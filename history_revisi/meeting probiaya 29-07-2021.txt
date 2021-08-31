@@ -1,0 +1,110 @@
+Tambahan (database/file)
+------------------------
+
+1. Di "tbl_pengajuan" : Tambah field (DONE 10.20.0.40 -> db_probiaya_live)
+	1. "note_penyelesaian" (varchar 200) setelah "status_dokumen" , test : BY/003-04/2021/00032
+	2. "status_penyelesaian" (varchar 20) setelah "coa"
+
+2. Buat tabel "tbl_penyelesaian_kelebihan" (DONE 10.20.0.40 -> db_probiaya_live)
+	1* id_penyelesaian (int 11) AI
+	2* nomor_pengajuan (varchar 40)
+	3* nomor_penyelesaian (varchar 40)
+	4* jenis_biaya (varchar 300)
+	5* sub_biaya (varchar 300)
+	6* total_pengajuan (int 20)
+	7* realisasi (int 20)
+	8* lebih_bayar (int 20)
+	9* tanggal_pengembalian (date)
+	10* cara_pengembalian (varchar 100)
+	11* departemen_tujuan (varchar 40)
+	12* status_verifikasi_penyelesaian (varchar 40)
+	13* note_verifikasi_penyelesaian (varchar 500)
+
+3. Buat tabel "tbl_kelebihan_file" (DONE 10.20.0.40 -> db_probiaya_live)
+	1* id (int 11) AI
+	2* nomor_pengajuan (varchar 40)
+	3* file (varchar 50)
+	4* nama_file (varchar 50)
+	5* status (varchar 20)
+	
+4. Tambah 1 folder utama "file_penyelesaian" (Done 10.20.0.40)
+
+5. Buat tabel "tbl_penyelesaian_kekurangan" (DONE 10.20.0.40 -> db_probiaya_live)
+	1* id_penyelesaian (int 11) AI
+	2* nomor_pengajuan (varchar 40)
+	3* nomor_penyelesaian (varchar 40)
+	4* nomor_invoice
+	5* jenis_biaya (varchar 300)
+	6* sub_biaya (varchar 300)
+	7* total_pengajuan (int 20)
+	8* realisasi (int 20)
+	9* kurang_bayar (int 20)
+	10* bank (varchar 40)(
+	11* nomor_rekening (varchar 40)
+	12* atas_nama_bank (varchar 40)
+	13* tanggal_request_transfer (date)
+	14* kronologis (varchar 5000)
+	15* departemen_tujuan (varchar 40)
+	16* status_approve_penyelesaian (varchar 40)
+	17* approved_by_penyelesaian (varchar 40)
+	18* nama_pengapprove_penyelesaian (varchar 40)
+	19* note_cancel (varchar 500)
+	20* direktur_tujuan_penyelesaian (varchar 40)
+	21* kadiv_tujuan_penyelesaian (varchar 40)
+	22* tanggal_approved_penyelesaian (date)
+	23* status_verifikasi_penyelesaian (varchar 40)
+	24* note_verifikasi_penyelesaian (varchar 500)
+	25* status_bayar_penyelesaian (varchar 40)
+	26* tanggal_rencana_bayar_penyelesaian (date)
+	27* tanggal_proses_bayar_penyelesaian (date)
+	28* bank_bayar_penyelesaian (varchar 50)
+	29* tanggal_bayar_penyelesaian (date)
+	30* nomor_bmhd_penyelesaian (varchar 50) (ADA UPDATE) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	31* nomor_pymt_penyelesaian (varchar 50) (ADA UPDATE) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+6. Buat tabel "tbl_approved_history_penyelesaian" (copy saja struktur tbl_approved_history)
+
+...................................................................................................
+
+Step-step Perubahan Rule Pengajuan Collection 90 Up
+
+1. Ubah data sub biaya sesuai file gambar "ubah sub biaya.jpg"
+
+2. Ubah relasi sub_biaya : 
+	* pengaju yang awal nya Asset Recovery menjadi ADCOLL (Cabang)
+	* dept reviewer yang awalnya Asset Recovery menjadi COLLECTION
+
+3. tambah field "parameter_tambahan" di tbl_sub_biaya, lalu untuk sub_biaya yang dimaksud isi parameter nya dengan "90up"
+
+4. tambah field "jalur_khusus" di tbl_pengajuan setelah field "dept_tujuan"
+
+5. untuk user thomas, patria, bambang (buat user baru) sebagai coll head, tambahkan jabatan khusus "collwil_1 , collwil_2, collwil3"
+
+6. Setelah pengajuan2 90 up diatas melewati kawil, maka pengajuan diarahkan ke salah satu dari 3 orang di bawah sesuai wilayah dari cabang yang mengajukan,
+	* sumatera (wil 1) : THOMAS
+	* jawa & bali (wil 2 & wil 5) : PATRIA
+	* kalimantan & sulawesi (wil 6 & 7) : BAMBANG ADARINO
+
+	* LOGIKANYA (pada saat kawil approve):
+		1. ambil data lengkap dari sub_biaya
+			jika parameter_tambahan='90up' maka
+				update jalur_khusus = 'collwil_1' (sesuai wilayah nya)
+		2. saat sampai di level head, maka 'collwil jadi pertimbangan ke mana pengajuan tsb selanjutnya'
+
+7. Ubah data sub biaya (juga nama di relasi sub) sbb : 
+	* Biaya Perjalanan Dinas Penagihan -> Biaya Perjalanan Dinas Penagihan < 91 Up
+	* Biaya Perjalanan Dinas Penarikan Collection -> Biaya Perjalanan Dinas Penarikan < 91 Up
+
+PENTING : Jangan lupa ubah juga nama sub biaya di pengajuan yang sudah lewat (untuk kebutuhan penarikan accounting)
+
+-------------------------------------------------------------------------------------------------------------------------
+
+PR Susulan :
+
+1. Indikator angka pada review penyelesaian
+2. Next approve pada tampilan pengajuan (terkait ada perubahan alur collection)..... (clear)
+3. Dashboard penyelesaian bagian "Verified by Accounting" belum bisa di klik
+4. Alur penyelesaian belum di update terkait perubahan struktur collection
+5. Filter2 setiap tampilan data
+6. fungsi hide tombol & loading ketika proses (klik tombol)
+
