@@ -94,7 +94,7 @@
       <?php } ?>
 
 
-      <!-- Jika Ada revisi rekening by finance, tampil di dashboard (khusus PIC Dept) -->
+      <!-- Jika Ada revisi rekening pengajuan by finance, tampil di dashboard (khusus PIC Dept) -->
       <?php 
         if($cabang == 'HEAD OFFICE'){
           $cek_refrek = $this->db->query("SELECT * FROM tbl_pengajuan WHERE revisi_rekening='ya' AND dept_tujuan='$departemen'")->num_rows();
@@ -116,6 +116,32 @@
           </div>
         <?php } ?>
       <?php } ?>
+      <!-- Penutup Jika Ada revisi rekening pengajuan by finance, tampil di dashboard (khusus PIC Dept) -->
+
+
+      <!-- Jika Ada revisi rekening penyelesaian by finance, tampil di dashboard (khusus PIC Dept) -->
+      <?php 
+        if($cabang == 'HEAD OFFICE'){
+          $cek_refrek_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE revisi_rekening_penyelesaian='ya' AND departemen_tujuan='$departemen'")->num_rows();
+        }else{
+          $cek_refrek_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE revisi_rekening_penyelesaian='ya' AND departemen_tujuan='$cabang'")->num_rows();
+        }
+        
+      ?>
+
+      <?php if($cek_refrek_penyelesaian > 0){ ?> <!-- jika ada revisi rekening penyelesaian by finance tampilkan notifikasi -->
+        <?php if($level == 'Departement PIC'){ ?>
+          <!-- Notifikasi Revisi Rekening Finance -->
+          <div class="callout callout-warning">
+              <h4>Perhatian !</h4>
+              <p>
+                Anda memiliki permintaan revisi (Terkait Nomor Rekening Penyelesaian) dari Finance Dept. Silahkan 
+                <a href="<?php echo base_url().'review_kekurangan_biaya/revisi_rekening' ?>">Lihat Data</a>
+              </p>
+          </div>
+        <?php } ?>
+      <?php } ?>
+      <!-- Penutup Jika Ada revisi rekening penyelesaian by finance, tampil di dashboard (khusus PIC Dept) -->
 
 
       <!-- Jika Ada Approval Masuk -->

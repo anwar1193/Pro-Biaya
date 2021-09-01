@@ -59,8 +59,10 @@ Tambahan (database/file)
 	27* tanggal_proses_bayar_penyelesaian (date)
 	28* bank_bayar_penyelesaian (varchar 50)
 	29* tanggal_bayar_penyelesaian (date)
-	30* nomor_bmhd_penyelesaian (varchar 50) (ADA UPDATE) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	31* nomor_pymt_penyelesaian (varchar 50) (ADA UPDATE) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	30* nomor_bmhd_penyelesaian (varchar 50)
+	31* nomor_pymt_penyelesaian (varchar 50)
+	32* revisi_rekening_penyelesaian (varchar 30) (ADA UPDATE) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	33* alasan_revisi_rekening_penyelesaian (varchar 200) (ADA UPDATE) >>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 6. Buat tabel "tbl_approved_history_penyelesaian" (copy saja struktur tbl_approved_history)
 
@@ -74,7 +76,7 @@ Step-step Perubahan Rule Pengajuan Collection 90 Up
 	* pengaju yang awal nya Asset Recovery menjadi ADCOLL (Cabang)
 	* dept reviewer yang awalnya Asset Recovery menjadi COLLECTION
 
-3. tambah field "parameter_tambahan" di tbl_sub_biaya, lalu untuk sub_biaya yang dimaksud isi parameter nya dengan "90up"
+3. tambah field "parameter_tambahan" di tbl_sub_biaya, lalu untuk sub_biaya yang dimaksud isi parameter nya dengan "91up"
 
 4. tambah field "jalur_khusus" di tbl_pengajuan setelah field "dept_tujuan"
 
@@ -101,10 +103,15 @@ PENTING : Jangan lupa ubah juga nama sub biaya di pengajuan yang sudah lewat (un
 
 PR Susulan :
 
-1. Indikator angka pada review penyelesaian
+1. Indikator angka pada review penyelesaian......................................... (clear)
 2. Next approve pada tampilan pengajuan (terkait ada perubahan alur collection)..... (clear)
 3. Dashboard penyelesaian bagian "Verified by Accounting" belum bisa di klik
 4. Alur penyelesaian belum di update terkait perubahan struktur collection
-5. Filter2 setiap tampilan data
-6. fungsi hide tombol & loading ketika proses (klik tombol)
+5. Filter tampilan data (inquiry, review, finance).................................. (clear)
+6. Fungsi2 di halaman bayar (penyelesaian) finance.................................. (clear)
+7. fungsi hide tombol & loading ketika proses (klik tombol)
 
+
+NEXT : Tambahkan data review kekurangan/kelebihan cek apakah indikator angkanya benar berubah?
+
+BY/060-04/2021/00041 (Revisi Rekening)

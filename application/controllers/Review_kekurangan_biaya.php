@@ -18,14 +18,32 @@ class Review_kekurangan_biaya extends CI_Controller {
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$level = $this->libraryku->tampil_user()->level;
 
-		$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.departemen_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='final approved' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
+		if(isset($_POST['cari_data1'])){
+
+			$cabang = $this->input->post('cabang');
+			$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.departemen_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='final approved' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='' AND tbl_pengajuan.cabang='$cabang' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
+
+		}elseif(isset($_POST['cari_data2'])){
+
+			$sub_biaya = $this->input->post('sub_biaya');
+			$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.departemen_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='final approved' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='' AND tbl_penyelesaian_kekurangan.sub_biaya='$sub_biaya' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
+
+		}else{
+			$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.departemen_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='final approved' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
+		}
 
 		$identitas = $departemen;
+		$data_cabang = $this->db->query("SELECT * FROM tbl_cabang WHERE kode_cabang < 100")->result_array();
+		$data_filter_biaya = $this->db->query("SELECT * FROM tbl_sub_biaya WHERE departemen_tujuan='$departemen'")->result_array();
 		
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
-		$this->load->view('v_review_kekurangan', array('data_review' => $data_review));
+		$this->load->view('v_review_kekurangan', array(
+			'data_review' => $data_review,
+			'data_cabang' => $data_cabang,
+			'data_filter_biaya' => $data_filter_biaya
+		));
 		$this->load->view('footer');
 	}
 
@@ -154,6 +172,45 @@ class Review_kekurangan_biaya extends CI_Controller {
 		$this->dompdf->load_html($html);
 		$this->dompdf->render();
 		$this->dompdf->stream("struk_pengajuan.pdf",array('Attachment' => 0)); //Nama Hasil Export PDF
+	}
+
+
+	public function revisi_rekening()
+	{
+		date_default_timezone_set("Asia/Jakarta");
+		cek_belum_login();
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		$identitas = $level;
+		$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.revisi_rekening_penyelesaian='ya' AND tbl_penyelesaian_kekurangan.departemen_tujuan='$departemen' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_review_kekurangan_refrek', array('data_inquiry' => $data_inquiry));
+		$this->load->view('footer');
+	}
+
+
+	public function update_rekening(){
+		$id_penyelesaian = $this->input->post('id_penyelesaian');
+
+		// Update status revisi_finance
+		$result = $this->M_master->update_pengajuan('tbl_penyelesaian_kekurangan',array(
+			'bank' => $this->input->post('bank'),
+			'nomor_rekening' => $this->input->post('nomor_rekening'),
+			'atas_nama_bank' => $this->input->post('atas_nama_bank'),
+			'revisi_rekening_penyelesaian' => '',
+			'alasan_revisi_rekening_penyelesaian' => ''
+		), array('id_penyelesaian' => $id_penyelesaian));
+
+		if($result>0){
+			echo '<script>
+				alert("Data rekening dikirim kembali ke Finance Dept");window.location="revisi_rekening";
+			</script>';
+		}
 	}
 
 

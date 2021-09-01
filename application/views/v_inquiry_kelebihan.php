@@ -38,6 +38,83 @@ $level = $this->libraryku->tampil_user()->level;
         <!-- /.box-header -->
         <div class="box-body">
 
+        FILTER BY : 
+
+        <button class="btn btn-info btn-sm" id="tombol1">Jenis Biaya</button>
+        <button class="btn btn-success btn-sm" id="tombol2">Status Penyelesaian</button>
+
+        <!-- Filter by Jenis Biaya -->
+        <div id="jenis_biaya"><br>
+          <form method="POST" action="<?php echo base_url().'inquiry_kelebihan_biaya' ?>">
+            <table>
+              <tr>
+                <td>(FILTER By Biaya) - &nbsp;&nbsp;</td>
+
+                <td>Jenis Biaya :</td>
+                <td>
+                  <select name="jenis_biaya" required="" id="jenis_biaya_pilihan">
+                    <option value="">- Pilih Jenis Biaya -</option>
+                    <?php foreach($data_jb as $row){ ?>
+                    <option value="<?php echo $row['id_jb'] ?>">
+                      <?php echo $row['jenis_biaya'] ?>
+                    </option>
+                    <?php } ?>
+                  </select>
+                </td>
+
+                <td>&nbsp;</td>
+
+                <td>Sub Biaya :</td>
+                <td>
+                    <select id="sub_biaya_pilihan" name="sub_biaya" required="">
+                      <option></option>
+                    </select>
+                </td>
+
+                <td>
+                  &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data1">
+                    <i class="fa fa-search"></i> Cari Datas
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </form>
+          </div>
+          <!-- Penutup Filter by Jenis Biaya -->
+
+
+          <!-- Filter by Status Approval -->
+          <div id="status_penyelesaian"><br>
+          <form method="POST" action="<?php echo base_url().'inquiry_kelebihan_biaya' ?>">
+            <table>
+              <tr>
+                <td>(FILTER BY Status Penyelesaian) - &nbsp;&nbsp;</td>
+
+                <td>&nbsp; Status Penyelesaian :</td>
+                <td>
+                  <select name="status_penyelesaian">
+                    <option value="On Proccess">On Proccess</option>
+                    <option value="Verified By PIC">Verified By PIC</option>
+                    <option value="Verified By Accounting">Verified By Accounting</option>
+                    <option value="cancel">Cancel</option>
+                    <option value="cancel by request">Cancel By Request</option>
+                  </select>
+                </td>
+
+                <td>
+                  &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data2">
+                    <i class="fa fa-search"></i> Cari Data
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </form>
+          </div>
+          <!-- Penutup Filter by Status Approval -->
+
+          <br>
+          <hr style="border-color: orange; border-style: dashed;">
+
           <table id="tableDT" class="table table-bordered table-striped" style="margin-top: 10px">
             <thead>
             <tr>
@@ -160,3 +237,53 @@ if(flashData){
   });
 }
 </script>
+
+
+<!-- Script Pilihan Biaya -->
+<script>
+    
+    $(function(){
+  
+      $.ajaxSetup({
+        type : 'POST',
+        url : '<?php echo base_url().'inquiry_pengajuan/ambil_data_filter' ?>',
+        cache : false
+      });
+  
+      $("#jenis_biaya_pilihan").change(function(){
+        var value=$(this).val();
+        if(value>0){
+          $.ajax({
+            data:{modul:'sub_biaya',id:value},
+            success: function(respond){
+              $("#sub_biaya_pilihan").html(respond);
+            }
+          })
+        }
+      });
+  
+    });
+  
+    </script>
+    <!-- / Script Pilihan Biaya -->
+
+    <!-- Script Filter -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+        $('#jenis_biaya').hide();
+        $('#status_penyelesaian').hide();
+
+        $(document).on('click', '#tombol1', function(){
+          $('#jenis_biaya').slideDown(1000);
+          $('#status_penyelesaian').hide();
+        });
+
+        $(document).on('click', '#tombol2', function(){
+          $('#jenis_biaya').hide();
+          $('#status_penyelesaian').slideDown(1000);
+        });
+
+      });
+    </script>
+    <!-- / Penutup Script Filter -->

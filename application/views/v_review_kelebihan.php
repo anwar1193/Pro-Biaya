@@ -38,6 +38,71 @@ $level = $this->libraryku->tampil_user()->level;
         <!-- /.box-header -->
         <div class="box-body">
 
+        <button class="btn btn-success btn-sm" id="tombol1">Berdasarkan Cabang</button>
+        <button class="btn btn-warning btn-sm" id="tombol2">Berdasarkan Biaya</button>
+
+        <!-- Filter by Cabang -->
+        <div id="cabang"><br>
+        <form method="POST" action="<?php echo base_url().'review_kelebihan_biaya' ?>">
+          <table>
+            <tr>
+              <td>(FILTER BY Cabang) - &nbsp;&nbsp;</td>
+
+              <td>&nbsp; Cabang :</td>
+              <td>
+                <select name="cabang">
+                  <option value="">- Pilih Cabang -</option>
+                  <?php  
+                    foreach($data_cabang as $row_cabang){
+                  ?>
+                  <option value="<?php echo $row_cabang['nama_cabang'] ?>"><?php echo $row_cabang['nama_cabang'] ?></option>
+                  <?php } ?>
+                </select>
+              </td>
+
+              <td>
+                &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data1">
+                  <i class="fa fa-search"></i> Cari Data
+                </button>
+              </td>
+            </tr>
+          </table>
+        </form>
+        </div>
+        <!-- Penutup Filter by Cabang -->
+
+        <!-- Filter by Jenis Biaya -->
+        <div id="jenis_biaya"><br>
+        <form method="POST" action="<?php echo base_url().'review_kelebihan_biaya' ?>">
+          <table>
+            <tr>
+              <td>(FILTER By Sub Biaya) - &nbsp;&nbsp;</td>
+
+              <td>Sub Biaya :</td>
+              <td>
+                <select name="sub_biaya" required="">
+                  <option value="">- Pilih Sub Biaya -</option>
+                  <?php foreach($data_filter_biaya as $row){ ?>
+                  <option value="<?php echo $row['sub_biaya'] ?>">
+                    <?php echo $row['sub_biaya'] ?>
+                  </option>
+                  <?php } ?>
+                </select>
+              </td>
+
+              <td>
+                &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data2">
+                  <i class="fa fa-search"></i> Cari Data
+                </button>
+              </td>
+            </tr>
+          </table>
+        </form>
+        </div>
+        <!-- Penutup Filter by Jenis Biaya -->
+        <br>
+        <hr style="border-color: orange; border-style: dashed;">
+
           <table id="tableDT" class="table table-bordered table-striped" style="margin-top: 10px">
             <thead>
             <tr>
@@ -129,3 +194,24 @@ if(flashData){
   });
 }
 </script>
+
+<!-- Script Filter -->
+<script type="text/javascript">
+    $(document).ready(function(){
+
+      $('#cabang').hide();
+      $('#jenis_biaya').hide();
+
+      $(document).on('click', '#tombol1', function(){
+        $('#cabang').slideDown(1000);
+        $('#jenis_biaya').hide();
+      });
+
+      $(document).on('click', '#tombol2', function(){
+        $('#cabang').hide();
+        $('#jenis_biaya').slideDown(1000);
+      });
+
+    });
+  </script>
+<!-- / Penutup Script Filter -->

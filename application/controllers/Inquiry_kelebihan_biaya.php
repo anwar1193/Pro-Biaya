@@ -20,14 +20,37 @@ class Inquiry_kelebihan_biaya extends CI_Controller {
 
 		if($cabang=='HEAD OFFICE'){ // Jika Kantor Pusat
 
-			// $data_inquiry = $this->M_master->inquiryHO($departemen)->result_array();
-            $data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.bagian='$departemen' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+			if(isset($_POST['cari_data1'])){
+
+				$sub_biaya = $this->input->post('sub_biaya');
+				$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.bagian='$departemen' AND tbl_pengajuan.sub_biaya='$sub_biaya' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+
+			}elseif(isset($_POST['cari_data2'])){
+
+				$status_penyelesaian = $this->input->post('status_penyelesaian');
+				$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.bagian='$departemen' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='$status_penyelesaian' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+
+			}else{
+				$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.bagian='$departemen' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+			}
+            
 			$identitas = $departemen;
 
 		}else{ // Jika Cabang
 			
-            // $data_inquiry = $this->M_master->inquiry($cabang, $level)->result_array();
-            $data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.cabang='$cabang' AND tbl_pengajuan.bagian='$level' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+            if(isset($_POST['cari_data1'])){
+				
+				$sub_biaya = $this->input->post('sub_biaya');
+				$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.cabang='$cabang' AND tbl_pengajuan.bagian='$level' AND tbl_pengajuan.sub_biaya='$sub_biaya' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+
+			}elseif(isset($_POST['cari_data2'])){
+
+				$status_penyelesaian = $this->input->post('status_penyelesaian');
+				$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.cabang='$cabang' AND tbl_pengajuan.bagian='$level' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='$status_penyelesaian' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+
+			}else{
+				$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.cabang='$cabang' AND tbl_pengajuan.bagian='$level' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+			}
 				
             $identitas = $level;
 			

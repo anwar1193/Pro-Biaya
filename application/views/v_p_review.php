@@ -93,7 +93,9 @@
                 </table>
               </form>
               </div>
-              <!-- Penutup Filter by Jenis Biaya --><br><br>
+              <!-- Penutup Filter by Jenis Biaya -->
+              <br>
+              <hr style="border-color: orange; border-style: dashed;">
 
               <table class="table table-bordered table-striped" id="tableDT" style="margin-top: 10px">
                 <thead>

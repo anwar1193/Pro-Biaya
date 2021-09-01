@@ -38,7 +38,85 @@ $level = $this->libraryku->tampil_user()->level;
         <!-- /.box-header -->
         <div class="box-body">
 
-          <table id="tableDT" class="table table-bordered table-striped" style="margin-top: 10px">
+          FILTER BY : 
+
+          <button class="btn btn-info btn-sm" id="tombol1">Jenis Biaya</button>
+          <button class="btn btn-success btn-sm" id="tombol2">Status Approval</button>
+
+          <!-- Filter by Jenis Biaya -->
+          <div id="jenis_biaya"><br>
+            <form method="POST" action="<?php echo base_url().'inquiry_kekurangan_biaya' ?>">
+              <table>
+                <tr>
+                  <td>(FILTER By Biaya) - &nbsp;&nbsp;</td>
+
+                  <td>Jenis Biaya :</td>
+                  <td>
+                    <select name="jenis_biaya" required="" id="jenis_biaya_pilihan">
+                      <option value="">- Pilih Jenis Biaya -</option>
+                      <?php foreach($data_jb as $row){ ?>
+                      <option value="<?php echo $row['id_jb'] ?>">
+                        <?php echo $row['jenis_biaya'] ?>
+                      </option>
+                      <?php } ?>
+                    </select>
+                  </td>
+
+                  <td>&nbsp;</td>
+
+                  <td>Sub Biaya :</td>
+                  <td>
+                      <select id="sub_biaya_pilihan" name="sub_biaya" required="">
+                        <option></option>
+                      </select>
+                  </td>
+
+                  <td>
+                    &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data1">
+                      <i class="fa fa-search"></i> Cari Datas
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+            </div>
+            <!-- Penutup Filter by Jenis Biaya -->
+
+
+            <!-- Filter by Status Approval -->
+            <div id="status_approval"><br>
+            <form method="POST" action="<?php echo base_url().'inquiry_kekurangan_biaya' ?>">
+              <table>
+                <tr>
+                  <td>(FILTER BY Status Approval) - &nbsp;&nbsp;</td>
+
+                  <td>&nbsp; Status Approval :</td>
+                  <td>
+                    <select name="status_approval">
+                      <option value="on proccess">On Proccess</option>
+                      <option value="final approved">Final Approved</option>
+                      <option value="rejected">Rejected</option>
+                      <option value="revisi">Revisi</option>
+                      <option value="cancel">Cancel</option>
+                      <option value="cancel by request">Cancel By Request</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data2">
+                      <i class="fa fa-search"></i> Cari Data
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+            </div>
+            <!-- Penutup Filter by Status Approval -->
+
+            <br>
+            <hr style="border-color: orange; border-style: dashed;">
+
+          <table id="tableDT" class="table table-bordered table-striped" style="margin-top: 20px">
             <thead>
             <tr>
               <th style="text-align: center">NO</th>
@@ -73,7 +151,7 @@ $level = $this->libraryku->tampil_user()->level;
               <td><?php echo $row_inquiry['departemen_tujuan'] ?></td>
               <td style="font-weight:bold">
                 <?php echo $row_inquiry['status_approve_penyelesaian'] ?> 
-                <?php if($row_inquiry['status_approve_penyelesaian'] != 'On Proccess' AND $row_inquiry['status_approve_penyelesaian'] != 'cancel'){ ?>
+                <?php if($row_inquiry['status_approve_penyelesaian'] != 'On Proccess' AND $row_inquiry['status_approve_penyelesaian'] != 'cancel' AND $row_inquiry['status_approve_penyelesaian'] != 'cancel by request'){ ?>
                   By <?php echo $row_inquiry['approved_by_penyelesaian'] ?><br>
                   (<?php echo $row_inquiry['nama_pengapprove_penyelesaian'] ?>)
                 <?php } ?>
@@ -191,3 +269,52 @@ if(flashData){
   });
 }
 </script>
+
+<!-- Script Filter -->
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('#jenis_biaya').hide();
+    $('#status_approval').hide();
+
+    $(document).on('click', '#tombol1', function(){
+      $('#jenis_biaya').slideDown(1000);
+      $('#status_approval').hide();
+    });
+
+    $(document).on('click', '#tombol2', function(){
+      $('#jenis_biaya').hide();
+      $('#status_approval').slideDown(1000);
+    });
+
+  });
+</script>
+<!-- / Penutup Script Filter -->
+
+<!-- Script Pilihan Biaya -->
+<script>
+    
+    $(function(){
+  
+      $.ajaxSetup({
+        type : 'POST',
+        url : '<?php echo base_url().'inquiry_pengajuan/ambil_data_filter' ?>',
+        cache : false
+      });
+  
+      $("#jenis_biaya_pilihan").change(function(){
+        var value=$(this).val();
+        if(value>0){
+          $.ajax({
+            data:{modul:'sub_biaya',id:value},
+            success: function(respond){
+              $("#sub_biaya_pilihan").html(respond);
+            }
+          })
+        }
+      });
+  
+    });
+  
+    </script>
+    <!-- / Script Pilihan Biaya -->

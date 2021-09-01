@@ -18,18 +18,28 @@ class Bayar_penyelesaian_final extends CI_Controller {
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$level = $this->libraryku->tampil_user()->level;
 
-        $data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_bayar_penyelesaian='Proses Bayar' ORDER BY tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian ASC")->result_array();
-        
+		if(isset($_POST['cari_data'])){
+			$tanggal_from = date('Y-m-d', strtotime($this->input->post('tanggal_from')));
+			$tanggal_to = date('Y-m-d', strtotime($this->input->post('tanggal_to')));
+			$nama_bank = $this->input->post('nama_bank');
+
+			$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_bayar_penyelesaian='Proses Bayar' AND (tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian BETWEEN '$tanggal_from' AND '$tanggal_to') AND tbl_penyelesaian_kekurangan.bank='$nama_bank' ORDER BY tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian ASC")->result_array();
+		}else{
+			$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_bayar_penyelesaian='Proses Bayar' ORDER BY tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian ASC")->result_array();
+		}
+
         $identitas = $level;
 
 		$nomor_pymt_penyelesaian = $this->M_master->nojur_pymt_penyelesaian();
+		$data_bank_pengaju = $this->db->query("SELECT * FROM tbl_bank_pengaju ORDER BY nama_bank")->result_array();
 		
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_bayar_penyelesaian_final', array(
 			'data_inquiry' => $data_inquiry,
-			'nomor_pymt_penyelesaian' => $nomor_pymt_penyelesaian
+			'nomor_pymt_penyelesaian' => $nomor_pymt_penyelesaian,
+			'data_bank_pengaju' => $data_bank_pengaju
 		));
 		$this->load->view('footer');
 	}
@@ -82,6 +92,53 @@ class Bayar_penyelesaian_final extends CI_Controller {
 			'data_approve_history' => $data_approve_history
 		));
 		$this->load->view('footer');
+	}
+
+
+	public function ubah_tanggal(){
+		$tanggal_baru = date('Y-m-d', strtotime($this->input->post('tanggal_rencana_bayar')));
+		$id_penyelesaian = $this->input->post('id_penyelesaian');
+
+		$result = $this->M_master->update_pengajuan('tbl_penyelesaian_kekurangan', array(
+			'tanggal_rencana_bayar_penyelesaian' => $tanggal_baru
+		), array('id_penyelesaian' => $id_penyelesaian));
+
+		if($result>0){
+			echo '<script>
+				alert("Tanggal Rencana Bayar Berhasil Diubah");window.location="index";
+			</script>';
+		}
+	}
+
+	public function ubah_bank(){
+		$bank = $this->input->post('bank_bayar');
+		$id_penyelesaian = $this->input->post('id_penyelesaian');
+
+		$result = $this->M_master->update_pengajuan('tbl_penyelesaian_kekurangan', array(
+			'bank_bayar_penyelesaian' => $bank
+		), array('id_penyelesaian' => $id_penyelesaian));
+
+		if($result>0){
+			echo '<script>
+				alert("Bank Bayar Berhasil Diubah");window.location="index";
+			</script>';
+		}
+	}
+
+	public function revisi_rekening(){
+		$id_penyelesaian = $this->input->post('id_penyelesaian');
+
+		$result = $this->M_master->update_pengajuan('tbl_penyelesaian_kekurangan', array(
+			'revisi_rekening_penyelesaian' => 'ya',
+			'alasan_revisi_rekening_penyelesaian' => $this->input->post('alasan_revisi_rekening')
+		), array('id_penyelesaian'=>$id_penyelesaian));
+
+		if($result>0){
+			echo '<script>
+				alert("Permintaan revisi rekening terkirim ke PIC Reviewer");window.location="index";
+			</script>';
+		}
+
 	}
 
 

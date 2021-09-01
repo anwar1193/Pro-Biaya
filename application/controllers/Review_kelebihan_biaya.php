@@ -18,14 +18,33 @@ class Review_kelebihan_biaya extends CI_Controller {
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$level = $this->libraryku->tampil_user()->level;
 
-		$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='On Proccess' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+		if(isset($_POST['cari_data1'])){
+
+			$cabang_dipilih = $this->input->post('cabang');
+			$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='On Proccess' AND tbl_pengajuan.cabang='$cabang_dipilih' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+
+		}elseif(isset($_POST['cari_data2'])){
+
+			$sub_biaya = $this->input->post('sub_biaya');
+			$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='On Proccess' AND tbl_penyelesaian_kelebihan.sub_biaya='$sub_biaya' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+
+		}else{
+			$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='On Proccess' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+		}
 
 		$identitas = $departemen;
 		
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+		$data_cabang = $this->db->query("SELECT * FROM tbl_cabang WHERE kode_cabang < 100")->result_array();
+		$data_filter_biaya = $this->db->query("SELECT * FROM tbl_sub_biaya WHERE departemen_tujuan='$departemen'")->result_array();
+
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
-		$this->load->view('v_review_kelebihan', array('data_review' => $data_review));
+		$this->load->view('v_review_kelebihan', array(
+			'data_review' => $data_review,
+			'data_cabang' => $data_cabang,
+			'data_filter_biaya' => $data_filter_biaya
+		));
 		$this->load->view('footer');
 	}
 

@@ -630,14 +630,22 @@
             <!-- Review Penyelesaian Biaya -->
             <li class="<?= $this->uri->segment(1)=='review_kelebihan_biaya' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kelebihan_biaya' ?>"><i class="fa fa-check-square-o"></i> 
               <span>Review Kelebihan Biaya</span>
-              <!-- <span class="pull-right-container">
+              <span class="pull-right-container">
               <?php  
-                $jml_bayar_penyelesaian = $this->M_master->tampil_bayar_penyelesaian()->num_rows();
+                $jml_review_kelebihan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='On Proccess' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->num_rows();
               ?>
-              <span class="label label-danger pull-right"><?php echo $jml_bayar_penyelesaian; ?></span> -->
+              <span class="label label-success pull-right"><?php echo $jml_review_kelebihan; ?></span>
             </a></li>
 
-            <li class="<?= $this->uri->segment(1)=='review_kekurangan_biaya' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kekurangan_biaya' ?>"><i class="fa fa-check-square-o"></i> <span>Review Kekurangan Biaya</span></a></li>
+
+            <li class="<?= $this->uri->segment(1)=='review_kekurangan_biaya' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kekurangan_biaya' ?>"><i class="fa fa-check-square-o"></i> 
+              <span>Review Kekurangan Biaya</span>
+              <span class="pull-right-container">
+              <?php  
+                $jml_review_kekurangan = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.departemen_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='final approved' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->num_rows();
+              ?>
+              <span class="label label-danger pull-right"><?php echo $jml_review_kekurangan; ?></span>
+            </a></li>
             <!-- Penutup Review Penyelesaian Biaya -->
 
           <?php } ?>

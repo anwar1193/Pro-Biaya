@@ -38,6 +38,41 @@ $level = $this->libraryku->tampil_user()->level;
         <!-- /.box-header -->
         <div class="box-body">
 
+          <!-- Filter by Tanggal Pengajuan -->
+          <div id="tanggal_pengajuan">
+            <form method="POST" action="<?php echo base_url().'setuju_bayar_penyelesaian' ?>">
+              <table>
+                <tr>
+                  <td>(FILTER By Tgl Minta Transfer & Nama Bank) - &nbsp;</td>
+
+                  <td>&nbsp;  Dari Tanggal : </td>
+                  <td><input type="date" name="tanggal_from" required></td>
+
+                  <td>&nbsp;  Sampai Tanggal : </td>
+                  <td><input type="date" name="tanggal_to" required></td>
+
+                  <td>&nbsp;  Nama Bank : </td>
+                  <td>
+                    <select name="nama_bank" required="">
+                      <option value="">- Pilih Bank -</option>
+                      <?php foreach($data_bank_pengaju as $row_bank){ ?>
+                      <option value="<?php echo $row_bank['nama_bank'] ?>"><?php echo $row_bank['nama_bank'] ?></option>
+                      <?php } ?>
+                    </select>
+                  </td>
+
+                  <td>
+                    &nbsp;  <button type="submit" class="btn btn-info btn-xs" name="cari_data">
+                      <i class="fa fa-search"></i> Cari Data
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+            </div>
+
+            <!-- Penutup Filter by Tanggal Pengajuan --><br>
+
           <table id="tableDT" class="table table-bordered table-striped" style="margin-top: 10px">
             <thead>
             <tr>
@@ -49,6 +84,7 @@ $level = $this->libraryku->tampil_user()->level;
               <th style="text-align: center">Jumlah Pengajuan</th>
               <th style="text-align: center">Realisasi</th>
               <th style="text-align: center">Kurang Bayar</th>
+              <th style="text-align: center">Bank</th>
               <th style="text-align: center">PIC Reviewer</th>
               <th style="text-align: center">Status Penyelesaian</th>
               <th style="text-align: center">Sts Review PIC</th>
@@ -69,6 +105,7 @@ $level = $this->libraryku->tampil_user()->level;
               <td style="text-align: right;"><?php echo number_format($row_inquiry['total_pengajuan'],0,',','.') ?></td>
               <td style="text-align: right;"><?php echo number_format($row_inquiry['realisasi'],0,',','.') ?></td>
               <td style="text-align: right;"><?php echo number_format($row_inquiry['kurang_bayar'],0,',','.') ?></td>
+              <td><?php echo $row_inquiry['bank'] ?></td>
               <td><?php echo $row_inquiry['departemen_tujuan'] ?></td>
               <td style="font-weight:bold">
                 <?php echo $row_inquiry['status_approve_penyelesaian'] ?> 

@@ -18,19 +18,30 @@ class Setuju_bayar_penyelesaian extends CI_Controller {
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$level = $this->libraryku->tampil_user()->level;
 
-        $data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' AND tbl_penyelesaian_kekurangan.status_bayar_penyelesaian='' ORDER BY tbl_penyelesaian_kekurangan.tanggal_request_transfer ASC")->result_array();
-        
+		if(isset($_POST['cari_data'])){
+			$tanggal_from = date('Y-m-d', strtotime($this->input->post('tanggal_from')));
+			$tanggal_to = date('Y-m-d', strtotime($this->input->post('tanggal_to')));
+			$nama_bank = $this->input->post('nama_bank');
+
+			$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' AND tbl_penyelesaian_kekurangan.status_bayar_penyelesaian='' AND (tbl_penyelesaian_kekurangan.tanggal_request_transfer BETWEEN '$tanggal_from' AND '$tanggal_to') AND tbl_penyelesaian_kekurangan.bank='$nama_bank' ORDER BY tbl_penyelesaian_kekurangan.tanggal_request_transfer ASC")->result_array();
+		}else{
+			$data_inquiry = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' AND tbl_penyelesaian_kekurangan.status_bayar_penyelesaian='' ORDER BY tbl_penyelesaian_kekurangan.tanggal_request_transfer ASC")->result_array();
+		}
+
         $identitas = $level;
 
 		// Nomor Jurnal BMHD
 		$nojur_bmhd_penyelesaian = $this->M_master->nojur_bmhd_penyelesaian();
+
+		$data_bank_pengaju = $this->db->query("SELECT * FROM tbl_bank_pengaju ORDER BY nama_bank")->result_array();
 		
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_setuju_bayar_penyelesaian', array(
 			'data_inquiry' => $data_inquiry,
-			'nojur_bmhd_penyelesaian' => $nojur_bmhd_penyelesaian
+			'nojur_bmhd_penyelesaian' => $nojur_bmhd_penyelesaian,
+			'data_bank_pengaju' => $data_bank_pengaju
 		));
 		$this->load->view('footer');
 	}
