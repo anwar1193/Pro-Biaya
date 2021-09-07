@@ -71,6 +71,10 @@ Tambahan (database/file)
 Step-step Perubahan Rule Pengajuan Collection 90 Up
 
 1. Ubah data sub biaya sesuai file gambar "ubah sub biaya.jpg"
+	* Biaya Perjalanan Dinas Penagihan AR -> Biaya Perjalanan Dinas Penagihan 91 Up
+	* Biaya Perjalanan Dinas Penarikan AR -> Biaya Perjalanan Dinas Penarikan 91 Up
+	* Biaya BBM Asset Recovery            -> Biaya BBM 91 Up
+	* Biaya Representasi - AssetRec	      -> Biaya Representasi 91 Up
 
 2. Ubah relasi sub_biaya : 
 	* pengaju yang awal nya Asset Recovery menjadi ADCOLL (Cabang)
@@ -94,10 +98,10 @@ Step-step Perubahan Rule Pengajuan Collection 90 Up
 		2. saat sampai di level head, maka 'collwil jadi pertimbangan ke mana pengajuan tsb selanjutnya'
 
 7. Ubah data sub biaya (juga nama di relasi sub) sbb : 
-	* Biaya Perjalanan Dinas Penagihan -> Biaya Perjalanan Dinas Penagihan < 91 Up
+	* Biaya Perjalanan Dinas Penagihan            -> Biaya Perjalanan Dinas Penagihan < 91 Up
 	* Biaya Perjalanan Dinas Penarikan Collection -> Biaya Perjalanan Dinas Penarikan < 91 Up
 
-PENTING : Jangan lupa ubah juga nama sub biaya di pengajuan yang sudah lewat (untuk kebutuhan penarikan accounting)
+8. PENTING : Tambahkan lagi biaya AR seperti semula, supaya coa bisa di tarik spt biasa
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -110,8 +114,6 @@ PR Susulan :
 5. Filter tampilan data (inquiry, review, finance).................................. (clear)
 6. Fungsi2 di halaman bayar (penyelesaian) finance.................................. (clear)
 7. fungsi hide tombol & loading ketika proses (klik tombol)
+8. Tambahkan lagi biaya AR seperti semula, supaya coa bisa di tarik spt biasa....... (clear)
+9. Upload Probiaya Dev............................................................... (clear tinggal database nya)
 
-
-NEXT : Tambahkan data review kekurangan/kelebihan cek apakah indikator angkanya benar berubah?
-
-BY/060-04/2021/00041 (Revisi Rekening)

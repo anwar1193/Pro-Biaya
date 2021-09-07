@@ -45,7 +45,9 @@
 			// Ambil COA (Nomor Perkiraan)
 			$sub_biaya = $data['sub_biaya'];
 			$dept = $data['bagian'];
-			$ambil_coa = $this->db->query("SELECT * FROM tbl_relasi_sub WHERE sub_biaya='$sub_biaya' AND departemen='$dept'")->row_array();
+			$dept_ex = 'EX '.$dept;
+
+			$ambil_coa = $this->db->query("SELECT * FROM tbl_relasi_sub WHERE sub_biaya='$sub_biaya' AND (departemen='$dept' OR departemen='$dept_ex')")->row_array();
 			$coa = $ambil_coa['coa'];
 
 		?>

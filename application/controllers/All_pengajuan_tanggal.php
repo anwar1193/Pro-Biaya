@@ -225,7 +225,9 @@ class All_pengajuan_tanggal extends CI_Controller {
 		// Ambil COA (Nomor Perkiraan)
 		$sub_biaya = $data_pengajuan['sub_biaya'];
 		$dept = $data_pengajuan['bagian'];
-		$ambil_coa = $this->db->query("SELECT * FROM tbl_relasi_sub WHERE sub_biaya='$sub_biaya' AND departemen='$dept'")->row_array();
+		$ex_dept = 'EX '.$dept;
+		$ambil_coa = $this->db->query("SELECT * FROM tbl_relasi_sub WHERE sub_biaya='$sub_biaya' AND (departemen='$dept' OR departemen='$ex_dept')")->row_array();
+		
 		$coa = $ambil_coa['coa'];
 		$nama_coa = $ambil_coa['nama_coa'];
 
