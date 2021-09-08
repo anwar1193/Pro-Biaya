@@ -1258,8 +1258,7 @@ class M_master extends CI_Model {
 			status_approve='approved' AND approved_by='dept head pic' AND direktur_tujuan='$director' AND nama_pengapprove!='$director' AND kadiv_tujuan='' AND bagian='INTERNAL AUDIT' OR
 			
 			-- balik lagi
-			
-			status_approve='final approved' AND direktur_tujuan='$director' AND balik_lagi='Ya'
+			status_approve='final approved' AND approved_by='director' AND nama_pengapprove='$director' AND direktur_tujuan='$director' AND balik_lagi='Ya'
 		"); // nama_pengapprove != '$director supaya saat sudah approve, memo nya hilang dari inbox'
 		return $result;
 	}
@@ -1295,7 +1294,9 @@ class M_master extends CI_Model {
 	// (INBOX DIRECTOR FINANCE)
 	public function tampil_inbox_director_finance($director){
 		$result = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
-			status_approve='approved' AND approved_by='director' AND bagian!='INTERNAL AUDIT'
+			status_approve='approved' AND approved_by='director' AND bagian!='INTERNAL AUDIT' OR
+			-- balik lagi
+			status_approve='final approved' AND approved_by='director finance' AND nama_pengapprove='$director' AND direktur_tujuan='$director' AND balik_lagi='Ya'
 		"); // nama_pengapprove != '$director supaya saat sudah approve, memo nya hilang dari inbox'
 		return $result;
 	}
@@ -1312,7 +1313,10 @@ class M_master extends CI_Model {
 	public function tampil_inbox_presdir(){
 		$result = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
 			status_approve='approved' AND approved_by='director finance' OR
-			status_approve='approved' AND approved_by='director' AND bagian='INTERNAL AUDIT'
+			status_approve='approved' AND approved_by='director' AND bagian='INTERNAL AUDIT' OR
+
+			-- balik lagi
+			status_approve='final approved' AND approved_by='president director' AND balik_lagi='Ya'
 		"); // nama_pengapprove != '$director supaya saat sudah approve, memo nya hilang dari inbox'
 		return $result;
 	}

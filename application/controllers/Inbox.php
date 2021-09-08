@@ -211,7 +211,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'direktur_tujuan' => $direktur,
-								'kadiv_tujuan' => $kadiv
+								'kadiv_tujuan' => $kadiv,
+								'balik_lagi' => ''
 							), array('id_pengajuan' => $id));
 
 						}else{ //jika tidak punya kadiv
@@ -226,7 +227,8 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'direktur_tujuan' => $direktur,
-									'kadiv_tujuan' => $kadiv
+									'kadiv_tujuan' => $kadiv,
+									'balik_lagi' => ''
 								), array('id_pengajuan' => $id));
 
 							}else{ //jika pengajuan tidak melebihi limit kadiv
@@ -261,7 +263,8 @@ class Inbox extends CI_Controller {
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'approved',
 						'approved_by' => 'dept head',
-						'nama_pengapprove' => $nama_lengkap
+						'nama_pengapprove' => $nama_lengkap,
+						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
 
 				}
@@ -283,7 +286,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'dept head pic',
 							'nama_pengapprove' => $nama_lengkap,
 							'direktur_tujuan' => $direktur,
-							'kadiv_tujuan' => $kadiv
+							'kadiv_tujuan' => $kadiv,
+							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
 
 					}else{ //jika tidak punya kadiv
@@ -297,7 +301,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'direktur_tujuan' => $direktur,
-								'kadiv_tujuan' => $kadiv
+								'kadiv_tujuan' => $kadiv,
+								'balik_lagi' => ''
 							), array('id_pengajuan' => $id));
 
 						}else{ //jika pengajuan tidak melebihi limit kadiv
@@ -358,7 +363,8 @@ class Inbox extends CI_Controller {
 						$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 							'status_approve' => 'approved',
 							'approved_by' => 'division head',
-							'nama_pengapprove' => $nama_lengkap
+							'nama_pengapprove' => $nama_lengkap,
+							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
 					}else{ // jika total pengajuan masih dibawah limit, selesai
 						$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
@@ -375,7 +381,8 @@ class Inbox extends CI_Controller {
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'approved',
 						'approved_by' => 'division head',
-						'nama_pengapprove' => $nama_lengkap
+						'nama_pengapprove' => $nama_lengkap,
+						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
 				}
 
@@ -386,7 +393,8 @@ class Inbox extends CI_Controller {
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'approved',
 						'approved_by' => 'division head',
-						'nama_pengapprove' => $nama_lengkap
+						'nama_pengapprove' => $nama_lengkap,
+						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
 				}else{ // jika total pengajuan masih dibawah limit, selesai
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
@@ -418,7 +426,8 @@ class Inbox extends CI_Controller {
 				$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 					'status_approve' => 'approved',
 					'approved_by' => 'director pengaju',
-					'nama_pengapprove' => $nama_lengkap
+					'nama_pengapprove' => $nama_lengkap,
+					'balik_lagi' => ''
 				), array('id_pengajuan' => $id));
 
 			}elseif($dir_login != $dir_asal AND $dir_login == $dir_tujuan){ //jika hanya sebagai direktur tujuan
@@ -427,7 +436,8 @@ class Inbox extends CI_Controller {
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'approved',
 						'approved_by' => 'director',
-						'nama_pengapprove' => $nama_lengkap
+						'nama_pengapprove' => $nama_lengkap,
+						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
 				}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 
@@ -440,7 +450,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal_approved' => date('Y-m-d'),
-							'wa_blast' => 'off'
+							'wa_blast' => 'off',
+							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
 
 					}else{ //jika bukan audit, selesai sampai sini
@@ -465,7 +476,8 @@ class Inbox extends CI_Controller {
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'approved',
 						'approved_by' => 'director',
-						'nama_pengapprove' => $nama_lengkap
+						'nama_pengapprove' => $nama_lengkap,
+						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
 				}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
@@ -493,7 +505,8 @@ class Inbox extends CI_Controller {
 				$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 					'status_approve' => 'approved',
 					'approved_by' => 'director finance',
-					'nama_pengapprove' => $nama_lengkap
+					'nama_pengapprove' => $nama_lengkap,
+					'balik_lagi' => ''
 				), array('id_pengajuan' => $id));
 			}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 				$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
