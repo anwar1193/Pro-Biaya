@@ -18,7 +18,7 @@ class Review_kekurangan_accounting extends CI_Controller {
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$level = $this->libraryku->tampil_user()->level;
 
-		$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
+		$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE (tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' OR tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified By ACC') ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC")->result_array();
 
 		$identitas = $departemen;
 		

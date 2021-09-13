@@ -52,6 +52,7 @@ $level = $this->libraryku->tampil_user()->level;
               <th style="text-align: center">PIC Reviewer</th>
               <th style="text-align: center">Status Penyelesaian</th>
               <th style="text-align: center">Status Bayar</th>
+              <th style="text-align: center">Status Review Acc</th>
               <th style="text-align: center" width="7%">Action</th>
             </tr>
             </thead>
@@ -80,6 +81,16 @@ $level = $this->libraryku->tampil_user()->level;
               </td>
 
               <td><?php echo $row_review['status_bayar_penyelesaian'] ?></td>
+
+              <td>
+                <?php 
+                  if($row_review['status_verifikasi_penyelesaian'] != "Verified By ACC"){
+                    echo '-';
+                  }else{
+                    echo $row_review['status_verifikasi_penyelesaian'];
+                  }
+                ?>
+              </td>
 
               <!-- Kolom Action -->
               <td style="text-align: center;">

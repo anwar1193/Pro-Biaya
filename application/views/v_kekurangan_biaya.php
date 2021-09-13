@@ -111,7 +111,7 @@ Penyelesaian Kekurangan Biaya
 
         <div class="form-group">
           <label for="tanggal_request_transfer">Tanggal (Request Transfer Kekurangan Bayar)</label>
-          <input type="date" name="tanggal_request_transfer" id="tanggal_request_transfer" class="form-control" required>
+          <input type="date" name="tanggal_request_transfer" id="tanggal_request_transfer" class="form-control" min="<?php echo date('Y-m-d') ?>" required>
         </div>
 
         <div class="form-group">
@@ -279,6 +279,11 @@ $(document).on('click','#pilih', function(){
   $('#jumlah').val(jumlah);
   $('#note_penyelesaian').text('"'+note_penyelesaian+'"');
   $('#note_penyelesaian2').val('"'+note_penyelesaian+'"');
+
+  // Reset Data Sebelumnya
+  $('#kurang_bayar').val(0);
+  $('#kurang_bayar_text').text('Rp ' + rubah(0));
+  $('#realisasi').val(0);
 
   $('#modal-nomor_pengajuan').modal('hide');
 });

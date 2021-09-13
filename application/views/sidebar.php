@@ -663,9 +663,9 @@
               </a>
               <ul class="treeview-menu">
 
-              <li class="<?= $this->uri->segment(1)=='review_kelebihan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kelebihan_accounting' ?>"><i class="fa fa-circle-o"></i> <span>Review Kelebihan Biaya</span></a></li>
+              <li class="<?= $this->uri->segment(1)=='review_kelebihan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kelebihan_accounting' ?>"><i class="fa fa-circle-o"></i> <span>All Penyelesaian Kelebihan</span></a></li>
 
-              <li class="<?= $this->uri->segment(1)=='review_kekurangan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kekurangan_accounting' ?>"><i class="fa fa-circle-o"></i> <span>Review Kekurangan Biaya</span></a></li>
+              <li class="<?= $this->uri->segment(1)=='review_kekurangan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kekurangan_accounting' ?>"><i class="fa fa-circle-o"></i> <span>All Penyelesaian Kekurangan</span></a></li>
 
               </ul>
             </li>

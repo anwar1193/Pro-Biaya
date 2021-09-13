@@ -18,7 +18,7 @@ class Review_kelebihan_accounting extends CI_Controller {
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$level = $this->libraryku->tampil_user()->level;
 
-		$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By PIC' ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
+		$data_review = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE (tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By PIC' OR tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By Accounting') ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC")->result_array();
 
 		$identitas = $departemen;
 		

@@ -82,7 +82,7 @@
 
             <div class="form-group">
               <label for="tanggal_pengembalian">Tanggal Pengembalian</label>
-              <input type="date" name="tanggal_pengembalian" id="tanggal_pengembalian" class="form-control" required>
+              <input type="date" name="tanggal_pengembalian" id="tanggal_pengembalian" class="form-control" min="<?php echo date('Y-m-d') ?>" required>
             </div>
 
             <div class="form-group">
@@ -252,6 +252,11 @@ $(document).ready(function(){
     $('#jumlah').val(jumlah);
     $('#note_penyelesaian').text('"'+note_penyelesaian+'"');
     $('#note_penyelesaian2').val('"'+note_penyelesaian+'"');
+
+    // reset data sebelumnya
+    $('#lebih_bayar').val(0);
+    $('#lebih_bayar_text').text('Rp ' + rubah(0));
+    $('#realisasi').val(0);
 
     $('#modal-nomor_pengajuan').modal('hide');
   });
