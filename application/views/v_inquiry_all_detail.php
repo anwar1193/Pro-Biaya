@@ -561,6 +561,35 @@
                       </td>
                     </tr>
 
+                    <!-- Data Jika Pernah ada Kenaikan Harga................................................. -->
+                    <?php if($data_pengajuan['harga_sebelumnya'] != 0 AND $data_pengajuan['harga_sebelumnya'] < $data_pengajuan['jumlah']){ ?>
+                    <tr style="background-color: red; color:white">
+                      <td colspan="3">
+                        <div></div>
+                        <b>Keterangan Tambahan (Kenaikan Harga) PIC Reviewer</b>
+                      </td>
+                    </tr>
+                    
+                    <tr>
+                      <th>Jumlah (Harga) Sebelumnya</th>
+                      <th>:</th>
+                      <td><?php echo number_format($data_pengajuan['harga_sebelumnya'], 0 , ',', '.') ?></td>
+                    </tr>
+
+                    <tr>
+                      <th>Jumlah (Harga) Baru</th>
+                      <th>:</th>
+                      <td><?php echo number_format($data_pengajuan['jumlah'], 0 , ',', '.') ?></td>
+                    </tr>
+
+                    <tr>
+                      <th>Ket Harga Naik (Dari Reviewer)</th>
+                      <th>:</th>
+                      <td>"<?php echo $data_pengajuan['ket_balik'] ?>"</td>
+                    </tr>
+                    <?php } ?>
+                    <!-- / Data Jika Pernah ada Kenaikan Harga............................................... -->
+
                     <!-- Data Over Budget -->
                     <?php if($data_pengajuan['alasan_over_budget'] != ''){ ?>
                       <tr style="background-color: orange">

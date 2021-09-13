@@ -98,8 +98,8 @@ Step-step Perubahan Rule Pengajuan Collection 90 Up
 		2. saat sampai di level head, maka 'collwil jadi pertimbangan ke mana pengajuan tsb selanjutnya'
 
 7. Ubah data sub biaya (juga nama di relasi sub) sbb : 
-	* Biaya Perjalanan Dinas Penagihan            -> Biaya Perjalanan Dinas Penagihan < 91 Up
-	* Biaya Perjalanan Dinas Penarikan Collection -> Biaya Perjalanan Dinas Penarikan < 91 Up
+	* Biaya Perjalanan Dinas Penagihan            -> Biaya Perjalanan Dinas Penagihan < 91 Up (balik lagi)
+	* Biaya Perjalanan Dinas Penarikan Collection -> Biaya Perjalanan Dinas Penarikan < 91 Up (balik lagi)
 
 8. PENTING : Tambahkan lagi biaya AR seperti semula, supaya coa bisa di tarik spt biasa
 

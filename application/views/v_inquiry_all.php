@@ -162,7 +162,8 @@
                     <td>
                       <select name="status_approval">
                         <option value="on proccess">On Proccess</option>
-                        <option value="final approved">Approved</option>
+                        <option value="approved">Approved</option>
+                        <option value="final approved">Final Approved</option>
                         <option value="rejected">Rejected</option>
                         <option value="revisi">Revisi</option>
                         <option value="cancel">Cancel</option>
