@@ -1,0 +1,12 @@
+testing :
+
+BY/001-04/2021/00040
+BY/001-04/2021/00039
+BY/001-04/2021/00037
+
+
+setelah pengajuan di bayar, otomatis muncul fitur tambah dokumen di inquiry pengaju
+Tambah parameter ESTIMASI untuk filter tampilan penyelesaian
+pilihan tanggal penyelesaian bisa mundur
+jurnal balik terbentuk pada saat?
+tambah filter saat awal tampilan penyelesaian (harus sudah proses review dokumen oleh PIC)

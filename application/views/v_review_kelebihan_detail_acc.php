@@ -167,10 +167,12 @@ $level = $this->libraryku->tampil_user()->level;
               <span>
                 <a href="<?php echo base_url().'kelebihan_biaya/detail/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-info btn-xs" target="_blank">Detail Pengajuan</a>
               </span>
-
-              <span>
-                <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-verifikasi">Verifikasi</a>
-              </span>
+              
+              <?php if($data_penyelesaian['status_verifikasi_penyelesaian'] != 'Verified By Accounting'){ ?>
+                <span>
+                  <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-verifikasi">Verifikasi</a>
+                </span>
+              <?php } ?>
 
               <!-- <span>
                 <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal-pending">Pending</a>
