@@ -12,7 +12,7 @@ $level = $this->libraryku->tampil_user()->level;
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Detail Penyelesaian Kelebihan Biaya (Pending)
+    Detail Penyelesaian Kelebihan Biaya (Verified By Accounting)
     <small>PT Procar Int'l Finance</small>
   </h1>
   <ol class="breadcrumb">
@@ -31,7 +31,7 @@ $level = $this->libraryku->tampil_user()->level;
           <div class="row">
             <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
               
-              <h4 style="text-align: center;">Detail Penyelesaian Kelebihan Biaya</h4>
+              <h4 style="text-align: center;">Detail Penyelesaian Kelebihan Biaya (Verified By Accounting)</h4>
               <hr style="border-width: 2px; width: 200px">
               
               <table class="table">
@@ -167,15 +167,11 @@ $level = $this->libraryku->tampil_user()->level;
             <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
 
               <span>
-                <a href="<?php echo base_url().'inquiry_kelebihan_biaya/pending' ?>" class="btn btn-danger btn-xs">Kembali</a>
+                <a href="<?php echo base_url().'inquiry_kelebihan_biaya/verified_acc' ?>" class="btn btn-danger btn-xs">Kembali</a>
               </span>
 
               <span>
                 <a href="<?php echo base_url().'kelebihan_biaya/detail/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-warning btn-xs" target="_blank">Detail Pengajuan</a>
-              </span>
-
-              <span>
-                <a href="<?php echo base_url().'inquiry_kelebihan_biaya/perbaiki_pending/'.$data_penyelesaian['id_penyelesaian'] ?>" class="btn btn-info btn-xs">Perbaiki</a>
               </span>
 
             </div>

@@ -68,12 +68,15 @@
     $this->uri->segment(1)=='all_pengajuan_tanggal' && $this->uri->segment(2)=='jurnal_pic' ||
     $this->uri->segment(1)=='all_pengajuan_tanggal' && $this->uri->segment(2)=='jurnal_finance' ||
     $this->uri->segment(1)=='inbox' && $this->uri->segment(2)=='detail_counter' ||
+    $this->uri->segment(1)=='inbox' && $this->uri->segment(2)=='detail_counter_lalu' ||
+    $this->uri->segment(1)=='inbox' && $this->uri->segment(2)=='detail_counter_lalu_all' ||
     $this->uri->segment(1)=='data_user' && $this->uri->segment(2)=='history_clearlog' ||
     $this->uri->segment(1)=='data_user' && $this->uri->segment(2)=='log_login' ||
     $this->uri->segment(1)=='all_pengajuan_tanggal' && $this->uri->segment(2)=='jurnal_reverse' ||
     $this->uri->segment(1)=='p_bayar' && $this->uri->segment(2)=='detail' ||
     $this->uri->segment(1)=='p_bayar_final' && $this->uri->segment(2)=='detail' ||
     $this->uri->segment(1)=='inbox' && $this->uri->segment(2)=='detail_list_counter' ||
+    $this->uri->segment(1)=='inbox' && $this->uri->segment(2)=='detail_list_counter_lalu' ||
     $this->uri->segment(1)=='kelebihan_biaya' && $this->uri->segment(2)=='detail' ||
     $this->uri->segment(1)=='review_kekurangan_accounting' && $this->uri->segment(2)=='jurnal_pic' ||
     $this->uri->segment(1)=='review_kekurangan_accounting' && $this->uri->segment(2)=='jurnal_finance' ||

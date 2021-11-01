@@ -111,7 +111,7 @@ Penyelesaian Kekurangan Biaya
 
         <div class="form-group">
           <label for="tanggal_request_transfer">Tanggal (Request Transfer Kekurangan Bayar)</label>
-          <input type="date" name="tanggal_request_transfer" id="tanggal_request_transfer" class="form-control" min="<?php echo date('Y-m-d') ?>" required>
+          <input type="date" name="tanggal_request_transfer" id="tanggal_request_transfer" class="form-control" required>
         </div>
 
         <div class="form-group">
@@ -208,7 +208,7 @@ Penyelesaian Kekurangan Biaya
         <td><?php echo $data['nomor_pengajuan'] ?></td>
         <td><?php echo $data['jenis_biaya'] ?></td>
         <td><?php echo $data['sub_biaya'] ?></td>
-        <td><?php echo $data['jumlah'] + $data['ppn'] - $data['pph23'] - $data['pph42'] - $data['pph21'] ?></td>
+        <td><?php echo number_format($data['jumlah'] + $data['ppn'] - $data['pph23'] - $data['pph42'] - $data['pph21'], 0, '.', ',') ?></td>
         <td>
           <button class="btn btn-info btn-xs" id="pilih" type="button"
             data-nomor_pengajuan="<?php echo $data['nomor_pengajuan'] ?>"
@@ -301,14 +301,19 @@ $('#kurang_bayar_text').text('Rp ' + rubah(kurang_bayar));
 
 // validasi realisasi tidak boleh lebih kecil dari total pengajuan
 $(document).on('click', '#tombol_kirim', function(){
-var jumlah_v = $('#jumlah').val();
-var realisasi_v = $('#realisasi').val();
-var lebih_bayar_v = (realisasi_v * 1) - (jumlah_v * 1);
+  var jumlah_v = $('#jumlah').val();
+  var realisasi_v = $('#realisasi').val();
+  var lebih_bayar_v = (realisasi_v * 1) - (jumlah_v * 1);
 
-if(lebih_bayar_v <= 0){
-    alert("Nilai Realisasi Tidak Boleh Lebih Kecil / Sama Dengan Total Pengajuan");
-    return false;
-}
+  if(realisasi_v == '' || realisasi_v == 0){
+      alert("Nilai Realisasi Tidak Boleh Kosong atau Nol");
+      return false;
+  }
+
+  if(lebih_bayar_v <= 0){
+      alert("Nilai Realisasi Tidak Boleh Lebih Kecil / Sama Dengan Total Pengajuan");
+      return false;
+  }
 });
 
 });

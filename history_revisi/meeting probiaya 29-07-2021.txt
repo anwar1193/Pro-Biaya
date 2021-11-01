@@ -68,7 +68,7 @@ Tambahan (database/file)
 
 ...................................................................................................
 
-Step-step Perubahan Rule Pengajuan Collection 90 Up
+Step-step Perubahan Rule Pengajuan Collection 90 Up (ADCOLL)
 
 1. Ubah data sub biaya sesuai file gambar "ubah sub biaya.jpg"
 	* Biaya Perjalanan Dinas Penagihan AR -> Biaya Perjalanan Dinas Penagihan 91 Up

@@ -38,10 +38,11 @@
             <div class="box-body">
               <table id="tableDT" class="table table-bordered table-striped">
                 <thead>
-                <tr>
+                <tr style="text-align:center">
                   <th>NO</th>
                   <th>Tanggal</th>
                   <th>NO Pengajuan</th>
+                  <th>No Invoice</th>
                   <th>Cabang</th>
                   <th>Dept</th>
                   <th>Jenis Biaya</th>
@@ -61,6 +62,7 @@
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_pendok['tanggal'])) ?></td>
                   <td><?php echo $row_pendok['nomor_pengajuan'] ?></td>
+                  <td><?php echo $row_pendok['nomor_invoice'] ?></td>
                   <td><?php echo $row_pendok['cabang'] ?></td>
                   <td><?php echo $row_pendok['bagian'] ?></td>
                   <td><?php echo $row_pendok['jenis_biaya'] ?></td>

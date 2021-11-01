@@ -136,8 +136,17 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="jenis_invoice">Jenis Invoice :</label>
+                  <select id="jenis_invoice" class="form-control" required="">
+                    <option value="">- Pilih -</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="estimasi">Estimasi</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
                   <label for="nomor_invoice">Nomor Invoice :</label>
-                  <input type="text" name="nomor_invoice" id="nomor_invoice" class="form-control" required autocomplete="off">
+                  <input type="text" name="nomor_invoice" id="nomor_invoice" class="form-control" required autocomplete="off" readonly autofocus>
                 </div>
 
                 <!-- Departemen Tujuan -->
@@ -1900,6 +1909,16 @@
         $('#total_rp').text('');
         $('#totalFr_rp').text('');
         $('#bandel').val('').change();
+      });
+
+      $('#jenis_invoice').change(function(){
+        let jenis_invoice = $(this).val();
+
+        if(jenis_invoice == 'fixed'){
+          $('#nomor_invoice').removeAttr('readonly').attr({'placeholder' : 'Masukkan Nomor Invoice', 'value' : ''}).focus();
+        }else{
+          $('#nomor_invoice').attr({'value' : 'ESTIMASI', 'readonly' : ''});
+        }
       });
 
     });

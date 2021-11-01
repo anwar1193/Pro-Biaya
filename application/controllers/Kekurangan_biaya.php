@@ -27,7 +27,7 @@ class kekurangan_biaya extends CI_Controller {
         }
 
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
-        $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE cabang='$cabang' AND bagian='$identitas' AND status_bayar='Telah Dibayar' AND status_penyelesaian='' ")->result_array();
+        $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE cabang='$cabang' AND bagian='$identitas' AND status_bayar='Telah Dibayar' AND nomor_invoice='ESTIMASI' AND jenis_penyelesaian='kekurangan' AND note_penyelesaian!='' AND status_penyelesaian='' ")->result_array();
 
         $data_bank = $this->db->query("SELECT * FROM tbl_bank_pengaju ORDER BY nama_bank")->result_array();
 

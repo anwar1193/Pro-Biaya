@@ -91,6 +91,34 @@ class Inquiry_kelebihan_biaya extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function detail_verified_acc($id){
+        $data_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE id_penyelesaian=$id")->row_array();
+		$no_pengajuan = $data_penyelesaian['nomor_pengajuan'];
+        $data_file = $this->db->query("SELECT * FROM tbl_kelebihan_file WHERE nomor_pengajuan = '$no_pengajuan'")->result_array();
+        $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan = '$no_pengajuan'")->row_array();
+
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_verified_acc_detail2', array(
+			'data_penyelesaian' => $data_penyelesaian,
+			'data_file' => $data_file,
+			'data_pengajuan' => $data_pengajuan
+		));
+		$this->load->view('footer');
+	}
+
 	public function pending()
 	{
 		date_default_timezone_set("Asia/Jakarta");
@@ -168,12 +196,14 @@ class Inquiry_kelebihan_biaya extends CI_Controller {
 		$data_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE id_penyelesaian=$id")->row_array();
 		$nomor_pengajuan = $data_penyelesaian['nomor_pengajuan'];
 		$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$nomor_pengajuan'")->row_array();
+		$data_file = $this->db->query("SELECT * FROM tbl_kelebihan_file WHERE nomor_pengajuan = '$nomor_pengajuan'")->result_array();
 		
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_perbaiki_penyelesaian_pending2', array(
 			'data_pengajuan' => $data_pengajuan,
-			'data_penyelesaian' => $data_penyelesaian
+			'data_penyelesaian' => $data_penyelesaian,
+			'data_file' => $data_file
 		));
 		$this->load->view('footer');
 	}
@@ -203,6 +233,34 @@ class Inquiry_kelebihan_biaya extends CI_Controller {
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_verified_penyelesaian2', array('data_inquiry' => $data_inquiry));
+		$this->load->view('footer');
+	}
+
+
+	public function verified_acc()
+	{
+		date_default_timezone_set("Asia/Jakarta");
+		cek_belum_login();
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){ // Jika Kantor Pusat
+
+			$data_inquiry = $this->M_master->tampil_verified_acc_penyelesaianHO2($departemen)->result_array();
+			$identitas = $departemen;
+
+		}else{ // Jika Cabang
+			
+            $data_inquiry = $this->M_master->tampil_verified_acc_penyelesaian2($cabang, $level)->result_array();
+            $identitas = $level;
+			
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_verified_penyelesaian2_acc', array('data_inquiry' => $data_inquiry));
 		$this->load->view('footer');
 	}
 
@@ -259,6 +317,36 @@ class Inquiry_kelebihan_biaya extends CI_Controller {
 		$this->dompdf->load_html($html);
 		$this->dompdf->render();
 		$this->dompdf->stream("struk_pengajuan.pdf",array('Attachment' => 0)); //Nama Hasil Export PDF
+	}
+
+
+	public function hapus_file($id, $id_penyelesaian){
+		// Ambil Data Untuk Hapus Gambar
+		// $data = $this->M_crudGambar->ambil_data('tbl_barang',array('id'=>$id));
+
+		$data = $this->db->query("SELECT * FROM tbl_kelebihan_file WHERE id=$id")->result_array();
+		$result = $this->db->query("DELETE FROM tbl_kelebihan_file WHERE id=$id");
+
+		// $result = $this->M_crudGambar->hapus('tbl_barang',array('id'=>$id));
+
+		if($result>0){
+			// jika hapus data, gambar di folder juga dihapus
+			foreach($data as $row){
+				$gambar_lama = $row['file'];
+
+				if(file_exists('file_penyelesaian/'.$gambar_lama)){
+					$target_file = './file_penyelesaian/'.$gambar_lama;
+				}else{
+					$nama_folder = substr($gambar_lama, 0, 10);
+					$target_file = './file_penyelesaian/'.$nama_folder.'/'.$gambar_lama;
+				}
+    			
+    			unlink($target_file);
+			}
+		}
+
+		redirect('inquiry_kelebihan_biaya/perbaiki_pending/'.$id_penyelesaian);
+
 	}
 
 

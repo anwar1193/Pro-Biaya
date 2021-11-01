@@ -282,6 +282,33 @@ class Inquiry_kekurangan_biaya extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function verified_acc()
+	{
+		date_default_timezone_set("Asia/Jakarta");
+		cek_belum_login();
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){ // Jika Kantor Pusat
+
+			$data_inquiry = $this->M_master->tampil_verified_acc_penyelesaianHO($departemen)->result_array();
+			$identitas = $departemen;
+
+		}else{ // Jika Cabang
+			
+            $data_inquiry = $this->M_master->tampil_verified_acc_penyelesaian($cabang, $level)->result_array();
+            $identitas = $level;
+			
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_verified_penyelesaian_acc', array('data_inquiry' => $data_inquiry));
+		$this->load->view('footer');
+	}
+
 	public function detail($id){
         $data_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE id_penyelesaian=$id")->row_array();
 		$no_pengajuan = $data_penyelesaian['nomor_pengajuan'];
@@ -389,6 +416,33 @@ class Inquiry_kekurangan_biaya extends CI_Controller {
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_verified_detail', array(
+			'data_penyelesaian' => $data_penyelesaian,
+			'data_pengajuan' => $data_pengajuan
+		));
+		$this->load->view('footer');
+	}
+
+	public function detail_verified_acc($id){
+        $data_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE id_penyelesaian=$id")->row_array();
+		$no_pengajuan = $data_penyelesaian['nomor_pengajuan'];
+
+        $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan = '$no_pengajuan'")->row_array();
+
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_verified_acc_detail', array(
 			'data_penyelesaian' => $data_penyelesaian,
 			'data_pengajuan' => $data_pengajuan
 		));

@@ -49,6 +49,8 @@ class Home extends CI_Controller {
 			$data_pending_pic3 = $this->M_master->tampil_pending_penyelesaianHO2($departemen)->num_rows();
 			$data_verified = $this->M_master->tampil_verified_penyelesaianHO($departemen)->num_rows();
 			$data_verified2 = $this->M_master->tampil_verified_penyelesaianHO2($departemen)->num_rows();
+			$data_verified_acc = $this->M_master->tampil_verified_acc_penyelesaianHO($departemen)->num_rows();
+			$data_verified_acc2 = $this->M_master->tampil_verified_acc_penyelesaianHO2($departemen)->num_rows();
 		}else{
 			// Dashboard Utama
 			$data_onproccess = $this->M_master->tampil_onproccess($cabang, $level)->num_rows();
@@ -81,6 +83,8 @@ class Home extends CI_Controller {
 			$data_pending_pic3 = $this->M_master->tampil_pending_penyelesaian2($cabang, $level)->num_rows();
 			$data_verified = $this->M_master->tampil_verified_penyelesaian($cabang, $level)->num_rows();
 			$data_verified2 = $this->M_master->tampil_verified_penyelesaian2($cabang, $level)->num_rows();
+			$data_verified_acc = $this->M_master->tampil_verified_acc_penyelesaian($cabang, $level)->num_rows();
+			$data_verified_acc2 = $this->M_master->tampil_verified_acc_penyelesaian2($cabang, $level)->num_rows();
 		}
 
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
@@ -112,7 +116,9 @@ class Home extends CI_Controller {
 			'data_pending_pic2' => $data_pending_pic2,
 			'data_pending_pic3' => $data_pending_pic3,
 			'data_verified' => $data_verified,
-			'data_verified2' => $data_verified2
+			'data_verified2' => $data_verified2,
+			'data_verified_acc' => $data_verified_acc,
+			'data_verified_acc2' => $data_verified_acc2
 		));
 		$this->load->view('footer');
 	}

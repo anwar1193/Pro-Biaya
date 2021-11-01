@@ -10,6 +10,10 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
+    <!-- Ambil Data Flashdata untuk kata sweet alert -->
+    <div class="flash-data" data-flashdata="<?php echo $this->session->flashdata('pesan'); ?>"></div>
+    
     <section class="content-header">
       <h1>
         Detail Pengajuan
@@ -558,7 +562,37 @@
                       </td>
                     </tr>
 
-                    
+                    <!-- Data Penyelesaian -->
+                    <tr style="background-color: orange">
+                      <td colspan="3">
+                        <b>PENYELESAIAN</b>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Status Penyelesaian</th>
+                      <th>:</th>
+                      <td>
+                        <?php if($data_pengajuan['note_penyelesaian']==''){ ?>
+                          <span style="font-weight:bold">Belum Di Proses</span>
+                        <?php }else{ ?>
+                          <span style="font-weight:bold">On Proccess</span>
+                        <?php } ?>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Note Penyelesaian</th>
+                      <th>:</th>
+                      <td>
+                        <?php if($data_pengajuan['note_penyelesaian']==''){ ?>
+                          <span>-</span>
+                        <?php }else{ ?>
+                          <span><?php echo $data_pengajuan['note_penyelesaian'] ?></span>
+                        <?php } ?>
+                      </td>
+                    </tr>
+
 
                   </table>
 
@@ -627,6 +661,16 @@
                     </span>
                   <?php } ?>
                   <!-- Penutup Tombol Memo -->
+
+                  <!-- Tombol Request Penyelesaian -->
+                  <?php 
+                    $no_invoice = strtoupper($data_pengajuan['nomor_invoice']);
+                    if($no_invoice == 'ESTIMASI' AND $data_pengajuan['note_penyelesaian'] == '' AND $data_pengajuan['status_bayar']=='Telah Dibayar'){ 
+                  ?>
+                  <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-request_penyelesaian">
+                    Request Penyelesaian
+                  </a>
+                  <?php } ?>
 
                 </div>
               </div>
@@ -899,3 +943,69 @@
   </div>
   </form>
   <!-- / Modal Kirim Dokumen -->
+
+
+
+  <!-- Modal Request Penyelesaian -->
+  <form action="<?php echo base_url().'pendingan_dokumen/request_penyelesaian' ?>" method="post">
+  <div class="modal fade" id="modal-request_penyelesaian">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Note Penyelesaian</h4>
+          <em>Note ini akan menjadi acuan pengaju/cabang untuk melakukan penyelesaian</em>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" hidden name="nomor_pengajuan" value="<?php echo $data_pengajuan['nomor_pengajuan'] ?>">
+
+          <input type="text" hidden name="id" value="<?php echo $data_pengajuan['id_pengajuan'] ?>">
+
+          <input type="text" hidden name="tambah_dokumen_pic" value="<?php echo $departemen ?>">
+
+          <div class="form-group">
+            <label for="jenis_penyelesaian" required>Jenis Penyelesaian :</label>
+            <select name="jenis_penyelesaian" id="jenis_penyelesaian" class="form-control" required="">
+              <option value="">- Pilih -</option>
+              <option value="kelebihan">Kelebihan Biaya</option>
+              <option value="kekurangan">Kekurangan Biaya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="note_penyelesaian"></span> Isi Note :</label>
+            <textarea class="form-control" name="note_penyelesaian" rows="10" required></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm pull-left" data-dismiss="modal"> Batal</button>
+          <button type="submit" class="btn btn-sm btn-info"> Proses</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Request Penyelesaian -->
+
+
+  <!-- Panggil File JS SweetAlert -->
+  <script src="<?php echo base_url().'asset/sweetAlert/sweetalert2.all.min.js' ?>"></script>
+
+  <!-- script sweet alert -->
+  <script type="text/javascript">
+    // Jika Berhasil Melakukan Aksi (Simpan, Edit, Hapus)
+    var flashData = $('.flash-data').data('flashdata');
+    if(flashData){
+      Swal.fire({
+        icon: 'success', //Icon : success, error, warning, info, question
+        title: 'Berhasil',
+        text: flashData
+        // footer: 'Data Mahasiswa Tersimpan Ke Database'
+      });
+    }
+  </script>

@@ -82,7 +82,7 @@
 
             <div class="form-group">
               <label for="tanggal_pengembalian">Tanggal Pengembalian</label>
-              <input type="date" name="tanggal_pengembalian" id="tanggal_pengembalian" class="form-control" min="<?php echo date('Y-m-d') ?>" required>
+              <input type="date" name="tanggal_pengembalian" id="tanggal_pengembalian" class="form-control" required>
             </div>
 
             <div class="form-group">
@@ -272,14 +272,19 @@ $(document).ready(function(){
   });  
 
 
-  // validasi realisasi tidak boleh lebih besar dari total pengajuan
+  // validasi realisasi tidak boleh kosong & lebih besar dari total pengajuan
   $(document).on('click', '#tombol_kirim', function(){
     var jumlah_v = $('#jumlah').val();
     var realisasi_v = $('#realisasi').val();
     var lebih_bayar_v = (jumlah_v * 1) - (realisasi_v * 1);
 
-    if(lebih_bayar_v <= 0){
-        alert("Nilai Realisasi Tidak Boleh Lebih Besar / Sama Dengan Total Pengajuan");
+    if(realisasi_v == '' || realisasi_v == 0){
+        alert("Nilai Realisasi Tidak Boleh Kosong atau Nol");
+        return false;
+    }
+
+    if(lebih_bayar_v < 0){
+        alert("Nilai Realisasi Tidak Boleh Lebih Besar Dari Total Pengajuan");
         return false;
     }
   });

@@ -167,17 +167,12 @@
           <div class="box-footer no-padding">
             <ul class="nav nav-stacked">
 
-              <!-- <li>
-                <a href="<?php echo base_url().'p_dokumen_pending' ?>">Dokumen Pending <span class="pull-right badge bg-aqua">
-                  <?php echo $data_pendok; ?>
-                </span></a>
-              </li> -->
-
               <li>
-                <a href="#">Verified By Accounting <span class="pull-right badge bg-aqua">
-                  <?php echo 0; //$data_accdok; ?>
+                <a href="<?php echo base_url().'inquiry_kekurangan_biaya/verified_acc' ?>">Verified By Accounting <span class="pull-right badge bg-aqua">
+                  <?php echo $data_verified_acc; ?>
                 </span></a>
               </li>
+
             </ul>
           </div>
         </div>
@@ -261,17 +256,12 @@
           <div class="box-footer no-padding">
             <ul class="nav nav-stacked">
 
-              <!-- <li>
-                <a href="<?php echo base_url().'p_dokumen_pending' ?>">Dokumen Pending <span class="pull-right badge bg-aqua">
-                  <?php echo $data_pendok; ?>
-                </span></a>
-              </li> -->
-
               <li>
-                <a href="#">Verified By Accounting <span class="pull-right badge bg-aqua">
-                  <?php echo 0;//$data_accdok; ?>
+                <a href="<?php echo base_url().'inquiry_kelebihan_biaya/verified_acc' ?>">Verified By Accounting <span class="pull-right badge bg-aqua">
+                  <?php echo $data_verified_acc2; ?>
                 </span></a>
               </li>
+
             </ul>
           </div>
         </div>

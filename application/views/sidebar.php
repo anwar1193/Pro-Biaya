@@ -540,6 +540,11 @@
             </ul>
           </li>
           <!-- Penutup Inquiry Penyelesaian Biaya -->
+
+
+          <!-- Menu Pending Penyelesaian / Pengajuan Belum Diselesaikan -->
+          <li class="<?= $this->uri->segment(1)=='pending_penyelesaian' ? 'active' : null ?>"><a href="<?php echo base_url().'pending_penyelesaian' ?>"><i class="fa fa-clock-o"></i> <span>Pending Penyelesaian</span></a></li>
+          <!-- Penutup Menu Pending Penyelesaian / Pengajuan Belum Diselesaikan -->
        
         <?php } ?>
 
@@ -646,6 +651,11 @@
               ?>
               <span class="label label-danger pull-right"><?php echo $jml_review_kekurangan; ?></span>
             </a></li>
+
+
+            <li class="<?= $this->uri->segment(1)=='revisi_request_penyelesaian' ? 'active' : null ?>"><a href="<?php echo base_url().'revisi_request_penyelesaian' ?>"><i class="fa fa-wechat"></i> 
+              <span>Rev. Request Penyelesaian</span>
+            </a></li>
             <!-- Penutup Review Penyelesaian Biaya -->
 
           <?php } ?>
@@ -663,9 +673,25 @@
               </a>
               <ul class="treeview-menu">
 
-              <li class="<?= $this->uri->segment(1)=='review_kelebihan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kelebihan_accounting' ?>"><i class="fa fa-circle-o"></i> <span>All Penyelesaian Kelebihan</span></a></li>
+              <li class="<?= $this->uri->segment(1)=='review_kelebihan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kelebihan_accounting' ?>">
+                <i class="fa fa-circle-o"></i> 
+                <span>All Peny. Kelebihan</span>
+                <span class="pull-right-container">
+                <?php  
+                  $jml_all_peny_kelebihan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE status_verifikasi_penyelesaian='Verified By PIC'")->num_rows();
+                ?>
+                <span class="label label-success pull-right"><?php echo $jml_all_peny_kelebihan; ?></span>
+                </a>
+              </li>
 
-              <li class="<?= $this->uri->segment(1)=='review_kekurangan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kekurangan_accounting' ?>"><i class="fa fa-circle-o"></i> <span>All Penyelesaian Kekurangan</span></a></li>
+              <li class="<?= $this->uri->segment(1)=='review_kekurangan_accounting' ? 'active' : null ?>"><a href="<?php echo base_url().'review_kekurangan_accounting' ?>"><i class="fa fa-circle-o"></i> 
+                <span>All Peny. Kekurangan</span>
+                <span class="pull-right-container">
+                <?php  
+                  $jml_all_peny_kekurangan = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE status_verifikasi_penyelesaian='Verified'")->num_rows();
+                ?>
+                <span class="label label-danger pull-right"><?php echo $jml_all_peny_kekurangan; ?></span>
+              </a></li>
 
               </ul>
             </li>

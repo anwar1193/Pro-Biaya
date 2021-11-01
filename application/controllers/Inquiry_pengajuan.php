@@ -260,4 +260,64 @@ class Inquiry_pengajuan extends CI_Controller {
 	}
 
 
+	public function tambah_dokumen(){
+		date_default_timezone_set("Asia/Jakarta");
+		$no_pengajuan = $this->input->post('nomor_pengajuan');
+		// Simpan File Pengajuan
+
+		$hari_ini = date("Y-m-d");
+
+		$folderUpload = "./file_upload/".$hari_ini;
+
+		# periksa apakah folder tersedia
+		if (!is_dir($folderUpload)) {
+		  # jika tidak maka folder harus dibuat terlebih dahulu
+		  mkdir($folderUpload, 0777, $rekursif = true);
+		}
+
+		// ref_no diambil untuk nama file nya (pembeda antar pengajuan)
+		$refno = $this->input->post('ref_no');
+
+		$data = [];
+		$count = count($_FILES['files']['name']);
+		for($i=0; $i<$count; $i++){
+			if(!empty($_FILES['files']['name'][$i])){
+				$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+				$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+				$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+				$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+				$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+
+				$config['upload_path'] = $folderUpload;
+				$config['allowed_types'] = 'jpg|png|jpeg|pdf';
+				$config['max_size'] = 0;
+				// $config['file_name'] = $_FILES['files']['name'][$i];
+				$config['file_name'] = date('Y-m-d').'-'.$refno.'-'.substr(md5(rand()),0,5).'-'.$i;
+				// $config['encrypt_name'] = TRUE;
+
+				$this->load->library('upload', $config);
+
+				if($this->upload->do_upload('file')){
+					$uploadData = $this->upload->data();
+					$filename = $uploadData['file_name'];
+					$image[$i] = $filename;
+					$content = [
+						'nomor_pengajuan' => $no_pengajuan,
+						'file' => $image[$i],
+						'nama_file' => $this->input->post('nama_file')[$i]
+					];
+					$this->M_master->simpan_pengajuan('tbl_pengajuan_file', $content);
+				}
+			}
+		}
+
+		// cari id pengajuan untuk redirect halaman
+		// $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+		// $id_pengajuan = $data_pengajuan['id_pengajuan'];
+
+		$this->session->set_flashdata('pesan','Dokumen Baru Berhasil Ditambahkan');
+		redirect('inquiry_pengajuan');
+	}
+
+
 }

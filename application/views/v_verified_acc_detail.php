@@ -12,7 +12,7 @@ $level = $this->libraryku->tampil_user()->level;
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Detail Penyelesaian Kelebihan Biaya (Pending)
+    Detail Penyelesaian Kekurangan Biaya (Verified)
     <small>PT Procar Int'l Finance</small>
   </h1>
   <ol class="breadcrumb">
@@ -31,15 +31,21 @@ $level = $this->libraryku->tampil_user()->level;
           <div class="row">
             <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
               
-              <h4 style="text-align: center;">Detail Penyelesaian Kelebihan Biaya</h4>
+              <h4 style="text-align: center;">Detail Penyelesaian Kekurangan Biaya (Verified)</h4>
               <hr style="border-width: 2px; width: 200px">
               
               <table class="table">
 
                 <tr>
-                  <th>Nomor Pengajuan</th>
+                  <th width="300px">Nomor Pengajuan</th>
                   <th>:</th>
                   <td><?php echo $data_penyelesaian['nomor_pengajuan'] ?></td>
+                </tr>
+
+                <tr>
+                  <th>Nomor Invoice</th>
+                  <th>:</th>
+                  <td><?php echo $data_penyelesaian['nomor_invoice'] ?></td>
                 </tr>
 
                 <tr>
@@ -79,21 +85,27 @@ $level = $this->libraryku->tampil_user()->level;
                 </tr>
 
                 <tr>
-                  <th style="text-align: right;">Jumlah Lebih Bayar</th>
+                  <th style="text-align: right;">Jumlah Kurang Bayar</th>
                   <th>:</th>
-                  <td><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+                  <td><?php echo number_format($data_penyelesaian['kurang_bayar'],0,',','.') ?></td>
                 </tr>
 
                 <tr>
-                  <th>Tanggal Pengembalian</th>
+                  <th>Bank Penerima</th>
                   <th>:</th>
-                  <td><?php echo date('d-m-Y', strtotime($data_penyelesaian['tanggal_pengembalian'])) ?></td>
+                  <td><?php echo $data_penyelesaian['bank'] ?></td>
                 </tr>
 
                 <tr>
-                  <th>Cara Pengembalian</th>
+                  <th>Nomor Rekening</th>
                   <th>:</th>
-                  <td><?php echo $data_penyelesaian['cara_pengembalian'] ?></td>
+                  <td><?php echo $data_penyelesaian['nomor_rekening'] ?></td>
+                </tr>
+
+                <tr>
+                  <th>Atas Nama</th>
+                  <th>:</th>
+                  <td><?php echo $data_penyelesaian['atas_nama_bank'] ?></td>
                 </tr>
 
                 <tr>
@@ -101,48 +113,24 @@ $level = $this->libraryku->tampil_user()->level;
                   <th>:</th>
                   <td><?php echo $data_penyelesaian['departemen_tujuan'] ?></td>
                 </tr>
-                
+
                 <tr>
-                  <th>Berkas Penyelesaian</th>
+                  <th>Tanggal Minta Transfer</th>
                   <th>:</th>
-                  <td>
-                    <ul>
-                      <?php foreach($data_file as $row_file){ ?>
-                      <li>
-                        <?php echo $row_file['nama_file'] ?>
+                  <td><?php echo date('d-m-Y', strtotime($data_penyelesaian['tanggal_request_transfer'])) ?></td>
+                </tr>
+    
 
-                        <?php 
-                          if(file_exists('file_penyelesaian/'.$row_file['file'])){
-                        ?>
-
-                          <a target="_blank" href="<?php echo base_url().'file_penyelesaian/'.$row_file['file'] ?>">Download</a>
-                        
-                        <?php }else{ ?>
-
-                          <?php  
-                            $nama_folder = substr($row_file['file'], 0, 10);
-                          ?>
-
-                          <a target="_blank" href="<?php echo base_url().'file_penyelesaian/'.$nama_folder.'/'.$row_file['file'] ?>">Download</a>
-
-                        <?php } ?>
-
-                      </li>
-                      <?php } ?>
-                    </ul>
+                <tr>
+                  <th>Status Penyelesaian</th>
+                  <th>:</th>
+                  <td style="font-weight:bold">
+                    <?php echo $data_penyelesaian['status_approve_penyelesaian'] ?> 
+                    <?php if($data_penyelesaian['status_approve_penyelesaian'] != 'On Proccess'){ ?>
+                      By <?php echo $data_penyelesaian['approved_by_penyelesaian'] ?>
+                      (<?php echo $data_penyelesaian['nama_pengapprove_penyelesaian'] ?>)
+                    <?php } ?>
                   </td>
-                </tr>
-
-                <tr>
-                  <th>Status Verifikasi (PIC)</th>
-                  <th>:</th>
-                  <td style="font-weight:bold"><?php echo $data_penyelesaian['status_verifikasi_penyelesaian'] ?></td>
-                </tr>
-
-                <tr>
-                  <th>Note Verifikasi (PIC)</th>
-                  <th>:</th>
-                  <td><?php echo $data_penyelesaian['note_verifikasi_penyelesaian'] ?></td>
                 </tr>
 
               </table>
@@ -151,31 +139,27 @@ $level = $this->libraryku->tampil_user()->level;
 
           </div>
 
-          <!-- Catatan Penyelesaian (Dari PIC Reviewer) -->
+          <!-- Kronologis -->
           <div class="row">
             <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
 
-              <h4 style="text-decoration: underline;">Catatan Penyelesaian (Dari PIC Reviewer)</h4>
+              <h4 style="text-decoration: underline;">Kronologis Kekurangan Biaya</h4>
 
-              <?php echo $data_pengajuan['note_penyelesaian'] ?>
+              <?php echo $data_penyelesaian['kronologis'] ?>
 
             </div>
           </div>
-          <!-- / Catatan Penyelesaian (Dari PIC Reviewer) -->
+          <!-- / Kronologis -->
 
           <div class="row">
             <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
 
               <span>
-                <a href="<?php echo base_url().'inquiry_kelebihan_biaya/pending' ?>" class="btn btn-danger btn-xs">Kembali</a>
+                <a href="<?php echo base_url().'inquiry_kekurangan_biaya/verified_acc' ?>" class="btn btn-danger btn-xs">Kembali</a>
               </span>
 
               <span>
-                <a href="<?php echo base_url().'kelebihan_biaya/detail/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-warning btn-xs" target="_blank">Detail Pengajuan</a>
-              </span>
-
-              <span>
-                <a href="<?php echo base_url().'inquiry_kelebihan_biaya/perbaiki_pending/'.$data_penyelesaian['id_penyelesaian'] ?>" class="btn btn-info btn-xs">Perbaiki</a>
+                <a href="<?php echo base_url().'kekurangan_biaya/detail/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-warning btn-xs" target="_blank">Detail Pengajuan</a>
               </span>
 
             </div>

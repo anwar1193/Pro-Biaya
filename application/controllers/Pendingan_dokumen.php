@@ -99,6 +99,23 @@ class Pendingan_dokumen extends CI_Controller {
 	}
 
 
+	public function request_penyelesaian(){
+		$id_pengajuan = $this->input->post('id');
+		$note = $this->input->post('note_penyelesaian');
+		$jenis_penyelesaian = $this->input->post('jenis_penyelesaian');
+
+		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
+			'jenis_penyelesaian' => $jenis_penyelesaian,
+			'note_penyelesaian' => $note
+		), array('id_pengajuan' => $id_pengajuan));
+
+		if($result>0){
+			$this->session->set_flashdata('pesan','Request Penyelesaian Terkirim');
+			redirect('pendingan_dokumen/detail/'.$id_pengajuan);
+		}
+	}
+
+
 	public function check_dokumen(){
 		$id_file = $this->input->post('id_file');
 		$id_pengajuan = $this->input->post('id_pengajuan');

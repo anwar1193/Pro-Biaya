@@ -523,7 +523,7 @@
                       </td>
                     </tr>
 
-
+                    <!-- Counter Pengajuan Bulan Ini -->
                     <tr style="background-color: orange">
                       <td colspan="3">
                         <b>Counter Pengajuan (Berapa Kali Telah Diajukan & Nominalnya) Pada Bulan Ini</b>
@@ -547,6 +547,35 @@
                       <th>:</th>
                       <td><?php echo number_format($counter_pengajuan1['nominal_counter'],0,',','.') ?></td>
                     </tr>
+                    <!-- / Counter Pengajuan Bulan Ini -->
+
+                    <?php if($data_pengajuan['sub_biaya'] == 'Biaya Listrik' || $data_pengajuan['sub_biaya'] == 'Biaya Air' || $data_pengajuan['sub_biaya'] == 'Biaya Telepon dan Fax'){ ?>
+                      <!-- Data Pengajuan Bulan Sebelumnya -->
+                      <tr style="background-color: orange">
+                        <td colspan="3">
+                          <b>Data Pengajuan Bulan Sebelumnya</b>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th>Jumlah Diajukan</th>
+                        <th>:</th>
+                        <td>
+                          <?php echo $jumlah_pengajuan_lalu.' Kali'; ?> &nbsp; &nbsp;
+
+                          <a class="btn btn-info btn-xs" href="<?php echo base_url().'inbox/detail_counter_lalu/'.$data_pengajuan['id_pengajuan'] ?>" onclick="window.open(&apos;&apos;, &apos;popupwindow&apos;, &apos;scrollbars=yes, width=1000, height=600&apos;);return true" target="popupwindow">
+                            <i class="fa fa-eye"></i> Lihat
+                          </a>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th>Total Nominal</th>
+                        <th>:</th>
+                        <td><?php echo number_format($counter_pengajuan_lalu['nominal_counter'],0,',','.') ?></td>
+                      </tr>
+                      <!-- / Data Pengajuan Bulan Sebelumnya -->
+                    <?php } ?>
 
 
                     <!-- Data Over Budget -->

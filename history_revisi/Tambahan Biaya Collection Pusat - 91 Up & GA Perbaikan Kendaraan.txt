@@ -1,0 +1,37 @@
+Tambahan sub_biaya & alur collection pusat
+-------------------------------------------
+1. Copy kan biaya BBM ADCOLL (dari db), lalu edit menjadi COLL PUSAT
+	Biaya BBM - 91 Up Sumatera
+	Biaya BBM - 91 Up Jawa - Bali
+	Biaya BBM - 91 Up Sulawesi - Kalimantan
+
+2. Tambahkan relasi biaya "Biaya BBM" untuk collection support (dari admin panel)
+
+3. Tambahkan relasi sub (redaksional dari poin no.1) untuk collection support (dari admin panel)
+
+4. ke tbl_relasi_sub, ubah coa & nama_coa sub biaya yang baru ditambahkan
+
+5. Di Pengajuan Biaya, tambahkan input jalur khusus dengan kondisi :
+	* Jika bagian='COLLECTION SUPPORT' & yang diajukan (params tambahan) = 91Up
+		Jika sub_biaya = sub_sumatera -> collwil1
+		dst
+
+
+
+
+
+Tambahan sub_biaya GA
+----------------------
+1. Copykan biaya "Biaya Pemeliharaan dan Perbaikan Kendaraan" (dari db) 2x, ubah masing2 jadi :
+	Biaya Pemeliharaan dan Perbaikan Kendaraan - Mobil
+	Biaya Pemeliharaan dan Perbaikan Kendaraan - Motor
+
+2. Tambahkan relasi_sub dari admin panel (GA & ADCO) untuk kedua biaya diatas (jangan lupa tambahkan COA nya di db nya)
+
+3. ubah departemen (asal) di relasi_sub dari biaya yang lama (Biaya Pemeliharaan dan Perbaikan Kendaraan)
+	ADCO jadi EX ADCO
+	GENERAL AFFAIR jadi EX GENERAL AFFAIR
+
+Pecah sub biaya "Biaya Pemeliharaan dan Perbaikan Kendaraan" menjadi
+	Biaya Pemeliharaan dan Perbaikan Kendaraan - Mobil
+	Biaya Pemeliharaan dan Perbaikan Kendaraan - Motor

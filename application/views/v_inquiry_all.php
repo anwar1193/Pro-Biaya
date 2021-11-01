@@ -38,6 +38,12 @@
             <!-- /.box-header -->
             <div class="box-body">
 
+              <div style="position: absolute; top:50px; right:20px;">
+                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-dokter">
+                  <i class="fa fa-print"></i> Cetak Dokumen Terlambat
+                </a>
+              </div>
+
               &nbsp; FILTER BY : 
 
               <button class="btn btn-info btn-sm" id="tombol1">Tanggal Pengajuan</button>
@@ -596,6 +602,53 @@
   </div>
   </form>
   <!-- / Modal Cancel -->
+
+
+  <!-- Modal Dokter -->
+  <form action="<?php echo base_url().'inquiry_all/cetak_dok_terlambat' ?>" method="post" target="_blank">
+  <div class="modal fade" id="modal-dokter">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Cetak Dokumen Terlambat</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="cabang"></span> Pilih Cabang :</label>
+            <select name="cabang" id="cabang" class="form-control">
+              <option value="all">All Cabang</option>
+
+              <?php foreach($data_cabang as $row_cabang){ ?>
+                <option value="<?php echo $row_cabang['nama_cabang'] ?>">
+                  <?php echo $row_cabang['nama_cabang'] ?> (<?php echo $row_cabang['kode_cabang'] ?>)
+                </option>
+              <?php } ?>
+
+            </select>
+          </div>
+
+        </div> 
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-danger btn-sm pull-left" data-dismiss="modal"> 
+            <i class="fa fa-times"></i> Batal
+          </button>
+
+          <button type="submit" class="btn btn-sm btn-success" id="tombol_cetak"> 
+          <i class="fa fa-print"></i> Cetak
+          </button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Dokter -->
 
 
   <!-- Script Jquery Cancel -->

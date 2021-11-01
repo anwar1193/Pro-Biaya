@@ -295,4 +295,23 @@ class Inquiry_all extends CI_Controller {
 	}
 
 
+	public function cetak_dok_terlambat(){
+		date_default_timezone_set("Asia/Jakarta");
+
+		// bandingkan antara tanggal sekarang (current_date) & tanggal_bayar apakah lebih dari 14 hari?
+		$cabang = $this->input->post("cabang");
+
+		if($cabang == 'all'){
+			$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE status_bayar='Telah Dibayar' AND status_dokumen='' AND datediff(tanggal_bayar, current_date()) < -14 ")->result_array();
+		}else{
+			$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE status_bayar='Telah Dibayar' AND status_dokumen='' AND cabang='$cabang' AND datediff(tanggal_bayar, current_date()) < -14 ")->result_array();
+		}
+		
+
+		$this->load->view('v_cetak_dokterlambat_excel', array(
+			'data_pengajuan' => $data_pengajuan
+		));
+	}
+
+
 }

@@ -16,6 +16,10 @@
 			border-top: 1px solid #000;
 		}
 
+        *{
+            line-height: 20px;
+        }
+
 		table,th,td{
 			border-collapse: collapse;
 		}
@@ -66,9 +70,9 @@
 
     <hr style="border-collapse: collapse;">
 
-    Isi Memo : <br><br>
-
+    
     <?= $data_memo['isi_memo'] ?>
+    
 
     <!-- Tracking Approval Memo -->
     <table class="table" style="margin-top:50px">

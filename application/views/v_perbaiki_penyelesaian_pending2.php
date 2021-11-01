@@ -96,7 +96,46 @@ Penyelesaian Kelebihan Biaya (Pending)
           </select>
         </div>
 
-        <b>Upload Berkas (jpg / png / jpeg / pdf) :</b>
+        <!-- Berkas Pendukung -->
+        <div class="form-group">
+          <label for="Berkas">Berkas Pendukung :</label>
+          <table width="100%" border="1" style="border-collapse: collapse;" cellpadding="5px">
+            <tr>
+              <th style="text-align: center">Nama File</th>
+              <th style="text-align: center">Kode File</th>
+              <th style="text-align: center">Action</th>
+            </tr>
+
+            <?php foreach($data_file as $row_berkas){ ?>
+            <tr>
+              <td><?php echo $row_berkas['nama_file'] ?></td>
+              <td><?php echo $row_berkas['file'] ?></td>
+              <td style="text-align: center;">
+
+                <?php 
+                  if(file_exists('file_penyelesaian/'.$row_berkas['file'])){
+                ?>
+
+                  <a class="btn btn-info btn-xs" target="_blank" href="<?php echo base_url().'file_penyelesaian/'.$row_berkas['file'] ?>">Lihat File</a>
+                
+                <?php }else{ ?>
+
+                  <?php  
+                    $nama_folder = substr($row_berkas['file'], 0, 10);
+                  ?>
+
+                  <a class="btn btn-info btn-xs" target="_blank" href="<?php echo base_url().'file_penyelesaian/'.$nama_folder.'/'.$row_berkas['file'] ?>">Lihat File</a>
+
+                <?php } ?>
+
+                <a onclick="return confirm('Anda Yakin Akan Menghapus File Ini?')" href="<?php echo base_url().'inquiry_kelebihan_biaya/hapus_file/'.$row_berkas['id'].'/'.$data_penyelesaian['id_penyelesaian'] ?>" class="btn btn-danger btn-xs">Hapus</a>
+              </td>
+            </tr>
+            <?php } ?>
+          </table>            
+        </div>
+
+        <b>Upload Berkas Tambahan (jpg / png / jpeg / pdf) :</b>
         <table class="table table-bordered" id="tableLoop">
             <thead>
             <tr class="bg-success">
@@ -134,8 +173,13 @@ Penyelesaian Kelebihan Biaya (Pending)
 
         <br>
 
+        <span>
+          <a href="<?php echo base_url().'inquiry_kelebihan_biaya/detail_pending/'.$data_penyelesaian['id_penyelesaian'] ?>" class="btn btn-danger btn-sm">
+            <i class="fa fa-backward"></i> Kembali
+          </a>
+        </span>
+
         <button class="btn btn-success btn-sm" type="submit" id="tombol_kirim"><i class="fa fa-send"></i> Update Penyelesaian</button>
-        <!-- <button class="btn btn-danger btn-sm" type="reset"><i class="fa fa-times"></i> Reset</button> -->
 
       </form>
 

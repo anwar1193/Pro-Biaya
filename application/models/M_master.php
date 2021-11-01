@@ -850,11 +850,34 @@ class M_master extends CI_Model {
 		return $result;
 	}
 
+	// Pengajuan Verified ACC Penyelesaian Cabang (Saat Di Verifikasi Oleh ACC)
+	public function tampil_verified_acc_penyelesaian($cabang, $bagian){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'final approved' AND tbl_pengajuan.cabang='$cabang' AND tbl_pengajuan.bagian='$bagian' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified By ACC'
+			ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC");
+		return $result;
+	}
+
 	// Pengajuan Verified Penyelesaian HO ((Saat Di Verifikasi Oleh PIC))
 	public function tampil_verified_penyelesaianHO($dept){
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE
 			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'final approved' AND tbl_pengajuan.bagian='$dept' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified'
 			ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC");
+		return $result;
+	}
+
+	// Pengajuan Verified Penyelesaian ACC HO ((Saat Di Verifikasi Oleh ACC))
+	public function tampil_verified_acc_penyelesaianHO($dept){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'final approved' AND tbl_pengajuan.bagian='$dept' AND tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified By ACC'
+			ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC");
+		return $result;
+	}
+
+	public function tampil_verified_acc_penyelesaianHO2($dept){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE
+			 tbl_pengajuan.bagian='$dept' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By Accounting'
+			ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC");
 		return $result;
 	}
 
@@ -866,10 +889,26 @@ class M_master extends CI_Model {
 		return $result;
 	}
 
+	// Pengajuan Verified Penyelesaian Kelebihan ACC Cabang (Saat Di Verifikasi Oleh Accounting)
+	public function tampil_verified_acc_penyelesaian2($cabang, $bagian){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
+			tbl_pengajuan.cabang='$cabang' AND tbl_pengajuan.bagian='$bagian' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By Accounting'
+			ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC");
+		return $result;
+	}
+
 	// Pengajuan Verified Penyelesaian Kelebihan HO ((Saat Di Verifikasi Oleh PIC))
 	public function tampil_verified_penyelesaianHO2($dept){
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE
 			tbl_pengajuan.bagian='$dept' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By PIC'
+			ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC");
+		return $result;
+	}
+
+	// Pengajuan Verified Penyelesaian PIC Kelebihan HO ((Saat Di Verifikasi Oleh PIC))
+	public function tampil_verified_pic_penyelesaianHO2($dept){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE
+			tbl_pengajuan.bagian='$dept' AND tbl_penyelesaian_kelebihan.status_verifikasi_penyelesaian='Verified By Accounting'
 			ORDER BY tbl_penyelesaian_kelebihan.id_penyelesaian DESC");
 		return $result;
 	}
@@ -1129,7 +1168,7 @@ class M_master extends CI_Model {
 	// (INBOX KACAB PENYELESAIAN)
 	public function tampil_inbox_kacab2($cabang){
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
-			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG') AND tbl_pengajuan.cabang='$cabang' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='On Proccess'
+			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.cabang='$cabang' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='On Proccess'
 		");
 		return $result;
 	}
@@ -1148,7 +1187,7 @@ class M_master extends CI_Model {
 	// (INBOX KAWIL PENYELESAIAN)
 	public function tampil_inbox_kawil2($wilayah){
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
-			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG') AND tbl_pengajuan.wilayah='$wilayah' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kacab'
+			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.wilayah='$wilayah' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kacab'
 		");
 		return $result;
 	}
@@ -1185,7 +1224,7 @@ class M_master extends CI_Model {
 
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
 			-- sebagai departemen tujuan
-			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' OR
+			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' OR
 
 			tbl_pengajuan.level_pengaju='Departement PIC' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head' AND tbl_pengajuan.kadiv_tujuan='' AND tbl_pengajuan.bagian!='$departemen' AND tbl_pengajuan.dept_tujuan='$departemen' OR
 

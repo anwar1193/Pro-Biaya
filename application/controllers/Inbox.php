@@ -100,19 +100,43 @@ class Inbox extends CI_Controller {
 		$departemen_pengaju = $data_pengajuan['bagian'];
 		$sub_biaya = $data_pengajuan['sub_biaya'];
 
-		// Query Cari Counter Pengajuan (Nominal)
+		if($bulan_ini == '01'){
+			$bulan_lalu = '12';
+			$tahun_lalu = $tahun_ini - 1;
+		}else{
+			$bulan_lalu = $bulan_ini - 1;
+			$tahun_lalu = $tahun_ini;
+		}
+
+		// Query Cari Counter Pengajuan Bulan Berjalan (Nominal)
 		$counter_pengajuan1 = $this->db->query("SELECT SUM(jumlah+ppn-(pph23+pph42+pph21)) AS nominal_counter FROM tbl_pengajuan WHERE 
 			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_ini' AND YEAR(tanggal)='$tahun_ini' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel' AND
 			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_ini' AND YEAR(tanggal)='$tahun_ini' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel by request' AND
 			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_ini' AND YEAR(tanggal)='$tahun_ini' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'rejected'
 		")->row_array();
 
-		// Query Cari Counter Pengajuan (Jumlah Data)
+		// Query Cari Counter Pengajuan Bulan Berjalan (Jumlah Data)
 		$jumlah_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
 			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_ini' AND YEAR(tanggal)='$tahun_ini' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel' AND
 			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_ini' AND YEAR(tanggal)='$tahun_ini' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel by request' AND
 			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_ini' AND YEAR(tanggal)='$tahun_ini' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'rejected'
 		")->num_rows();
+
+
+		// Query Cari Counter Pengajuan Bulan Sebelumnya (Nominal)
+		$counter_pengajuan_lalu = $this->db->query("SELECT SUM(jumlah+ppn-(pph23+pph42+pph21)) AS nominal_counter FROM tbl_pengajuan WHERE 
+			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel' AND
+			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel by request' AND
+			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'rejected'
+		")->row_array();
+
+		// Query Cari Counter Pengajuan Bulan Sebelumnya (Jumlah Data)
+		$jumlah_pengajuan_lalu = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
+			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel' AND
+			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'cancel by request' AND
+			sub_biaya='$sub_biaya' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang_pengaju' AND bagian='$departemen_pengaju' AND status_approve != 'rejected'
+		")->num_rows();
+
 
 		// Tampilkan Data Memo
 		$data_memo = $this->db->query("SELECT * FROM tbl_memo WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
@@ -128,6 +152,8 @@ class Inbox extends CI_Controller {
 			'frek_byr' => $frek_byr,
 			'counter_pengajuan1' => $counter_pengajuan1,
 			'jumlah_pengajuan' => $jumlah_pengajuan,
+			'counter_pengajuan_lalu' => $counter_pengajuan_lalu,
+			'jumlah_pengajuan_lalu' => $jumlah_pengajuan_lalu,
 			'data_byr2' => $data_byr2,
 			'data_memo' => $data_memo
 		));
@@ -1289,6 +1315,99 @@ class Inbox extends CI_Controller {
 	}
 
 
+	public function detail_counter_lalu($id){
+		date_default_timezone_set("Asia/Jakarta");
+		
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+
+		// Cari Counter Pengajuan (Sdh Berapa yang diajukan pada bulan sebelumnya)
+		$bulan_ini = date('m');
+		$tahun_ini = date('Y');
+
+		if($bulan_ini == '01'){
+			$bulan_lalu = '12';
+			$tahun_lalu = $tahun_ini - 1;
+		}else{
+			$bulan_lalu = $bulan_ini - 1;
+			$tahun_lalu = $tahun_ini;
+		}
+
+		// Cari Data Dipilih
+		$data_dipilih = $this->db->query("SELECT * FROM tbl_pengajuan WHERE id_pengajuan=$id")->row_array();
+		$cabang1 = $data_dipilih['cabang'];
+		$bagian1 = $data_dipilih['bagian'];
+		$sub_biaya1 = $data_dipilih['sub_biaya'];
+
+
+		// Query Cari Counter Pengajuan (Jumlah Data)
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
+			sub_biaya='$sub_biaya1' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang1' AND bagian='$bagian1' AND status_approve != 'cancel' AND
+			sub_biaya='$sub_biaya1' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang1' AND bagian='$bagian1' AND status_approve != 'cancel by request' AND
+			sub_biaya='$sub_biaya1' AND MONTH(tanggal)='$bulan_lalu' AND YEAR(tanggal)='$tahun_lalu' AND cabang='$cabang1' AND bagian='$bagian1' AND status_approve != 'rejected'
+		")->result_array();
+
+		$this->load->view('header');
+		// $this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_list_counter_lalu', array(
+			'data_pengajuan' => $data_pengajuan,
+			'sub_biaya1' => $sub_biaya1,
+			'cabang1' => $cabang1,
+			'bagian1' => $bagian1
+		));
+		$this->load->view('footer');
+	}
+
+	public function detail_counter_lalu_all(){
+		date_default_timezone_set("Asia/Jakarta");
+		
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+		$cabang1 = $this->input->post('cabang');
+		$bagian1 = $this->input->post('bagian');
+		$sub_biaya1 = $this->input->post('sub_biaya');
+
+
+		// Query Cari Counter Pengajuan (Jumlah Data)
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
+			sub_biaya='$sub_biaya1' AND cabang='$cabang1' AND bagian='$bagian1' AND status_approve != 'cancel' AND
+			sub_biaya='$sub_biaya1' AND cabang='$cabang1' AND bagian='$bagian1' AND status_approve != 'cancel by request' AND
+			sub_biaya='$sub_biaya1' AND cabang='$cabang1' AND bagian='$bagian1' AND status_approve != 'rejected'
+			ORDER BY tanggal DESC
+		")->result_array();
+
+		$this->load->view('header');
+		// $this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_list_counter_lalu_all', array(
+			'data_pengajuan' => $data_pengajuan,
+			'sub_biaya1' => $sub_biaya1,
+			'cabang1' => $cabang1,
+			'bagian1' => $bagian1
+		));
+		$this->load->view('footer');
+	}
+
+
 	public function detail_list_counter($id){
 		$data_pengajuan = $this->M_master->tampil_pengajuan_detail($id)->row_array();
 		$no_pengajuan = $data_pengajuan['nomor_pengajuan'];
@@ -1327,6 +1446,60 @@ class Inbox extends CI_Controller {
 		$this->load->view('header');
 		// $this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_list_counter_detail', array(
+			'data_pengajuan' => $data_pengajuan,
+			'data_approve_history' => $data_approve_history,
+			'data_file' => $data_file,
+			'data_check' => $data_check,
+			'data_check_file' => $data_check_file,
+			'data_perdin' => $data_perdin,
+			'data_byr' => $data_byr,
+			'frek_byr' => $frek_byr,
+			'data_byr1' => $data_byr1,
+			'data_byr2' => $data_byr2,
+			'data_memo' => $data_memo
+		));
+		$this->load->view('footer');
+	}
+
+
+	public function detail_list_counter_lalu($id){
+		$data_pengajuan = $this->M_master->tampil_pengajuan_detail($id)->row_array();
+		$no_pengajuan = $data_pengajuan['nomor_pengajuan'];
+		$data_approve_history = $this->M_master->tampil_approve_history('tbl_approved_history', array(
+			'nomor_pengajuan' => $no_pengajuan
+		))->result_array();
+		$data_file = $this->M_master->tampil_file('tbl_pengajuan_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
+		$data_check = $this->M_master->tampil_check_no('tbl_check', array('nomor_pengajuan' => $no_pengajuan))->row_array();
+		$data_check_file = $this->M_master->tampil_check_no('tbl_check_file', array('nomor_pengajuan' => $no_pengajuan))->result_array();
+		$data_perdin = $this->M_master->tampil_perdin('tbl_pengajuan_perdin', array('nomor_pengajuan' => $no_pengajuan))->row_array();
+
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+		// Untuk Data Split Pembayaran
+		$data_byr = $this->db->query("SELECT * FROM tbl_bayar INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+		$frek_byr = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan' ORDER BY id")->num_rows();
+
+		$data_byr2 = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan' ORDER BY id")->result_array();
+
+		// Data Pembayaran Pertama untuk menampilkan tanggal bayar
+		$data_byr1 = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan' ORDER BY id ASC LIMIT 0,1")->row_array();
+
+		// Tampilkan Data Memo
+		$data_memo = $this->db->query("SELECT * FROM tbl_memo WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+
+		$this->load->view('header');
+		// $this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_list_counter_lalu_detail', array(
 			'data_pengajuan' => $data_pengajuan,
 			'data_approve_history' => $data_approve_history,
 			'data_file' => $data_file,

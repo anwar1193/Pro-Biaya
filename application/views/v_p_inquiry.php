@@ -469,9 +469,22 @@
                       <a href="<?php echo base_url().'inquiry_pengajuan/cetak_pengajuan/'.$row_inquiry['id_pengajuan'] ?>" class="btn btn-success btn-xs" target="_blank">
                         <i class="fa fa-print"></i> Cetak List Dokumen
                       </a>
+
+                      <a href="#" data-toggle="modal" data-target="#tambah_dokumen" class="btn btn-primary btn-xs" style="margin-top: 5px;"
+                        id="pilih_tambah_dokumen"
+                        data-nomor_pengajuan="<?php echo $row_inquiry['nomor_pengajuan'] ?>"
+                        data-ref_no="<?php echo $row_inquiry['ref_no'] ?>"
+                      >
+                        <i class="fa fa-plus"></i> Tambah Dokumen
+                      </a>
+
                     <?php }else{ ?>
                       <a href="#" class="btn btn-default btn-xs" disabled>
                         <i class="fa fa-print"></i> Cetak List Dokumen
+                      </a>
+
+                      <a href="#" class="btn btn-default btn-xs" style="margin-top: 5px;" disabled>
+                        <i class="fa fa-plus"></i> Tambah Dokumen
                       </a>
                     <?php } ?>
 
@@ -524,6 +537,53 @@
   </div>
   </form>
   <!-- / Modal Cancel -->
+  
+
+  <!-- Modal Tambah Dokumen -->
+  <form action="<?php echo base_url().'inquiry_pengajuan/tambah_dokumen' ?>" method="post" enctype="multipart/form-data">
+  <div class="modal fade" id="tambah_dokumen">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Tambah Dokumen</h4>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" name="nomor_pengajuan" autocomplete="off" id="nomor_pengajuan">
+          <input type="text" name="ref_no" autocomplete="off" id="ref_no">
+
+          <b>Upload Berkas (jpg / png / jpeg / pdf) :</b>
+            <table class="table table-bordered" id="tableLoop">
+              <thead>
+                <tr class="bg-success">
+                  <th>No</th>
+                  <th>Upload File</th>
+                  <th>Nama File</th>
+                  <th class="text-center">
+                    <button class="btn btn-primary btn-xs" id="BarisBaru">
+                      <i class="fa fa-plus"></i> Tambah File
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody></tbody>
+            </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> Upload Dokumen</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Tambah Dokumen -->
 
 
   <!-- Script Jquery Cancel -->
@@ -538,6 +598,22 @@
     });
   </script>
   <!-- / Script Jquery Edit Split Bayar-->
+
+
+  <!-- Script Jquery pilih tambah dokumen -->
+  <script>
+    $(document).ready(function(){
+      $(document).on('click','#pilih_tambah_dokumen', function(){
+
+        var nomor_pengajuan = $(this).data('nomor_pengajuan');
+        var ref_no = $(this).data('ref_no');
+
+        $('#nomor_pengajuan').val(nomor_pengajuan);
+        $('#ref_no').val(ref_no);
+      });
+    });
+  </script>
+  <!-- / Script Jquery pilih tambah dokumen-->
 
 
   <script type="text/javascript">
@@ -732,3 +808,68 @@
 
   </script>
   <!-- / Script Pilihan Biaya -->
+
+
+<!-- Script Upload Multiple File -->
+<script type="text/javascript">
+
+$(document).ready(function(){
+  for(b=1; b<=1; b++){
+    barisBaru();
+  }
+  $('#BarisBaru').click(function(e){
+    e.preventDefault();
+    barisBaru();
+  });
+
+  $("tableLoop tbody").find('input[type=text]').filter(':visible:first').focus();
+});
+
+function barisBaru(){
+  $(document).ready(function(){
+    $("[data-toggle='tooltip'").tooltip();
+  });
+
+  var Nomor = $("#tableLoop tbody tr").length + 1;
+  var Baris = '<tr>';
+          Baris += '<td class="text-center">'+Nomor+'</td>';
+
+          Baris += '<td>';
+            Baris += '<input type="file" id="pilih_file" name="files[]" class="form-control" placeholder="Upload File">';
+          Baris += '</td>';
+
+          Baris += '<td>';
+            Baris += '<input type="text" name="nama_file[]" class="form-control" placeholder="Nama File" id="nama_file" autocomplete="off">';
+          Baris += '</td>';
+
+          Baris += '<td class="text-center">';
+            Baris += '<a class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Baris" id="HapusBaris"><i class="fa fa-times"></i></a>';
+          Baris += '</td>';
+      Baris += '</tr>';
+
+  $("#tableLoop tbody").append(Baris);
+  $("#tableLoop tbody tr").each(function(){
+    $(this).find('td:nth-child(2) input').focus();
+  });
+
+}
+
+$(document).on('click', '#HapusBaris', function(e){
+  e.preventDefault();
+  var Nomor = 1;
+  $(this).parent().parent().remove();
+  $('tableLoop tbody tr').each(function(){
+    $(this).find('td:nth-child(1)').html(Nomor);
+    Nomor++;
+  });
+});
+
+
+// Jika file upload di klik, nama file akan jadi required/wajib
+$(document).ready(function() {
+  $("#pilih_file").click(function() {
+    $("#nama_file").attr("required","");
+  })
+});
+
+</script>
