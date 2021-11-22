@@ -6,6 +6,12 @@
     $level = $this->libraryku->tampil_user()->level;
     $jabatan_khusus = $this->libraryku->tampil_user()->jabatan_khusus;
 
+    if($cabang=='HEAD OFFICE'){ // Jika Kantor Pusat
+			$identitas = $departemen;
+		}else{ // Jika Cabang
+			$identitas = $level;
+		}
+
   ?>
 
 
@@ -414,7 +420,7 @@
 
         <?php if($level=='admin'){ ?>
         <!-- Menu Master Data -->
-        <li class="treeview <?= $this->uri->segment(1)=='data_cabang' || $this->uri->segment(1)=='data_karyawan' || $this->uri->segment(1)=='data_kendaraan' || $this->uri->segment(1)=='data_bank' || $this->uri->segment(1)=='data_departemen' || $this->uri->segment(1)=='data_jenis_biaya' || $this->uri->segment(1)=='data_sub_biaya' || $this->uri->segment(1)=='data_level' || $this->uri->segment(1)=='relasi_biaya' || $this->uri->segment(1)=='relasi_sub' ? 'active' : null ?>">
+        <li class="treeview <?= $this->uri->segment(1)=='data_cabang' || $this->uri->segment(1)=='data_karyawan' || $this->uri->segment(1)=='data_kendaraan' || $this->uri->segment(1)=='data_sparepart' || $this->uri->segment(1)=='data_bank' || $this->uri->segment(1)=='data_departemen' || $this->uri->segment(1)=='data_jenis_biaya' || $this->uri->segment(1)=='data_sub_biaya' || $this->uri->segment(1)=='data_level' || $this->uri->segment(1)=='relasi_biaya' || $this->uri->segment(1)=='relasi_sub' ? 'active' : null ?>">
           <a href="#">
             <i class="fa fa-database"></i>
             <span>Master Data</span>
@@ -430,6 +436,8 @@
             <li class="<?= $this->uri->segment(1)=='data_karyawan' ? 'active' : null ?>"><a href="<?php echo base_url().'data_karyawan' ?>"><i class="fa fa-circle-o"></i> Data Karyawan</a></li>
 
             <li class="<?= $this->uri->segment(1)=='data_kendaraan' ? 'active' : null ?>"><a href="<?php echo base_url().'data_kendaraan' ?>"><i class="fa fa-circle-o"></i> Data Kendaraan</a></li>
+
+            <li class="<?= $this->uri->segment(1)=='data_sparepart' ? 'active' : null ?>"><a href="<?php echo base_url().'data_sparepart' ?>"><i class="fa fa-circle-o"></i> Data Sparepart</a></li>
 
             <li class="<?= $this->uri->segment(1)=='data_bank' ? 'active' : null ?>"><a href="<?php echo base_url().'data_bank' ?>"><i class="fa fa-circle-o"></i> Data Bank</a></li>
 
@@ -543,7 +551,19 @@
 
 
           <!-- Menu Pending Penyelesaian / Pengajuan Belum Diselesaikan -->
-          <li class="<?= $this->uri->segment(1)=='pending_penyelesaian' ? 'active' : null ?>"><a href="<?php echo base_url().'pending_penyelesaian' ?>"><i class="fa fa-clock-o"></i> <span>Pending Penyelesaian</span></a></li>
+          <li class="<?= $this->uri->segment(1)=='pending_penyelesaian' ? 'active' : null ?>">
+            <a href="<?php echo base_url().'pending_penyelesaian' ?>">
+              <i class="fa fa-clock-o"></i> <span>Pending Penyelesaian</span>
+
+              <?php  
+                $jumlah_pending_penyelesaian = $this->db->query("SELECT * FROM tbl_pengajuan WHERE cabang='$cabang' AND bagian='$identitas' AND status_bayar='Telah Dibayar' AND nomor_invoice='ESTIMASI' AND note_penyelesaian!='' AND status_penyelesaian='' ")->num_rows();
+              ?>
+              <span class="pull-right-container">
+                <span class="label label-warning pull-right"><?php echo $jumlah_pending_penyelesaian; ?></span>
+              </span>
+
+            </a>
+          </li>
           <!-- Penutup Menu Pending Penyelesaian / Pengajuan Belum Diselesaikan -->
        
         <?php } ?>
@@ -591,7 +611,7 @@
               }elseif($level=='Area Manager'){
                 $jml_inbox = $this->M_master->tampil_inbox_kawil2($cabang)->num_rows();
               }elseif($level=='Department Head'){
-                $jml_inbox = $this->M_master->tampil_inbox_kadept2($departemen, $nama_lengkap)->num_rows();
+                $jml_inbox = $this->M_master->tampil_inbox_kadept2($departemen, $nama_lengkap, $jabatan_khusus)->num_rows();
               }elseif($level=='Division Head'){
                 $jml_inbox = $this->M_master->tampil_inbox_kadiv2($nama_lengkap)->num_rows();
               }elseif($level=='Director'){

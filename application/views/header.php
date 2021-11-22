@@ -60,6 +60,20 @@
       opacity: 0.6;
       /* background-size: 10%; */
     }
+
+    .perhatian{
+      animation: animasi_notif 0.3s ease infinite alternate;
+    }
+
+    @keyframes animasi_notif{
+      0%{
+        opacity: 0;
+      }
+
+      100%{
+        opacity: 1;
+      }
+    }
   </style>
 
 </head>

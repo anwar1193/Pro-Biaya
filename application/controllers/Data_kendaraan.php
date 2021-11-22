@@ -25,10 +25,14 @@ class Data_kendaraan extends CI_Controller {
 
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
 		$data_kendaraan = $this->M_master->tampil_kendaraan()->result_array();
+		$data_cabang = $this->M_master->tampil_cabang()->result_array();
 
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
-		$this->load->view('v_data_kendaraan', array('data_kendaraan' => $data_kendaraan));
+		$this->load->view('v_data_kendaraan', array(
+			'data_kendaraan' => $data_kendaraan,
+			'data_cabang' => $data_cabang
+		));
 		$this->load->view('footer');
 	}
 
@@ -38,6 +42,8 @@ class Data_kendaraan extends CI_Controller {
 			'jenis_kendaraan' => $this->input->post('jenis_kendaraan'),
 			'merk_kendaraan' => $this->input->post('merk_kendaraan'),
 			'kapasitas_silinder' => $this->input->post('kapasitas_silinder'),
+			'no_rangka' => $this->input->post('no_rangka'),
+			'no_mesin' => $this->input->post('no_mesin'),
 			'cabang' => $this->input->post('cabang')
 		));
 
@@ -52,6 +58,8 @@ class Data_kendaraan extends CI_Controller {
 			'jenis_kendaraan' => $this->input->post('jenis_kendaraan'),
 			'merk_kendaraan' => $this->input->post('merk_kendaraan'),
 			'kapasitas_silinder' => $this->input->post('kapasitas_silinder'),
+			'no_rangka' => $this->input->post('no_rangka'),
+			'no_mesin' => $this->input->post('no_mesin'),
 			'cabang' => $this->input->post('cabang')
 		), array('id' => $this->input->post('id')));
 

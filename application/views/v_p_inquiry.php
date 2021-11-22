@@ -255,6 +255,7 @@
                   <th>NO</th>
                   <th>Tanggal</th>
                   <th>NO Pengajuan</th>
+                  <th>NO Invoice</th>
                   <th>Cabang</th>
                   <th>Bagian</th>
                   <th>Jenis Biaya</th>
@@ -264,6 +265,7 @@
                   <th style="text-align: center" width="10%">Sts Check</th>
                   <th style="text-align: center">Sts Bayar</th>
                   <th style="text-align: center">Sts Dokumen</th>
+                  <th style="text-align: center">Sts Penyelesaian</th>
                   <th style="text-align: center" width="15%">Action</th>
                 </tr>
                 </thead>
@@ -276,6 +278,7 @@
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_inquiry['tanggal'])) ?></td>
                   <td><?php echo $row_inquiry['nomor_pengajuan'] ?></td>
+                  <td><?php echo $row_inquiry['nomor_invoice'] ?></td>
                   <td><?php echo $row_inquiry['cabang'] ?></td>
                   <td><?php echo $row_inquiry['bagian'] ?></td>
                   <td><?php echo $row_inquiry['jenis_biaya'] ?></td>
@@ -457,6 +460,21 @@
                   <?php } ?>
                   <!-- / Kolom Status Dokumen -->
 
+                  <!-- Kolom Status Penyelesaian -->
+                  <td style="text-align: center;">
+                    <?php if($row_inquiry['status_dokumen'] == 'done acc'){ ?>
+                      <span style="color:green; font-weight:bold">Selesai</span>
+                    <?php }else{ ?>
+                      <?php if($row_inquiry['jenis_penyelesaian_pengaju'] != ''){ ?>
+                        <span style="color:blue; font-weight:bold">Telah Diajukan</span>
+                      <?php }else{ ?>
+                        <span>-</span>
+                      <?php } ?>
+                    <?php } ?>
+
+                  </td>
+                  <!-- / Kolom Status Penyelesaian -->
+
 
                   <!-- Kolom Action -->
                   <td style="text-align: center;">
@@ -466,27 +484,38 @@
                     </a>
 
                     <?php if($row_inquiry['status_bayar'] == 'Telah Dibayar'){ ?>
-                      <a href="<?php echo base_url().'inquiry_pengajuan/cetak_pengajuan/'.$row_inquiry['id_pengajuan'] ?>" class="btn btn-success btn-xs" target="_blank">
+                      <a href="<?php echo base_url().'inquiry_pengajuan/cetak_pengajuan/'.$row_inquiry['id_pengajuan'] ?>" class="btn btn-success btn-xs" target="_blank" style="margin-top: 5px;">
                         <i class="fa fa-print"></i> Cetak List Dokumen
                       </a>
 
-                      <a href="#" data-toggle="modal" data-target="#tambah_dokumen" class="btn btn-primary btn-xs" style="margin-top: 5px;"
-                        id="pilih_tambah_dokumen"
-                        data-nomor_pengajuan="<?php echo $row_inquiry['nomor_pengajuan'] ?>"
-                        data-ref_no="<?php echo $row_inquiry['ref_no'] ?>"
-                      >
-                        <i class="fa fa-plus"></i> Tambah Dokumen
-                      </a>
+                      <?php if($row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['status_dokumen'] != 'done acc' AND strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI'){ ?>
+                        <a href="#" data-toggle="modal" data-target="#ajukan_penyelesaian" class="btn btn-info btn-xs" style="margin-top: 5px;"
+                          id="pilih_penyelesaian"
+                          data-nomor_pengajuan="<?php echo $row_inquiry['nomor_pengajuan'] ?>"
+                        >
+                          <i class="fa fa-check"></i> Ajukan Penyelesaian
+                        </a>
+                      <?php } ?>
 
                     <?php }else{ ?>
-                      <a href="#" class="btn btn-default btn-xs" disabled>
+
+                      <a href="#" class="btn btn-default btn-xs" disabled style="margin-top: 5px;">
                         <i class="fa fa-print"></i> Cetak List Dokumen
                       </a>
 
                       <a href="#" class="btn btn-default btn-xs" style="margin-top: 5px;" disabled>
-                        <i class="fa fa-plus"></i> Tambah Dokumen
+                        <i class="fa fa-check"></i> Ajukan Penyelesaian
                       </a>
+
                     <?php } ?>
+
+                    <a href="#" data-toggle="modal" data-target="#tambah_dokumen" class="btn btn-primary btn-xs" style="margin-top: 5px;"
+                        id="pilih_tambah_dokumen"
+                        data-nomor_pengajuan="<?php echo $row_inquiry['nomor_pengajuan'] ?>"
+                        data-ref_no="<?php echo $row_inquiry['ref_no'] ?>"
+                      >
+                      <i class="fa fa-plus"></i> Tambah Dokumen
+                    </a>
 
                   </td>
                   <!-- / Kolom Action -->
@@ -551,8 +580,8 @@
         </div>
         <div class="modal-body">
 
-          <input type="text" name="nomor_pengajuan" autocomplete="off" id="nomor_pengajuan">
-          <input type="text" name="ref_no" autocomplete="off" id="ref_no">
+          <input type="text" name="nomor_pengajuan" autocomplete="off" id="nomor_pengajuan" hidden>
+          <input type="text" name="ref_no" autocomplete="off" id="ref_no" hidden>
 
           <b>Upload Berkas (jpg / png / jpeg / pdf) :</b>
             <table class="table table-bordered" id="tableLoop">
@@ -586,6 +615,48 @@
   <!-- / Modal Tambah Dokumen -->
 
 
+  <!-- Modal Ajukan Penyelesaian -->
+  <form action="<?php echo base_url().'inquiry_pengajuan/ajukan_penyelesaian' ?>" method="post" enctype="multipart/form-data">
+  <div class="modal fade" id="ajukan_penyelesaian">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Ajukan Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" name="nomor_pengajuan" autocomplete="off" id="nomor_pengajuan2" hidden>
+
+          <div class="form-group">
+            <label for="jenis_penyelesaian">Jenis Penyelesaian :</label>
+            <select name="jenis_penyelesaian" id="jenis_penyelesaian" class="form-control" required="">
+              <option value="">-Pilih-</option>
+              <option value="kelebihan">Kelebihan</option>
+              <option value="kekurangan">Kekurangan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="note_penyelesaian">Note Penyelesaian :</label>
+            <textarea name="note_penyelesaian" class="form-control" required=""></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Ajukan Penyelesaian</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Ajukan Penyelesaian -->
+
+
   <!-- Script Jquery Cancel -->
   <script>
     $(document).ready(function(){
@@ -600,17 +671,25 @@
   <!-- / Script Jquery Edit Split Bayar-->
 
 
-  <!-- Script Jquery pilih tambah dokumen -->
+  
   <script>
     $(document).ready(function(){
-      $(document).on('click','#pilih_tambah_dokumen', function(){
 
+      // Script Jquery pilih tambah dokumen
+      $(document).on('click','#pilih_tambah_dokumen', function(){
         var nomor_pengajuan = $(this).data('nomor_pengajuan');
         var ref_no = $(this).data('ref_no');
-
         $('#nomor_pengajuan').val(nomor_pengajuan);
         $('#ref_no').val(ref_no);
       });
+
+      // Script Jquery pilih penyelesaian
+      $(document).on('click','#pilih_penyelesaian', function(){
+        var nomor_pengajuan = $(this).data('nomor_pengajuan');
+        $('#nomor_pengajuan2').val(nomor_pengajuan);
+      });
+      
+
     });
   </script>
   <!-- / Script Jquery pilih tambah dokumen-->

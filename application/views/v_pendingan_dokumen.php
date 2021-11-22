@@ -50,6 +50,7 @@
                   <th>Jumlah Biaya</th>
                   <th style="text-align: center;" width="10%">Status Check</th>
                   <th style="text-align: center;" width="10%">Status Dokumen</th>
+                  <th style="text-align: center;" width="10%">Status Penyelesaian</th>
                   <th style="text-align: center" width="15%">Action</th>
                 </tr>
                 </thead>
@@ -146,6 +147,18 @@
 
                   <?php } ?>
                   <!-- / Kolom Status Dokumen -->
+
+                  <!-- Kolom Status Penyelesaian -->
+                  <td style="text-align: center;">
+                    <?php if($row_pendok['jenis_penyelesaian_pengaju'] != '' AND $row_pendok['jenis_penyelesaian'] == ''){ ?>
+                      <span style="color:blue; font-weight:bold">Telah Diajukan</span>
+                    <?php }elseif($row_pendok['jenis_penyelesaian_pengaju'] != '' AND $row_pendok['jenis_penyelesaian'] != ''){ ?>
+                      <span style="color:blue; font-weight:bold">On Proccess</span>
+                    <?php }else{ ?>
+                      <span>-</span>
+                    <?php } ?>
+                  </td>
+                  <!-- / Kolom Status Penyelesaian -->
                   
                   <!-- td action -->
                   <td style="text-align: center;">

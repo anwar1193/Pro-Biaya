@@ -20,7 +20,7 @@
             <div class="box-header">
               <h3 class="box-title">View Data</h3>
 
-              <span style="margin-left: 82%">
+              <span style="display: block; position: absolute; top:10px; right: 10px;">
                 <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#modal-tambah">
                   <i class="fa fa-plus"></i> Tambah Kendaraan
                 </button>
@@ -35,8 +35,10 @@
                   <th>NO</th>
                   <th>Nopol</th>
                   <th>Jenis Kendaraan</th>
-                  <th>Merk Kendaraan</th>
+                  <th>Merk/Tipe Kendaraan</th>
                   <th>Kapasitas Silinder</th>
+                  <th>No Rangka</th>
+                  <th>No Mesin</th>
                   <th>Cabang</th>
                   <th style="text-align: center" width="15%">Action</th>
                 </tr>
@@ -45,6 +47,8 @@
                 <?php
                   $no=1;
                   foreach($data_kendaraan as $row_kendaraan){
+                    $cab = $row_kendaraan['cabang'];
+                    $cabang = $this->M_master->tampil_cabang_where('tbl_cabang', array('nama_cabang' => $cab));
                 ?>
                 <tr>
                   <td><?php echo $no++; ?></td>
@@ -52,6 +56,8 @@
                   <td><?php echo $row_kendaraan['jenis_kendaraan'] ?></td>
                   <td><?php echo $row_kendaraan['merk_kendaraan'] ?></td>
                   <td><?php echo $row_kendaraan['kapasitas_silinder'] ?></td>
+                  <td><?php echo $row_kendaraan['no_rangka'] ?></td>
+                  <td><?php echo $row_kendaraan['no_mesin'] ?></td>
                   <td><?php echo $row_kendaraan['cabang'] ?></td>
                   <td style="text-align: center;">
 
@@ -61,7 +67,9 @@
                       data-jenis_kendaraan = "<?php echo $row_kendaraan['jenis_kendaraan'] ?>"
                       data-merk_kendaraan = "<?php echo $row_kendaraan['merk_kendaraan'] ?>"
                       data-kapasitas_silinder = "<?php echo $row_kendaraan['kapasitas_silinder'] ?>"
-                      data-cabang = "<?php echo $row_kendaraan['cabang'] ?>"
+                      data-no_rangka = "<?php echo $row_kendaraan['no_rangka'] ?>"
+                      data-no_mesin = "<?php echo $row_kendaraan['no_mesin'] ?>"
+                      data-cabang = "<?php echo $cabang['nama_cabang'] ?>"
                       id="pilih_edit"
                     >
                       <i class="fa fa-edit"></i> Edit
@@ -123,8 +131,24 @@
           </div>
 
           <div class="form-group">
+            <label for="no_rangka"></span> Nomor Rangka :</label>
+            <input type="text" name="no_rangka" class="form-control" autocomplete="off" required>
+          </div>
+
+          <div class="form-group">
+            <label for="no_mesin"></span> Nomor Mesin :</label>
+            <input type="text" name="no_mesin" class="form-control" autocomplete="off" required>
+          </div>
+
+          <div class="form-group">
             <label for="cabang"></span> Cabang :</label>
-            <input type="text" name="cabang" class="form-control" autocomplete="off" required>
+            <select name="cabang" class="form-control" required="">
+              <option value="">Pilih Cabang</option>
+
+              <?php foreach($data_cabang as $row){ ?>
+                <option value="<?php echo $row['nama_cabang'] ?>"><?php echo $row['nama_cabang'] ?></option>
+              <?php } ?>
+            </select>
           </div>
 
         </div>
@@ -179,8 +203,22 @@
           </div>
 
           <div class="form-group">
+            <label for="no_rangka"></span> Nomor Rangka :</label>
+            <input type="text" name="no_rangka" id="no_rangka" class="form-control" autocomplete="off" required>
+          </div>
+
+          <div class="form-group">
+            <label for="no_mesin"></span> Nomor Mesin :</label>
+            <input type="text" name="no_mesin" id="no_mesin" class="form-control" autocomplete="off" required>
+          </div>
+
+          <div class="form-group">
             <label for="cabang"></span> Cabang :</label>
-            <input type="text" name="cabang" id="cabang" class="form-control" autocomplete="off" required>
+            <select name="cabang" id="cabang" class="form-control" required="">
+              <?php foreach($data_cabang as $row){ ?>
+                <option value="<?php echo $row['nama_cabang'] ?>"><?php echo $row['nama_cabang'] ?></option>
+              <?php } ?>
+            </select>
           </div>
 
         </div>
@@ -208,6 +246,8 @@
         var jenis_kendaraan = $(this).data('jenis_kendaraan');
         var merk_kendaraan = $(this).data('merk_kendaraan');
         var kapasitas_silinder = $(this).data('kapasitas_silinder');
+        var no_rangka = $(this).data('no_rangka');
+        var no_mesin = $(this).data('no_mesin');
         var cabang = $(this).data('cabang');
 
         $('#id').val(id);
@@ -215,6 +255,8 @@
         $('#jenis_kendaraan').val(jenis_kendaraan);
         $('#merk_kendaraan').val(merk_kendaraan);
         $('#kapasitas_silinder').val(kapasitas_silinder);
+        $('#no_rangka').val(no_rangka);
+        $('#no_mesin').val(no_mesin);
         $('#cabang').val(cabang);
       });
     });

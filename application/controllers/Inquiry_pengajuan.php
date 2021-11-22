@@ -319,5 +319,20 @@ class Inquiry_pengajuan extends CI_Controller {
 		redirect('inquiry_pengajuan');
 	}
 
+	public function ajukan_penyelesaian(){
+		date_default_timezone_set("Asia/Jakarta");
+		$nomor_pengajuan = $this->input->post('nomor_pengajuan');
+
+		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
+			'jenis_penyelesaian_pengaju' => $this->input->post('jenis_penyelesaian'),
+			'note_penyelesaian_pengaju' => $this->input->post('note_penyelesaian')
+		), array('nomor_pengajuan' => $nomor_pengajuan));
+
+		if($result>0){
+			echo '<script>
+				alert("Permintaan Penyelesaian Terkirim");window.location="index";
+			</script>';
+		}
+	}
 
 }

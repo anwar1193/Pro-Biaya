@@ -3,10 +3,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_master extends CI_Model {
 
-	// Ranah Data Cabang
+	// Model Data Umum
+	public function tampil_data($tbl){
+		$result = $this->db->get($tbl);
+		return $result;
+	}
 
+	public function tampil_data_where($tbl, $where){
+		$result = $this->db->get_where($tbl, $where);
+		return $result;
+	}
+
+	public function simpan_data($tbl, $data){
+		$result = $this->db->insert($tbl, $data);
+		return $result;
+	}
+
+	public function update_data($tbl, $data, $where){
+		$result = $this->db->update($tbl, $data, $where);
+		return $result;
+	}
+
+
+
+	// Ranah Data Cabang
 	public function tampil_cabang(){
 		// $this->db->where('kode_cabang < 100');
+		// $this->db->order_by('nama_cabang');
 		$result = $this->db->get('tbl_cabang');
 		return $result;
 	}
@@ -1129,7 +1152,7 @@ class M_master extends CI_Model {
 	// Tampil Pendingan Dokumen Pengajuan Masuk (By Departemen)
 	public function pendingan_dokumen($dept){
 		$result = $this->db->query("SELECT * FROM tbl_pengajuan WHERE
-			status_approve = 'final approved' AND dept_tujuan='$dept' AND status_dokumen=''
+			status_approve = 'final approved' AND dept_tujuan='$dept' AND status_dokumen!='done acc'
 			ORDER BY id_pengajuan DESC");
 		return $result;
 	}
@@ -1219,12 +1242,15 @@ class M_master extends CI_Model {
 
 
 	// (INBOX DEPT HEAD Penyelesaian)
-	public function tampil_inbox_kadept2($departemen, $nama_lengkap){
+	public function tampil_inbox_kadept2($departemen, $nama_lengkap, $jabatan_khusus){
 		$departemen = $this->libraryku->tampil_user()->departemen;
 
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
 			-- sebagai departemen tujuan
-			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' OR
+			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' OR
+
+			-- khusus adcoll (deteksi 91 up)
+			tbl_pengajuan.level_pengaju='ADCOLL' AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' AND tbl_pengajuan.jalur_khusus='$jabatan_khusus' OR
 
 			tbl_pengajuan.level_pengaju='Departement PIC' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head' AND tbl_pengajuan.kadiv_tujuan='' AND tbl_pengajuan.bagian!='$departemen' AND tbl_pengajuan.dept_tujuan='$departemen' OR
 

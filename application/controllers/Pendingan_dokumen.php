@@ -106,6 +106,7 @@ class Pendingan_dokumen extends CI_Controller {
 
 		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
 			'jenis_penyelesaian' => $jenis_penyelesaian,
+			'nominal_penyelesaian_reviewer' => $this->input->post('nominal_penyelesaian'),
 			'note_penyelesaian' => $note
 		), array('id_pengajuan' => $id_pengajuan));
 

@@ -17,6 +17,7 @@ class Inbox_penyelesaian extends CI_Controller {
 		$level = $this->libraryku->tampil_user()->level;
 		$departemen = $this->libraryku->tampil_user()->departemen;
 		$nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap; //untuk parameter direktur
+		$jabatan_khusus = $this->libraryku->tampil_user()->jabatan_khusus; //untuk parameter direktur
 
 		$limit_approve = $this->M_master->ambil_limit('tbl_level', array('level'=>$level))->row_array();
 		$min_approve = $limit_approve['min_approve'];
@@ -27,7 +28,7 @@ class Inbox_penyelesaian extends CI_Controller {
 		}elseif($level == 'Area Manager'){
 			$data_inbox = $this->M_master->tampil_inbox_kawil2($cabang)->result_array();
 		}elseif($level == 'Department Head'){
-			$data_inbox = $this->M_master->tampil_inbox_kadept2($departemen, $nama_lengkap)->result_array();
+			$data_inbox = $this->M_master->tampil_inbox_kadept2($departemen, $nama_lengkap, $jabatan_khusus)->result_array();
 		}elseif($level == 'Division Head'){
 			$data_inbox = $this->M_master->tampil_inbox_kadiv2($nama_lengkap)->result_array();
 		}elseif($level == 'Director'){

@@ -82,6 +82,18 @@ class Pengajuan_biaya extends CI_Controller {
 				'data_kendaraan' => $data_kendaraan,
 				'data_bank_pengaju' => $data_bank_pengaju
 			));
+		}elseif($form == 'Kendaraan'){
+			$data_sparepart = $this->M_master->tampil_data('tbl_sparepart')->result_array();
+
+			$this->load->view('v_pengajuan_kendaraan', array(
+				'data_sub_biaya' => $data_sub_biaya,
+				'nopeng_otomatis' => $nopeng_otomatis,
+				'ref_no' => $ref_no,
+				'data_cabang' => $tampil_cabang,
+				'data_kendaraan' => $data_kendaraan,
+				'data_bank_pengaju' => $data_bank_pengaju,
+				'data_sparepart' => $data_sparepart
+			));
 		}
 
 		$this->load->view('footer');
@@ -115,6 +127,7 @@ class Pengajuan_biaya extends CI_Controller {
 		date_default_timezone_set("Asia/Jakarta");
 		$departemen = $this->libraryku->tampil_user()->departemen; //untuk pusat
 		$level = $this->libraryku->tampil_user()->level; //untuk cabang
+		$form = $this->input->post('form');
 
 		// Nyari Kode Cabang & Kode Dept Untuk Nomor Pengajuan Otomatis
 		$cabang = $this->libraryku->tampil_user()->cabang;
@@ -377,6 +390,45 @@ class Pengajuan_biaya extends CI_Controller {
 					));
 
 				}
+				// END Jika BBM, Simpan ke tbl_pengajuan_bbm
+
+
+				// Jika Biaya Perbaikan Kendaraan simpan ke tabel : tbl_pengajuan_kendaraan, tbl_rincian_sparepart, dan tbl_rincian_jasa_perbaikan
+				$nopol_perbaikan = $this->input->post('nopol_perbaikan');
+				if($form=='Kendaraan' && $nopol_perbaikan != ''){
+
+					$this->M_master->simpan_pengajuan('tbl_pengajuan_kendaraan', array(
+						'nomor_pengajuan' => $nopeng_otomatis,
+						'nopol_perbaikan' => $this->input->post('nopol_perbaikan'),
+						'merk_kendaraan' => $this->input->post('merk_kendaraan'),
+						'kilometer_pengajuan' => $this->input->post('kilometer_pengajuan')
+					));
+
+
+					$sparepart = $this->input->post('sparepart');
+					for($i=0; $i<sizeof($sparepart); $i++){
+						$this->M_master->simpan_pengajuan('tbl_rincian_sparepart', array(
+							'nomor_pengajuan' => $nopeng_otomatis,
+							'sparepart' => $this->input->post('sparepart')[$i],
+							'jumlah_sparepart' => $this->input->post('jumlah_sparepart')[$i],
+							'diskon_sparepart' => $this->input->post('diskon_sparepart')[$i],
+							'keterangan_sparepart' => $this->input->post('keterangan_sparepart')[$i]
+						));
+					}
+					
+
+					$jasa = $this->input->post('jasa');
+					for($i=0; $i<sizeof($jasa); $i++){
+						$this->M_master->simpan_pengajuan('tbl_rincian_jasa_perbaikan', array(
+							'nomor_pengajuan' => $nopeng_otomatis,
+							'jasa' => $this->input->post('jasa')[$i],
+							'jumlah_jasa' => $this->input->post('jumlah_jasa')[$i],
+							'diskon_jasa' => $this->input->post('diskon_jasa')[$i]
+						));
+					}
+
+				}
+				// END Jika Biaya Perbaikan Kendaraan simpan ke tabel : tbl_pengajuan_kendaraan, tbl_rincian_sparepart, dan tbl_rincian_jasa_perbaikan
 				
 
 				// Simpan Ke tbl_bayar

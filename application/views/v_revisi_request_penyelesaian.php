@@ -46,10 +46,11 @@ $level = $this->libraryku->tampil_user()->level;
               <th>Cabang</th>
               <th>Dept</th>
               <th>Jenis Biaya</th>
-              <th>Sub Biaya</th>
+              <th width="10%">Sub Biaya</th>
               <th>Jumlah Biaya</th>
               <th style="text-align: center;" width="10%">Status Dokumen</th>
               <th>Jenis Penyelesaian</th>
+              <th>Nominal Penyelesaian</th>
               <th style="text-align: center" width="15%">Note Penyelesaian</th>
               <th style="text-align: center" width="5%">Action</th>
             </tr>
@@ -125,17 +126,13 @@ $level = $this->libraryku->tampil_user()->level;
               <?php } ?>
               <!-- / Kolom Status Dokumen -->
 
-              <!-- Jenis & Note Penyelesaian -->
+              <!-- Jenis, Nominal & Note Penyelesaian -->
               <td><?php echo $row_pengajuan['jenis_penyelesaian'] ?></td>
+
+              <td class="text-right"><?php echo number_format($row_pengajuan['nominal_penyelesaian_reviewer'], 0, '.', ',') ?></td>
 
               <td>
                   <?php echo $row_pengajuan['note_penyelesaian'] ?> <br>
-                  <button style="margin-top: 5px;" class="btn btn-xs btn-success" id="pilih_edit" data-toggle="modal" data-target="#modal-ubah"
-                    data-id_pengajuan = "<?php echo $row_pengajuan['id_pengajuan'] ?>"
-                    data-note_penyelesaian = "<?php echo $row_pengajuan['note_penyelesaian'] ?>"
-                  >
-                        <i class="fa fa-edit"></i> Ubah Note
-                  </button>
               </td>
               
               <!-- td action -->
@@ -144,6 +141,25 @@ $level = $this->libraryku->tampil_user()->level;
                 <a href="<?php echo base_url().'revisi_request_penyelesaian/detail/'.$row_pengajuan['id_pengajuan'] ?>" class="btn btn-warning btn-xs">
                   <i class="fa fa-refresh"></i> Detail
                 </a>
+
+                <?php if($row_pengajuan['status_penyelesaian'] == ''){ ?>
+
+                  <button style="margin-top: 5px;" class="btn btn-xs btn-success" id="pilih_edit" data-toggle="modal" data-target="#modal-ubah"
+                      data-id_pengajuan = "<?php echo $row_pengajuan['id_pengajuan'] ?>"
+                      data-note_penyelesaian = "<?php echo $row_pengajuan['note_penyelesaian'] ?>"
+                      data-jenis_penyelesaian = "<?php echo $row_pengajuan['jenis_penyelesaian'] ?>"
+                      data-nominal_penyelesaian = "<?php echo $row_pengajuan['nominal_penyelesaian_reviewer'] ?>"
+                    >
+                        <i class="fa fa-edit"></i> Ubah Penyelesaian
+                  </button>
+
+                <?php }else{ ?>
+
+                  <button style="margin-top: 5px;" class="btn btn-xs btn-default">
+                        <i class="fa fa-edit"></i> Ubah Penyelesaian
+                  </button>
+                  
+                <?php } ?>
 
               </td>
             </tr>
@@ -193,6 +209,20 @@ if(flashData){
         <div class="modal-body">
 
           <input type="text" id="id_pengajuan" name="id_pengajuan" hidden>
+
+          <div class="form-group">
+            <label for="">Jenis Penyelesaian :</label>
+            <select name="jenis_penyelesaian" id="jenis_penyelesaian" class="form-control" required="">
+              <option value="kelebihan">Kelebihan</option>
+              <option value="kekurangan">Kekurangan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="">Nominal Penyelesaian :</label>
+            <input type="number" class="form-control" name="nominal_penyelesaian" id="nominal_penyelesaian" required="">
+          </div>
+
           <textarea class="form-control" name="note_penyelesaian" id="note_penyelesaian" rows="10" required=""></textarea>
 
         </div>
@@ -215,9 +245,13 @@ if(flashData){
         $(document).on('click','#pilih_edit', function(){
             var id = $(this).data('id_pengajuan');
             var note = $(this).data('note_penyelesaian');
+            var jenis_penyelesaian = $(this).data('jenis_penyelesaian');
+            var nominal_penyelesaian = $(this).data('nominal_penyelesaian');
 
             $('#id_pengajuan').val(id);
             $('#note_penyelesaian').val(note);
+            $('#jenis_penyelesaian').val(jenis_penyelesaian);
+            $('#nominal_penyelesaian').val(nominal_penyelesaian);
 
         });
 

@@ -72,8 +72,14 @@ $level = $this->libraryku->tampil_user()->level;
                   <td><?php echo number_format($data_penyelesaian['total_pengajuan'],0,',','.') ?></td>
                 </tr>
 
+                <tr style="background-color:silver">
+                  <th style="text-align: right;">Realisasi (Rekomendasi Reviewer)</th>
+                  <th>:</th>
+                  <td><?php echo number_format($data_pengajuan['nominal_penyelesaian_reviewer'],0,',','.') ?></td>
+                </tr>
+
                 <tr>
-                  <th style="text-align: right;">Realisasi</th>
+                  <th style="text-align: right;">Realisasi (Oleh Pengaju)</th>
                   <th>:</th>
                   <td><?php echo number_format($data_penyelesaian['realisasi'],0,',','.') ?></td>
                 </tr>
@@ -83,6 +89,14 @@ $level = $this->libraryku->tampil_user()->level;
                   <th>:</th>
                   <td><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
                 </tr>
+
+                <?php if($data_penyelesaian['alasan_beda_realisasi'] != ''){ ?>
+                <tr style="background-color:silver">
+                  <th>Alasan Perbedaan Realisasi</th>
+                  <th>:</th>
+                  <td><?php echo $data_penyelesaian['alasan_beda_realisasi'] ?></td>
+                </tr>
+                <?php } ?>
 
                 <tr>
                   <th>Tanggal Pengembalian</th>

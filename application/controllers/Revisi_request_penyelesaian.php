@@ -85,9 +85,14 @@ class Revisi_request_penyelesaian extends CI_Controller {
 
 	public function ubah(){
 		$id_pengajuan = $this->input->post('id_pengajuan');
+
+		$jenis = $this->input->post('jenis_penyelesaian');
+		$nominal = $this->input->post('nominal_penyelesaian');
 		$note = $this->input->post('note_penyelesaian');
 
 		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
+			'jenis_penyelesaian' => $jenis,
+			'nominal_penyelesaian_reviewer' => $nominal,
 			'note_penyelesaian' => $note
 		), array('id_pengajuan' => $id_pengajuan));
 

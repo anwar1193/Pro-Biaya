@@ -33,7 +33,11 @@ $level = $this->libraryku->tampil_user()->level;
         <div class="box-body">
           
           <div class="row">
-            <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
+            <?php if($data_pengajuan['form'] == 'Kendaraan'){ ?>
+              <div class="col-sm-8 col-sm-offset-2" style="border:1px dotted gray; padding: 10px;">
+            <?php }else{ ?>
+              <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
+            <?php } ?>
               
               <h4 style="text-align: center;">Detail Pengajuan Biaya</h4>
               <hr style="border-width: 2px; width: 200px">
@@ -314,6 +318,124 @@ $level = $this->libraryku->tampil_user()->level;
                 <?php } ?>
 
                 <!-- / Data Pengajuan BBM -->
+
+                <!-- Data Perbaikan Kendaraan -->
+
+                <?php  
+                      $data_perbaikan_kendaraan = $this->M_master->tampil_data_where('tbl_pengajuan_kendaraan', array('nomor_pengajuan' => $no_pengajuan))->row_array();
+
+                      $data_sparepart = $this->M_master->tampil_data_where('tbl_rincian_sparepart', array('nomor_pengajuan' => $no_pengajuan))->result_array();
+
+                      $data_jasa_perbaikan = $this->M_master->tampil_data_where('tbl_rincian_jasa_perbaikan', array('nomor_pengajuan' => $no_pengajuan))->result_array();
+
+                      $nopol_perbaikan = $data_perbaikan_kendaraan['nopol_perbaikan'];
+
+                      if($nopol_perbaikan != ''){
+                    ?>
+
+                      <tr style="background-color: orange">
+                        <td colspan="3">
+                          <b>Data Perbaikan Kendaraan Inventaris</b>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th>Nomor Polisi</th>
+                        <th>:</th>
+                        <td><?php echo $data_perbaikan_kendaraan['nopol_perbaikan'] ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Merk Kendaraan</th>
+                        <th>:</th>
+                        <td><?php echo $data_perbaikan_kendaraan['merk_kendaraan'] ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Kilometer Saat Pengajuan</th>
+                        <th>:</th>
+                        <td><?php echo $data_perbaikan_kendaraan['kilometer_pengajuan'] ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Rincian Sparepart</th>
+                        <th>:</th>
+                        <td>
+                            <table border="1" style="border-collapse: collapse;" width="100%">
+                              <tr>
+                                <th class="text-center">NO</th>
+                                <th class="text-center">Nama Sparepart</th>
+                                <th class="text-center">Harga Sparepart</th>
+                                <th class="text-center">Diskon</th>
+                                <th class="text-center">Keterangan</th>
+                              </tr>
+
+                              <?php 
+                                $no=1;
+                                $total_jumlah_sparepart = 0;
+                                $total_diskon_sparepart = 0;
+                                foreach($data_sparepart as $row){ 
+                                  $total_jumlah_sparepart += $row['jumlah_sparepart'];
+                                  $total_diskon_sparepart += $row['diskon_sparepart'];
+                              ?>
+                              <tr>
+                                <td class="text-center"><?php echo $no++; ?></td>
+                                <td><?php echo $row['sparepart'] ?></td>
+                                <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
+                                <td class="text-center"><?php echo $row['keterangan_sparepart'] ?></td>
+                              </tr>
+                              <?php } ?>
+
+                              <tr style="font-weight:bold">
+                                <td colspan="2" class="text-right">TOTAL :</td>
+                                <td class="text-right"><?php echo number_format($total_jumlah_sparepart, 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($total_diskon_sparepart, 0, ',', '.') ?></td>
+                              </tr>
+                            </table>
+                        </td>
+                      </tr>
+
+
+                      <tr>
+                        <th>Rincian Jasa Perbaikan</th>
+                        <th>:</th>
+                        <td>
+                            <table border="1" style="border-collapse: collapse;" width="100%">
+                              <tr>
+                                <th class="text-center" width="10%">NO</th>
+                                <th class="text-center" width="45%">Nama Jasa</th>
+                                <th class="text-center" width="25%">Biaya Jasa</th>
+                                <th class="text-center" width="20%">Diskon</th>
+                              </tr>
+
+                              <?php 
+                                $no=1;
+                                $total_jumlah_jasa = 0;
+                                $total_diskon_jasa = 0;
+                                foreach($data_jasa_perbaikan as $row){ 
+                                  $total_jumlah_jasa += $row['jumlah_jasa'];
+                                  $total_diskon_jasa += $row['diskon_jasa'];
+                              ?>
+                              <tr>
+                                <td class="text-center"><?php echo $no++; ?></td>
+                                <td><?php echo $row['jasa'] ?></td>
+                                <td class="text-right"><?php echo number_format($row['jumlah_jasa'], 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($row['diskon_jasa'], 0, ',', '.') ?></td>
+                              </tr>
+                              <?php } ?>
+
+                              <tr style="font-weight:bold">
+                                <td colspan="2" class="text-right">TOTAL :</td>
+                                <td class="text-right"><?php echo number_format($total_jumlah_jasa, 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($total_diskon_jasa, 0, ',', '.') ?></td>
+                              </tr>
+                            </table>
+                        </td>
+                      </tr>
+                      
+                    <?php } ?>
+                    <!-- / Data Perbaikan Kendaraan -->
                 
                 <tr>
                   <th><span id="berkas_pendukung">Berkas Pendukung</span></th>

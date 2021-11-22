@@ -40,7 +40,7 @@
       <?php if($cek_gagal > 0 AND $level=='Departement PIC'){ ?> <!-- jika ada pengajuan gagal tampilkan notifikasi -->
         <!-- Notifikasi Pengajuan gagal -->
         <div class="callout callout-danger">
-            <h4>Perhatian !</h4>
+            <h4 class="perhatian">Perhatian !</h4>
             <p>
               Anda memiliki pengajuan yang gagal proses, biasanya disebabkan oleh kesalahan teknis (misal mati lampu, koneksi terputus, dll). Harap hapus pengajuan gagal tersebut dengan 
               <a href="<?php echo base_url().'p_on_proccess/pengajuan_gagal' ?>">Klik Disini</a>
@@ -62,7 +62,7 @@
       <?php if($cek_tamdok > 0 AND $cabang=='HEAD OFFICE' AND $level=='Departement PIC' OR $cek_tamdok > 0 AND $cabang !='HEAD OFFICE'){ ?> <!-- jika ada tambahan dokumen tampilkan notifikasi -->
         <!-- Notifikasi Tambahan Dokumen -->
         <div class="callout callout-info">
-            <h4>Perhatian !</h4>
+            <h4 class="perhatian">Perhatian !</h4>
             <p>
               Anda memiliki request tambahan dokumen, Silahkan 
               <a href="<?php echo base_url().'p_on_proccess/tambah_dokumen' ?>">Lengkapi Dokumen</a>
@@ -85,7 +85,7 @@
       <?php if($cek_refin > 0 AND $cabang=='HEAD OFFICE' AND $level=='Departement PIC'){ ?> <!-- jika ada revisi data by finance tampilkan notifikasi -->
         <!-- Notifikasi Revisi data Finance -->
         <div class="callout callout-success">
-            <h4>Perhatian !</h4>
+            <h4 class="perhatian">Perhatian !</h4>
             <p>
               Anda memiliki pengajuan revisi dari Finance Dept. Silahkan 
               <a href="<?php echo base_url().'p_on_proccess/revisi_finance' ?>">Lihat Data</a>
@@ -108,7 +108,7 @@
         <?php if($level == 'Departement PIC'){ ?>
           <!-- Notifikasi Revisi Rekening Finance -->
           <div class="callout callout-warning">
-              <h4>Perhatian !</h4>
+              <h4 class="perhatian">Perhatian !</h4>
               <p>
                 Anda memiliki pengajuan revisi (Terkait Nomor Rekening) dari Finance Dept. Silahkan 
                 <a href="<?php echo base_url().'p_on_proccess/revisi_rekening' ?>">Lihat Data</a>
@@ -133,7 +133,7 @@
         <?php if($level == 'Departement PIC'){ ?>
           <!-- Notifikasi Revisi Rekening Finance -->
           <div class="callout callout-warning">
-              <h4>Perhatian !</h4>
+              <h4 class="perhatian">Perhatian !</h4>
               <p>
                 Anda memiliki permintaan revisi (Terkait Nomor Rekening Penyelesaian) dari Finance Dept. Silahkan 
                 <a href="<?php echo base_url().'review_kekurangan_biaya/revisi_rekening' ?>">Lihat Data</a>
@@ -170,7 +170,7 @@
       <?php if($cek_inbox > 0){ ?> <!-- jika ada approval masuk tampilkan notifikasi -->
         <!-- Notifikasi Approval -->
         <div class="callout callout-success">
-            <h4>Perhatian !</h4>
+            <h4 class="perhatian">Perhatian !</h4>
             <p>
               Anda memiliki <?php echo $cek_inbox; ?> approval pengajuan. Silahkan 
               <a href="<?php echo base_url().'inbox' ?>">Lihat Disini</a>
@@ -193,7 +193,7 @@
       <?php if($cek_inbox_dirfin > 0){ ?> <!-- jika ada approval masuk director finance tampilkan notifikasi -->
         <!-- Notifikasi Approval -->
         <div class="callout callout-info">
-            <h4>Perhatian !</h4>
+            <h4 class="perhatian">Perhatian !</h4>
             <p>
               Anda memiliki <?php echo $cek_inbox_dirfin; ?> approval pengajuan (Direktur Finance). Silahkan 
               <a href="<?php echo base_url().'inbox_dirfin' ?>">Lihat Disini</a>
@@ -205,7 +205,7 @@
       <?php if($password == 'aa9f4a51510466c95ba66eb18dfe89550b0ba8a0'){ ?>
 
         <div class="callout callout-warning">
-            <h4>Perhatian !</h4>
+            <h4 class="perhatian">Perhatian !</h4>
             <p>
               Anda masih menggunakan password standar! Demi keamanan segera ganti password anda
               <a href="<?php echo base_url().'ganti_password' ?>">Disini</a>
@@ -223,7 +223,7 @@
       ?>
 
         <div class="callout callout-danger">
-            <h4>Peringatan Dokumen Terlambat !</h4>
+            <h4 class="perhatian">Peringatan Dokumen Terlambat !</h4>
             <p>
               Anda mempunyai <?php echo $data_dokterlambat ?> dokumen terlambat. Untuk melihat Detail nya, silahkan 
               <a href="<?php echo base_url().'dokumen_terlambat' ?>">Klik Disini</a>
@@ -241,7 +241,7 @@
       ?>
 
         <div class="callout callout-danger">
-            <h4>Peringatan Dokumen Terlambat (Reviewer) !</h4>
+            <h4 class="perhatian">Peringatan Dokumen Terlambat (Reviewer) !</h4>
             <p>
               Anda mempunyai <?php echo $data_dokterlambat_reviewer ?> dokumen terlambat untuk pengajuan yang anda review. Untuk melihat Detail nya, silahkan 
               <a href="<?php echo base_url().'dokumen_terlambat_reviewer' ?>">Klik Disini</a>

@@ -45,6 +45,7 @@ class kelebihan_biaya extends CI_Controller {
         $total_pengajuan = $this->input->post('jumlah');
         $realisasi = $this->input->post('realisasi');
         $lebih_bayar = $this->input->post('lebih_bayar');
+        $alasan_beda_realisasi = $this->input->post('alasan_beda_realisasi');
 
         $tgl_pengembalian = $this->input->post('tanggal_pengembalian');
         $tanggal_pengembalian = date('Y-m-d', strtotime($tgl_pengembalian));
@@ -59,6 +60,7 @@ class kelebihan_biaya extends CI_Controller {
             'total_pengajuan' => $total_pengajuan,
             'realisasi' => $realisasi,
             'lebih_bayar' => $lebih_bayar,
+            'alasan_beda_realisasi' => $alasan_beda_realisasi,
             'tanggal_pengembalian' => $tanggal_pengembalian,
             'cara_pengembalian' => $cara_pengembalian,
             'departemen_tujuan' => $departemen_tujuan,

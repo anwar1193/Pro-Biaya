@@ -33,7 +33,11 @@
             <div class="box-body">
               
               <div class="row">
-                <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
+                <?php if($data_pengajuan['form'] == 'Kendaraan'){ ?>
+                  <div class="col-sm-8 col-sm-offset-2" style="border:1px dotted gray; padding: 10px;">
+                <?php }else{ ?>
+                  <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
+                <?php } ?>
                   
                   <h4 style="text-align: center;">Detail Pengajuan Biaya</h4>
                   <hr style="border-width: 2px; width: 200px">
@@ -120,7 +124,11 @@
                     <tr>
                       <th style="text-align: right;">Total</th>
                       <th>:</th>
-                      <td><?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,',','.') ?></td>
+                      <td>
+                        <?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,',','.') ?>
+
+                        <input type="text" id="total_biaya" value="<?php echo $data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']) ?>" hidden>
+                      </td>
                     </tr>
 
                     <tr>
@@ -314,6 +322,124 @@
                     <?php } ?>
 
                     <!-- / Data Pengajuan BBM -->
+
+                    <!-- Data Perbaikan Kendaraan -->
+
+                    <?php  
+                      $data_perbaikan_kendaraan = $this->M_master->tampil_data_where('tbl_pengajuan_kendaraan', array('nomor_pengajuan' => $no_pengajuan))->row_array();
+
+                      $data_sparepart = $this->M_master->tampil_data_where('tbl_rincian_sparepart', array('nomor_pengajuan' => $no_pengajuan))->result_array();
+
+                      $data_jasa_perbaikan = $this->M_master->tampil_data_where('tbl_rincian_jasa_perbaikan', array('nomor_pengajuan' => $no_pengajuan))->result_array();
+
+                      $nopol_perbaikan = $data_perbaikan_kendaraan['nopol_perbaikan'];
+
+                      if($nopol_perbaikan != ''){
+                    ?>
+
+                      <tr style="background-color: orange">
+                        <td colspan="3">
+                          <b>Data Perbaikan Kendaraan Inventaris</b>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th>Nomor Polisi</th>
+                        <th>:</th>
+                        <td><?php echo $data_perbaikan_kendaraan['nopol_perbaikan'] ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Merk Kendaraan</th>
+                        <th>:</th>
+                        <td><?php echo $data_perbaikan_kendaraan['merk_kendaraan'] ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Kilometer Saat Pengajuan</th>
+                        <th>:</th>
+                        <td><?php echo $data_perbaikan_kendaraan['kilometer_pengajuan'] ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Rincian Sparepart</th>
+                        <th>:</th>
+                        <td>
+                            <table border="1" style="border-collapse: collapse;" width="100%">
+                              <tr>
+                                <th class="text-center">NO</th>
+                                <th class="text-center">Nama Sparepart</th>
+                                <th class="text-center">Harga Sparepart</th>
+                                <th class="text-center">Diskon</th>
+                                <th class="text-center">Keterangan</th>
+                              </tr>
+
+                              <?php 
+                                $no=1;
+                                $total_jumlah_sparepart = 0;
+                                $total_diskon_sparepart = 0;
+                                foreach($data_sparepart as $row){ 
+                                  $total_jumlah_sparepart += $row['jumlah_sparepart'];
+                                  $total_diskon_sparepart += $row['diskon_sparepart'];
+                              ?>
+                              <tr>
+                                <td class="text-center"><?php echo $no++; ?></td>
+                                <td><?php echo $row['sparepart'] ?></td>
+                                <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
+                                <td class="text-center"><?php echo $row['keterangan_sparepart'] ?></td>
+                              </tr>
+                              <?php } ?>
+
+                              <tr style="font-weight:bold">
+                                <td colspan="2" class="text-right">TOTAL :</td>
+                                <td class="text-right"><?php echo number_format($total_jumlah_sparepart, 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($total_diskon_sparepart, 0, ',', '.') ?></td>
+                              </tr>
+                            </table>
+                        </td>
+                      </tr>
+
+
+                      <tr>
+                        <th>Rincian Jasa Perbaikan</th>
+                        <th>:</th>
+                        <td>
+                            <table border="1" style="border-collapse: collapse;" width="100%">
+                              <tr>
+                                <th class="text-center" width="10%">NO</th>
+                                <th class="text-center" width="45%">Nama Jasa</th>
+                                <th class="text-center" width="25%">Biaya Jasa</th>
+                                <th class="text-center" width="20%">Diskon</th>
+                              </tr>
+
+                              <?php 
+                                $no=1;
+                                $total_jumlah_jasa = 0;
+                                $total_diskon_jasa = 0;
+                                foreach($data_jasa_perbaikan as $row){ 
+                                  $total_jumlah_jasa += $row['jumlah_jasa'];
+                                  $total_diskon_jasa += $row['diskon_jasa'];
+                              ?>
+                              <tr>
+                                <td class="text-center"><?php echo $no++; ?></td>
+                                <td><?php echo $row['jasa'] ?></td>
+                                <td class="text-right"><?php echo number_format($row['jumlah_jasa'], 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($row['diskon_jasa'], 0, ',', '.') ?></td>
+                              </tr>
+                              <?php } ?>
+
+                              <tr style="font-weight:bold">
+                                <td colspan="2" class="text-right">TOTAL :</td>
+                                <td class="text-right"><?php echo number_format($total_jumlah_jasa, 0, ',', '.') ?></td>
+                                <td class="text-right"><?php echo number_format($total_diskon_jasa, 0, ',', '.') ?></td>
+                              </tr>
+                            </table>
+                        </td>
+                      </tr>
+                      
+                    <?php } ?>
+                    <!-- / Data Perbaikan Kendaraan -->
                     
                     <tr>
                       <th><span id="berkas_pendukung">Berkas Pendukung</span></th>
@@ -428,7 +554,10 @@
                               <td><?php echo date('d-m-Y', strtotime($data_byr['tanggal_minta_bayar'])) ?></td>
                               <td style="text-align: right;"><?php echo number_format($data_byr['jumlah']-($data_byr['pph23']+$data_byr['pph42']+$data_byr['pph21']), 0, ',', '.') ?></td>
                               <td style="text-align: right;"><?php echo number_format($data_byr['ppn'], 0, ',', '.') ?></td>
-                              <td style="text-align: right;"><?php echo number_format($data_byr['jumlah']+$data_byr['ppn']-($data_byr['pph23']+$data_byr['pph42']+$data_byr['pph21']), 0, ',', '.') ?></td>
+
+                              <td style="text-align: right;">
+                                <?php echo number_format($data_byr['jumlah']+$data_byr['ppn']-($data_byr['pph23']+$data_byr['pph42']+$data_byr['pph21']), 0, ',', '.') ?>
+                              </td>
                             </tr>
 
                           <?php }else{ //jika bayar lebih dari sekali, panggil dari tbl_bayar ?>
@@ -562,10 +691,38 @@
                       </td>
                     </tr>
 
+                    <!-- Data Penyelesaian Request Pengaju -->
+                    <tr style="background-color: orange">
+                      <td colspan="3">
+                        <b>PENYELESAIAN (REQUEST PENGAJU)</b>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Jenis Penyelesaian</th>
+                      <th>:</th>
+                      <td>
+                        <span style="font-weight:bold"><?php echo $data_pengajuan['jenis_penyelesaian_pengaju'] ?></span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Note Penyelesaian</th>
+                      <th>:</th>
+                      <td>
+                        <?php if($data_pengajuan['note_penyelesaian_pengaju']==''){ ?>
+                          <span>-</span>
+                        <?php }else{ ?>
+                          <span><?php echo $data_pengajuan['note_penyelesaian_pengaju'] ?></span>
+                        <?php } ?>
+                      </td>
+                    </tr>
+                    <!-- Data Penyelesaian Request Pengaju -->
+
                     <!-- Data Penyelesaian -->
                     <tr style="background-color: orange">
                       <td colspan="3">
-                        <b>PENYELESAIAN</b>
+                        <b>PENYELESAIAN (REVIEWER)</b>
                       </td>
                     </tr>
 
@@ -582,6 +739,27 @@
                     </tr>
 
                     <tr>
+                      <th>Nominal Penyelesaian</th>
+                      <th>:</th>
+                      <td>
+                        Rp. <?php echo number_format($data_pengajuan['nominal_penyelesaian_reviewer'], 0, '.', ',') ?>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Jenis Penyelesaian</th>
+                      <th>:</th>
+                      <td>
+                        <?php if($data_pengajuan['jenis_penyelesaian'] != ''){ ?>
+                          <span style="font-weight:bold"><?php echo $data_pengajuan['jenis_penyelesaian'] ?></span>
+                        <?php }else{ ?>
+                          <span style="font-weight:bold">-</span>
+                        <?php } ?>
+                        
+                      </td>
+                    </tr>
+
+                    <tr>
                       <th>Note Penyelesaian</th>
                       <th>:</th>
                       <td>
@@ -592,6 +770,7 @@
                         <?php } ?>
                       </td>
                     </tr>
+                    <!-- Data Penyelesaian -->
 
 
                   </table>
@@ -664,11 +843,11 @@
 
                   <!-- Tombol Request Penyelesaian -->
                   <?php 
-                    $no_invoice = strtoupper($data_pengajuan['nomor_invoice']);
+                    $no_invoice = strtoupper(trim($data_pengajuan['nomor_invoice']));
                     if($no_invoice == 'ESTIMASI' AND $data_pengajuan['note_penyelesaian'] == '' AND $data_pengajuan['status_bayar']=='Telah Dibayar'){ 
                   ?>
                   <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-request_penyelesaian">
-                    Request Penyelesaian
+                    Proses Penyelesaian
                   </a>
                   <?php } ?>
 
@@ -954,8 +1133,8 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Note Penyelesaian</h4>
-          <em>Note ini akan menjadi acuan pengaju/cabang untuk melakukan penyelesaian</em>
+          <h4 class="modal-title">Proses Penyelesaian</h4>
+          <em>Rekomendasi ini akan menjadi acuan pengaju/cabang untuk melakukan penyelesaian</em>
         </div>
         <div class="modal-body">
 
@@ -965,13 +1144,34 @@
 
           <input type="text" hidden name="tambah_dokumen_pic" value="<?php echo $departemen ?>">
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="jenis_penyelesaian" required>Jenis Penyelesaian :</label>
             <select name="jenis_penyelesaian" id="jenis_penyelesaian" class="form-control" required="">
               <option value="">- Pilih -</option>
               <option value="kelebihan">Kelebihan Biaya</option>
               <option value="kekurangan">Kekurangan Biaya</option>
             </select>
+          </div> -->
+
+          <div class="form-group">
+            <label for=""></span> Nominal Pengajuan Awal :</label>
+            <input type="number" class="form-control" value="<?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,',','.') ?>" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="nominal_penyelesaian"></span> Nominal Penyelesaian :</label>
+            <input type="number" class="form-control" placeholder="Rp" name="nominal_penyelesaian" id="nominal_penyelesaian" required>
+            <span style="display:block; position:absolute; right:15px; font-weight:bold" id="nominal_penyelesaian_v">0</span>
+          </div>
+
+          <div class="form-group">
+            <label for="jenis_penyelesaian"></span> Jenis Penyelesaian :</label>
+            <input type="text" class="form-control" name="jenis_penyelesaian" id="jenis_penyelesaian" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for=""></span> Nominal Kelebihan/Kekurangan :</label>
+            <input type="text" class="form-control" readonly id="selisih">
           </div>
 
           <div class="form-group">
@@ -982,7 +1182,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger btn-sm pull-left" data-dismiss="modal"> Batal</button>
-          <button type="submit" class="btn btn-sm btn-info"> Proses</button>
+          <button type="submit" class="btn btn-sm btn-info" id="tombol-penyelesaian"> Proses</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -1009,3 +1209,44 @@
       });
     }
   </script>
+
+  <!-- Script Penentuan Kelebihan/Kekurangan -->
+    <script>
+      $(document).ready(function(){
+
+        // Rubah format angka javascript
+        function rubah(angka){
+          var reverse = angka.toString().split('').reverse().join(''),
+          ribuan = reverse.match(/\d{1,3}/g);
+          ribuan = ribuan.join(',').split('').reverse().join('');
+          return ribuan;
+        }
+
+        $(document).on('keyup mouseup', '#nominal_penyelesaian', function(){
+          const nominal_penyelesaian = $('#nominal_penyelesaian').val();
+          const total_biaya = $('#total_biaya').val();
+          
+          $('#nominal_penyelesaian_v').text(rubah(nominal_penyelesaian));
+
+          if(nominal_penyelesaian*1 > total_biaya*1){
+            $('#jenis_penyelesaian').val('kekurangan');
+            $('#selisih').val(rubah((nominal_penyelesaian*1) - (total_biaya*1)));
+          }else{
+            $('#jenis_penyelesaian').val('kelebihan');
+            $('#selisih').val(rubah((total_biaya*1) - (nominal_penyelesaian*1)));
+          }
+        });
+
+
+        $(document).on('click', '#tombol-penyelesaian', function(){
+          const nominal_penyelesaian = $('#nominal_penyelesaian').val();
+          if(nominal_penyelesaian == 0){
+            alert("Nominal Penyelesaian Tidak Boleh 0");
+            return false;
+          }
+        });
+
+
+      });
+    </script>
+  <!-- END Script Penentuan Kelebihan/Kekurangan -->
