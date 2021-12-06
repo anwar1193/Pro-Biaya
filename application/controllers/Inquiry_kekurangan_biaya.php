@@ -466,9 +466,15 @@ class Inquiry_kekurangan_biaya extends CI_Controller {
 
 		$data_penyelesaian = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE id_penyelesaian=$id")->row_array();
 
+		$no_pengajuan = $data_penyelesaian['nomor_pengajuan'];
+
 		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
 
+		// Data pengajuan all untuk menampilkan data untuk cari pengajuan
         $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE cabang='$cabang' AND bagian='$identitas' AND status_bayar='Telah Dibayar' AND status_penyelesaian='' ")->result_array();
+
+		// Data pengajuan spesifik yang ingin diperbaiki
+		$data_penyelesaian_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
 
         $data_bank = $this->db->query("SELECT * FROM tbl_bank_pengaju ORDER BY nama_bank")->result_array();
 
@@ -477,7 +483,8 @@ class Inquiry_kekurangan_biaya extends CI_Controller {
 		$this->load->view('v_perbaiki_penyelesaian', array(
             'data_penyelesaian' => $data_penyelesaian,
             'data_pengajuan' => $data_pengajuan,
-            'data_bank' => $data_bank
+            'data_bank' => $data_bank,
+            'data_penyelesaian_pengajuan' => $data_penyelesaian_pengajuan
         ));
 		$this->load->view('footer');
 	}

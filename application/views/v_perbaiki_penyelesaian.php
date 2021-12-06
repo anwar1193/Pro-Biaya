@@ -49,7 +49,7 @@ Revisi Penyelesaian Kekurangan Biaya
         <div class="form-group input-group">
           <input type="text" name="nomor_pengajuan" id="nomor_pengajuan" class="form-control" required value="<?php echo $data_penyelesaian['nomor_pengajuan'] ?>" readonly>
           <span class="input-group-btn">
-            <button class="btn btn-info btn-flat" type="button" data-toggle="modal" data-target="#modal-nomor_pengajuan">
+            <button class="btn btn-default btn-flat disabled" type="button" data-toggle="modal" data-target="#">
               <i class="fa fa-search"></i>
             </button>
           </span>
@@ -76,8 +76,18 @@ Revisi Penyelesaian Kekurangan Biaya
         </div>
 
         <div class="form-group">
+          <label for="realisasi">Realisasi (Rekomendasi Reviewer)</label>
+          <input type="text" value="<?php echo $data_penyelesaian_pengajuan['nominal_penyelesaian_reviewer'] ?>" class="form-control" id="realisasi_reviewer" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" readonly>
+        </div>
+
+        <div class="form-group">
           <label for="realisasi">Realisasi</label>
           <input type="text" name="realisasi" id="realisasi" class="form-control" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" value="<?php echo $data_penyelesaian['realisasi'] ?>">
+        </div>
+
+        <div class="form-group" id="beda_realisasi">
+          <label for="alasan_beda_realisasi">Alasan Perbedaan Realisasi</label>
+          <textarea name="alasan_beda_realisasi" id="alasan_beda_realisasi" class="form-control" rows="7"></textarea>
         </div>
 
         <div class="form-group">
@@ -262,6 +272,7 @@ $('#kurang_bayar_text').text('Rp ' + rubah(kurang_bayar_direct));
 
 // Script data pengajuan
 $('#tampil_note').hide();
+$('#beda_realisasi').hide();
 
 $(document).on('click','#pilih', function(){
   var nomor_pengajuan = $(this).data('nomor_pengajuan');
@@ -270,6 +281,7 @@ $(document).on('click','#pilih', function(){
   var jumlah = $(this).data('jumlah');
   var note_penyelesaian = $(this).data('note_penyelesaian');
   var departemen_tujuan = $(this).data('departemen_tujuan');
+  var realisasi_reviewer = $(this).data('realisasi_reviewer');
 
   if(note_penyelesaian != ''){
     $('#tampil_note').show();
@@ -298,15 +310,42 @@ $(document).on('keyup mouseup', '#realisasi', function(){
 });  
 
 
+// jika realisasi != realisasi rekomendasi reviwer, maka tampil kotak alasan kenapa bisa beda
+$('#realisasi').blur(function(){
+  var realisasi = $('#realisasi').val();
+  var realisasi_reviewer = $('#realisasi_reviewer').val();
+
+  if(realisasi == realisasi_reviewer){
+    $('#beda_realisasi').hide();
+    $('#alasan_beda_realisasi').removeAttr('required').val('');
+  }
+
+});
+
+
 // validasi realisasi tidak boleh lebih kecil dari total pengajuan
 $(document).on('click', '#tombol_kirim', function(){
     var jumlah_v = $('#jumlah').val();
     var realisasi_v = $('#realisasi').val();
     var lebih_bayar_v = (realisasi_v * 1) - (jumlah_v * 1);
+    var realisasi_reviewer = $('#realisasi_reviewer').val();
+    var alasan_beda = $('#alasan_beda_realisasi').val();
+
+    if(realisasi_v == '' || realisasi_v == 0){
+      alert("Nilai Realisasi Tidak Boleh Kosong atau Nol");
+      return false;
+    }
 
     if(lebih_bayar_v <= 0){
-        alert("Nilai Realisasi Tidak Boleh Lebih Kecil / Sama Dengan Total Pengajuan");
-        return false;
+      alert("Nilai Realisasi Tidak Boleh Lebih Kecil / Sama Dengan Total Pengajuan");
+      return false;
+    }
+
+    if(realisasi_v != realisasi_reviewer && alasan_beda == ''){
+      alert('Jumlah realisasi yang anda masukkan berbeda dengan rekomendasi reviewer, harap mengisi kolom Alasan Perbedaan Realisasi!');
+      $('#beda_realisasi').slideDown();
+      $('#alasan_beda_realisasi').attr('required','').focus();
+      return false;
     }
 });
 

@@ -244,10 +244,10 @@
                   <thead>
                     <tr class="bg-success">
                       <th>No</th>
-                      <th>Sparepart/Material</th>
+                      <th>Nama Sparepart</th>
                       <th>Jumlah</th>
                       <th>Diskon</th>
-                      <th>Keterangan</th>
+                      <th>Jenis Sparepart</th>
                       <th class="text-center">
                         <button class="btn btn-primary btn-xs" id="BarisBaru_sparepart">
                           <i class="fa fa-plus"></i> Tambah
@@ -625,12 +625,7 @@
                 Baris += '<td class="text-center">'+Nomor+'</td>'; 
 
                 Baris += '<td>';
-                  Baris += '<select name="sparepart[]" class="form-control" required="">';
-                  Baris += '<option value="">-Pilih Sparepart-</option>';
-                  Baris += '<?php foreach($data_sparepart as $row){ ?>';
-                  Baris += '<option value="<?php echo $row['nama_sparepart'] ?>"><?php echo $row['nama_sparepart'] ?></option>';
-                  Baris += '<?php } ?>';
-                  Baris += '</select>';
+                  Baris += '<input type="text" name="sparepart[]" id="sparepart" class="form-control" autocomplete="off" placeholder="Nama Sparepart">';
                 Baris += '</td>';
 
                 Baris += '<td>';
@@ -642,8 +637,17 @@
                 Baris += '</td>';
 
                 Baris += '<td>';
-                  Baris += '<input type="text" name="keterangan_sparepart[]" id="keterangan_sparepart" class="form-control" autocomplete="off">';
+                  Baris += '<input type="text" name="keterangan_sparepart[]" id="keterangan_sparepart" class="form-control" autocomplete="off" placeholder="Diisi Oleh Reviewer" disabled>';
                 Baris += '</td>';
+
+                // Baris += '<td>';
+                //   Baris += '<select name="keterangan_sparepart[]" class="form-control" required="">';
+                //   Baris += '<option value="">-Jenis Sparepart-</option>';
+                //   Baris += '<?php foreach($data_sparepart as $row){ ?>';
+                //   Baris += '<option value="<?php echo $row['nama_sparepart'] ?>"><?php echo $row['nama_sparepart'] ?></option>';
+                //   Baris += '<?php } ?>';
+                //   Baris += '</select>';
+                // Baris += '</td>';
 
                 Baris += '<td class="text-center">';
                   Baris += '<a class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Baris" id="HapusBaris_sparepart"><i class="fa fa-times"></i></a>';

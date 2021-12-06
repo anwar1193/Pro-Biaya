@@ -119,6 +119,9 @@ class P_review extends CI_Controller {
 		// Tampilkan Data Memo
 		$data_memo = $this->db->query("SELECT * FROM tbl_memo WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
 
+		// Tampil Data Sparepart
+		$data_sparepart_all = $this->M_master->tampil_data_order('tbl_sparepart', 'nama_sparepart')->result_array();
+
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_p_detail_review', array(
@@ -133,7 +136,8 @@ class P_review extends CI_Controller {
 			'jml_split' => $jml_split,
 			'no_jurnal' => $nojur_otomatis,
 			'data_byr2' => $data_byr2,
-			'data_memo' => $data_memo
+			'data_memo' => $data_memo,
+			'data_sparepart_all' => $data_sparepart_all
 		));
 		$this->load->view('footer');
 	}
@@ -453,6 +457,27 @@ class P_review extends CI_Controller {
 			'jumlah_bayar' => $this->input->post('jumlah_bayar'),
 			'ppn_bayar' => $this->input->post('ppn_bayar')
 		), array('id' => $this->input->post('id')));
+
+		if($result>0){
+			$this->session->set_flashdata('pesan','Update Berhasil');
+			redirect('p_review/detail/'.$id_pengajuan);
+		}
+	}
+
+
+	public function ubah_sparepart(){
+		$id_sparepart = $this->input->post('id_sparepart');
+		$no_pengajuan = $this->input->post('nomor_pengajuan_sparepart');
+		$sparepart = $this->input->post('sparepart');
+		$jenis_sparepart = $this->input->post('jenis_sparepart');
+
+		// cari id pengajuan untuk redirect halaman
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+		$id_pengajuan = $data_pengajuan['id_pengajuan'];
+
+		$result = $this->M_master->update_pengajuan('tbl_rincian_sparepart', array(
+			'keterangan_sparepart' => $jenis_sparepart
+		), array('id' => $id_sparepart));
 
 		if($result>0){
 			$this->session->set_flashdata('pesan','Update Berhasil');

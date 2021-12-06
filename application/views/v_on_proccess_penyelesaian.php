@@ -88,9 +88,9 @@ $level = $this->libraryku->tampil_user()->level;
                       $approved_by = $row_inquiry['approved_by_penyelesaian'];
                       $wilayah = $row_inquiry['wilayah'];
                       $dept_tujuan = $row_inquiry['dept_tujuan'];
-                      $direktur_tujuan = $row_inquiry['direktur_tujuan'];
+                      $direktur_tujuan = $row_inquiry['direktur_tujuan_penyelesaian'];
                       $direktur_asal = $row_inquiry['direktur_asal'];
-                      $kadiv_tujuan = $row_inquiry['kadiv_tujuan'];
+                      $kadiv_tujuan = $row_inquiry['kadiv_tujuan_penyelesaian'];
                       $kadiv_asal = $row_inquiry['kadiv_asal'];
                       $jalur_khusus = $row_inquiry['jalur_khusus'];
 
@@ -160,10 +160,14 @@ $level = $this->libraryku->tampil_user()->level;
                         $q_next = $this->db->query("SELECT * FROM tbl_user WHERE level='President Director'")->row_array();
                         $nama_next = $q_next['nama_lengkap'];
                         $level_next = 'President Director';
-                      }
-
-                      elseif($level_pengaju == 'Departement PIC' AND $status_approve=='On Proccess' AND $cabang_pengaju=='HEAD OFFICE'){
+                      
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='On Proccess' AND $cabang_pengaju=='HEAD OFFICE' AND $jalur_khusus==''){
                         $q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$departemen' AND level='Department Head'")->row_array();
+                        $nama_next = $q_next['nama_lengkap'];
+                        $level_next = 'Dept. Head';
+
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='On Proccess' AND $cabang_pengaju=='HEAD OFFICE' AND $jalur_khusus!=''){
+                        $q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$departemen' AND level='Department Head' AND jabatan_khusus='$jalur_khusus'")->row_array();
                         $nama_next = $q_next['nama_lengkap'];
                         $level_next = 'Dept. Head';
 
@@ -182,17 +186,31 @@ $level = $this->libraryku->tampil_user()->level;
                         $nama_next = $q_next['nama_lengkap'];
                         $level_next = 'PIC Dept Head';
 
-                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='division head'){
+                      // Approved By Division Head.............................
+
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='division head' AND $jalur_khusus==''){
                         $q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$dept_tujuan' AND level='Department Head'")->row_array();
                         $nama_next = $q_next['nama_lengkap'];
                         $level_next = 'PIC Dept Head';
 
-                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='dept head pic' AND $direktur_asal!=''){
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='division head' AND $jalur_khusus!=''){
                         $q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_asal' AND level='Director'")->row_array();
                         $nama_next = $q_next['nama_lengkap'];
                         $level_next = 'Director';
 
-                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='dept head pic' AND $direktur_asal==''){
+                      // Approved By Dept Head PIC..............................
+
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='dept head pic' AND $kadiv_tujuan!=''){
+                      $q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$kadiv_tujuan' AND level='Division Head'")->row_array();
+                      $nama_next = $q_next['nama_lengkap'];
+                      $level_next = 'Division Head';
+
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='dept head pic' AND $kadiv_tujuan=='' AND $direktur_asal!=''){
+                        $q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_asal' AND level='Director'")->row_array();
+                        $nama_next = $q_next['nama_lengkap'];
+                        $level_next = 'Director';
+
+                      }elseif($level_pengaju == 'Departement PIC' AND $status_approve=='approved' AND $approved_by=='dept head pic' AND $kadiv_tujuan=='' AND $direktur_asal==''){
                         $q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_tujuan' AND level='Director'")->row_array();
                         $nama_next = $q_next['nama_lengkap'];
                         $level_next = 'Director';

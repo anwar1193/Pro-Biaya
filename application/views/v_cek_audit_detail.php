@@ -368,7 +368,7 @@
                                 <th class="text-center">Nama Sparepart</th>
                                 <th class="text-center">Harga Sparepart</th>
                                 <th class="text-center">Diskon</th>
-                                <th class="text-center">Keterangan</th>
+                                <th class="text-center">Jenis Sparepart</th>
                               </tr>
 
                               <?php 
@@ -384,7 +384,15 @@
                                 <td><?php echo $row['sparepart'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
                                 <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
-                                <td class="text-center"><?php echo $row['keterangan_sparepart'] ?></td>
+                                <td class="text-center">
+                                  <?php 
+                                    if($row['keterangan_sparepart'] == '-'){
+                                      echo '(Diisi Reviewer)';
+                                    }else{
+                                      echo $row['keterangan_sparepart'];
+                                    }
+                                  ?>
+                                </td>
                               </tr>
                               <?php } ?>
 

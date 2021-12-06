@@ -9,6 +9,12 @@ class M_master extends CI_Model {
 		return $result;
 	}
 
+	public function tampil_data_order($tbl, $order_by){
+		$this->db->order_by($order_by);
+		$result = $this->db->get($tbl);
+		return $result;
+	}
+
 	public function tampil_data_where($tbl, $where){
 		$result = $this->db->get_where($tbl, $where);
 		return $result;
@@ -522,12 +528,12 @@ class M_master extends CI_Model {
 	public function tampil_onproccessHO2($dept){
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
 			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'on proccess' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='' AND tbl_pengajuan.bagian='$dept' OR
-			tbl_penyelesaian_kekurangan.status_approve_penyelesaian AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head' AND tbl_pengajuan.bagian='$dept' OR
-			tbl_penyelesaian_kekurangan.status_approve_penyelesaian AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='division head' AND tbl_pengajuan.bagian='$dept' OR
-			tbl_penyelesaian_kekurangan.status_approve_penyelesaian AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head pic' AND tbl_pengajuan.bagian='$dept' OR
-			tbl_penyelesaian_kekurangan.status_approve_penyelesaian AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='director' AND tbl_pengajuan.bagian='$dept' OR
-			tbl_penyelesaian_kekurangan.status_approve_penyelesaian AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='director pengaju' AND tbl_pengajuan.bagian='$dept' OR
-			tbl_penyelesaian_kekurangan.status_approve_penyelesaian AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='director finance' AND tbl_pengajuan.bagian='$dept'
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head' AND tbl_pengajuan.bagian='$dept' OR
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='division head' AND tbl_pengajuan.bagian='$dept' OR
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head pic' AND tbl_pengajuan.bagian='$dept' OR
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='director' AND tbl_pengajuan.bagian='$dept' OR
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='director pengaju' AND tbl_pengajuan.bagian='$dept' OR
+			tbl_penyelesaian_kekurangan.status_approve_penyelesaian = 'approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='director finance' AND tbl_pengajuan.bagian='$dept'
 			ORDER BY tbl_penyelesaian_kekurangan.id_penyelesaian DESC");
 		return $result;
 	}
@@ -1231,7 +1237,7 @@ class M_master extends CI_Model {
 			level_pengaju='Departement PIC' AND status_approve='approved' AND approved_by='division head' AND kadiv_asal!='' AND bagian!='$departemen' AND dept_tujuan='$departemen' OR
 
 			-- sebagai departemen asal
-			level_pengaju='Departement PIC' AND bagian='$departemen' AND status_approve='on proccess' OR
+			level_pengaju='Departement PIC' AND bagian='$departemen' AND status_approve='on proccess' AND jalur_khusus='$jabatan_khusus' OR
 
 			-- jika balik lagi
 			status_approve='final approved' AND nama_pengapprove='$nama_lengkap' AND balik_lagi='Ya' AND dept_tujuan='$departemen'
@@ -1247,10 +1253,10 @@ class M_master extends CI_Model {
 
 		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE 
 			-- sebagai departemen tujuan
-			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' OR
+			(tbl_pengajuan.level_pengaju='ADCO' OR tbl_pengajuan.level_pengaju='CMC' OR tbl_pengajuan.level_pengaju='ADD-CABANG' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' AND tbl_pengajuan.jalur_khusus='' OR
 
 			-- khusus adcoll (deteksi 91 up)
-			tbl_pengajuan.level_pengaju='ADCOLL' AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' AND tbl_pengajuan.jalur_khusus='$jabatan_khusus' OR
+			(tbl_pengajuan.level_pengaju='ADCOLL' OR tbl_pengajuan.level_pengaju='Departement PIC') AND tbl_pengajuan.dept_tujuan='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='kawil' AND tbl_pengajuan.cabang!='HEAD OFFICE' AND tbl_pengajuan.jalur_khusus='$jabatan_khusus' OR
 
 			tbl_pengajuan.level_pengaju='Departement PIC' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='dept head' AND tbl_pengajuan.kadiv_tujuan='' AND tbl_pengajuan.bagian!='$departemen' AND tbl_pengajuan.dept_tujuan='$departemen' OR
 
@@ -1259,7 +1265,7 @@ class M_master extends CI_Model {
 			tbl_pengajuan.level_pengaju='Departement PIC' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='approved' AND tbl_penyelesaian_kekurangan.approved_by_penyelesaian='division head' AND tbl_pengajuan.kadiv_asal!='' AND tbl_pengajuan.bagian!='$departemen' AND tbl_pengajuan.dept_tujuan='$departemen' OR
 
 			-- sebagai departemen asal
-			tbl_pengajuan.level_pengaju='Departement PIC' AND tbl_pengajuan.bagian='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='On Proccess'
+			tbl_pengajuan.level_pengaju='Departement PIC' AND tbl_pengajuan.bagian='$departemen' AND tbl_penyelesaian_kekurangan.status_approve_penyelesaian='On Proccess' AND tbl_pengajuan.jalur_khusus='$jabatan_khusus'
 
 			-- jika balik lagi
 			-- tbl_penyelesaian_kekurangan.status_approve_penyelesaian='final approved' AND tbl_penyelesaian_kekurangan.nama_pengapprove_penyelesaian='$nama_lengkap' AND balik_lagi='Ya' AND dept_tujuan='$departemen'

@@ -157,6 +157,7 @@ class kekurangan_biaya extends CI_Controller {
         $bank = $this->input->post('bank_penerima');
         $nomor_rekening = $this->input->post('norek_penerima');
         $atas_nama_bank = $this->input->post('atas_nama');
+        $alasan_beda_realisasi = $this->input->post('alasan_beda_realisasi');
 
         $tgl_request_transfer = $this->input->post('tanggal_request_transfer');
         $tanggal_request_transfer = date('Y-m-d', strtotime($tgl_request_transfer));
@@ -172,6 +173,7 @@ class kekurangan_biaya extends CI_Controller {
             'total_pengajuan' => $total_pengajuan,
             'realisasi' => $realisasi,
             'kurang_bayar' => $kurang_bayar,
+            'alasan_beda_realisasi' => $alasan_beda_realisasi,
             'bank' => $bank,
             'nomor_rekening' => $nomor_rekening,
             'atas_nama_bank' => $atas_nama_bank,

@@ -202,6 +202,26 @@ class Pengajuan_biaya extends CI_Controller {
 			$q_coa = $this->db->query("SELECT * FROM tbl_relasi_sub WHERE sub_biaya = '$sub_biaya'")->row_array();
 			$coa = $q_coa['coa'];
 
+			// Mencari Jalur Khusus : Cek Apakah Pengajuan 91 Up Dan Diajukan Oleh (bagian) Collection Pusat
+				$bagian = $this->input->post('bagian');
+
+				// Cari parameter_tambahan di tbl_sub_biaya (apakah 91 Up)
+				$q_cek91Up = $this->db->query("SELECT * FROM tbl_sub_biaya WHERE sub_biaya='$sub_biaya'")->row_array();
+				$parameter_tambahan = $q_cek91Up['parameter_tambahan'];
+
+				if($parameter_tambahan == '91Up' AND $bagian == 'COLLECTION SUPPORT'){
+					if($sub_biaya == 'Biaya BBM - 91 Up Sumatera'){
+						$jalur_khusus = 'collwil_1';
+					}elseif($sub_biaya == 'Biaya BBM - 91 Up Jawa - Bali'){
+						$jalur_khusus = 'collwil_2';
+					}elseif($sub_biaya == 'Biaya BBM - 91 Up Sulawesi - Kalimantan'){
+						$jalur_khusus = 'collwil_3';
+					}
+				}else{
+					$jalur_khusus = '';
+				}
+			// Penutup Mencari Jalur Khusus
+
 			$result = $this->M_master->simpan_pengajuan('tbl_pengajuan', array(
 				'tanggal' => date('Y-m-d',strtotime($this->input->post('tanggal'))),
 				'nomor_pengajuan' => $nopeng_otomatis,
@@ -212,6 +232,7 @@ class Pengajuan_biaya extends CI_Controller {
 				'kode_cashflow' => $this->input->post('kode_cashflow'),
 				'level_pengaju' => $level,
 				'dept_tujuan' => $this->input->post('dept_tujuan'),
+				'jalur_khusus' => $jalur_khusus,
 				'cabang' => $this->input->post('cabang'),
 				'wilayah' => $this->input->post('wilayah'),
 				'bagian' => $this->input->post('bagian'),
@@ -412,7 +433,7 @@ class Pengajuan_biaya extends CI_Controller {
 							'sparepart' => $this->input->post('sparepart')[$i],
 							'jumlah_sparepart' => $this->input->post('jumlah_sparepart')[$i],
 							'diskon_sparepart' => $this->input->post('diskon_sparepart')[$i],
-							'keterangan_sparepart' => $this->input->post('keterangan_sparepart')[$i]
+							'keterangan_sparepart' => '-'
 						));
 					}
 					

@@ -371,7 +371,8 @@
                                 <th class="text-center">Nama Sparepart</th>
                                 <th class="text-center">Harga Sparepart</th>
                                 <th class="text-center">Diskon</th>
-                                <th class="text-center">Keterangan</th>
+                                <th class="text-center">Jenis Sparepart</th>
+                                <th class="text-center">Action</th>
                               </tr>
 
                               <?php 
@@ -387,7 +388,25 @@
                                 <td><?php echo $row['sparepart'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
                                 <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
-                                <td class="text-center"><?php echo $row['keterangan_sparepart'] ?></td>
+                                <td class="text-center">
+                                  <?php 
+                                    if($row['keterangan_sparepart'] == '-'){
+                                      echo '(Diisi Reviewer)';
+                                    }else{
+                                      echo $row['keterangan_sparepart'];
+                                    }
+                                  ?>
+                                </td>
+
+                                <td class="text-center">
+                                    <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-sparepart" id="ubah_sparepart" 
+                                    data-id_sparepart="<?php echo $row['id'] ?>" 
+                                    data-nomor_pengajuan_sparepart="<?php echo $row['nomor_pengajuan'] ?>"
+                                    data-sparepart="<?php echo $row['sparepart'] ?>"
+                                    >
+                                      Ubah
+                                    </button>
+                                </td>
                               </tr>
                               <?php } ?>
 
@@ -1415,6 +1434,49 @@
   <!-- / Modal Tambah Dokumen -->
 
 
+  <!-- Modal Sparepart -->
+  <form action="<?php echo base_url().'p_review/ubah_sparepart' ?>" method="post">
+  <div class="modal fade" id="modal-sparepart">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Update Jenis Sparepart</h4>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" name="id_sparepart" autocomplete="off" id="id_sparepart" hidden>
+          <input type="text" name="nomor_pengajuan_sparepart" autocomplete="off" id="nomor_pengajuan_sparepart" hidden>
+
+          <div class="form-group">
+            <label for="sparepart"></span> Nama Sparepart :</label>
+            <input type="text" name="sparepart" class="form-control" autocomplete="off" id="sparepart">
+          </div>
+
+          <div class="form-group">
+            <label for="jenis_sparepart">Jenis Sparepart :</label>
+            <select name="jenis_sparepart" class="form-control" required="">
+              <option value="">- Pilih Jenis -</option>
+              <?php foreach($data_sparepart_all as $row_sparepart){ ?>
+                <option value="<?php echo $row_sparepart['nama_sparepart'] ?>"><?php echo $row_sparepart['nama_sparepart'] ?></option>
+              <?php } ?>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Update Data</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Sparepart -->
+
 
   <!-- Script Jquery Edit Split Bayar -->
   <script>
@@ -1810,6 +1872,18 @@
             $(this).hide();
             $('#loadingPending').show();
           }  
+        });
+
+
+        // Ketika Tombol Ubah Sparepart di klik
+        $(document).on('click', '#ubah_sparepart', function(){
+          let id_sparepart = $(this).data('id_sparepart');
+          let nomor_pengajuan_sparepart = $(this).data('nomor_pengajuan_sparepart');
+          let sparepart = $(this).data('sparepart');
+
+          $('#id_sparepart').val(id_sparepart);
+          $('#nomor_pengajuan_sparepart').val(nomor_pengajuan_sparepart);
+          $('#sparepart').val(sparepart);
         });
 
       });
