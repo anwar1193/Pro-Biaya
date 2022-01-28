@@ -202,7 +202,7 @@
 
                       <div class="form-group">
                         <label for="alamat"></span> Tgl Rencana Bayar :</label>
-                        <input type="date" name="tanggal_bayar" class="form-control" id="tglRencanaBayar" required min="<?php echo date('Y-m-d') ?>" max="2021-12-31"></input>
+                        <input type="date" name="tanggal_bayar" class="form-control" id="tglRencanaBayar" required min="<?php echo date('Y-m-d') ?>" max="2022-12-31"></input>
                       </div>
 
                       <div class="form-group">

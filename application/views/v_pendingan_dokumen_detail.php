@@ -308,6 +308,23 @@
                     </tr>
 
                     <tr>
+                      <th>Status Kendaraan</th>
+                      <th>:</th>
+                      <td>
+                        <?php  
+                          $nopol = $data_bbm['nopol'];
+                          // cek apakah nopol ada di dalam list kendaraan operasional
+                          $cek_kendaraan = $this->M_master->tampil_data_where('tbl_kendaraan', array('nopol' => $nopol))->num_rows();
+                          if($cek_kendaraan > 0){
+                            echo 'Kendaraan Operasional';
+                          }else{
+                            echo 'Kendaraan Pribadi';
+                          }
+                        ?>
+                      </td>
+                    </tr>
+
+                    <tr>
                       <th>Keperluan Pengajuan BBM</th>
                       <th>:</th>
                       <td><?php echo $data_bbm['keperluan_pengajuan_bbm'] ?></td>
@@ -365,28 +382,24 @@
                         <th>Rincian Sparepart</th>
                         <th>:</th>
                         <td>
-                            <table border="1" style="border-collapse: collapse;" width="100%">
+                            <table class="table table-bordered" width="100%">
                               <tr>
                                 <th class="text-center">NO</th>
                                 <th class="text-center">Nama Sparepart</th>
                                 <th class="text-center">Harga Sparepart</th>
-                                <th class="text-center">Diskon</th>
                                 <th class="text-center">Jenis Sparepart</th>
                               </tr>
 
                               <?php 
                                 $no=1;
                                 $total_jumlah_sparepart = 0;
-                                $total_diskon_sparepart = 0;
                                 foreach($data_sparepart as $row){ 
                                   $total_jumlah_sparepart += $row['jumlah_sparepart'];
-                                  $total_diskon_sparepart += $row['diskon_sparepart'];
                               ?>
                               <tr>
                                 <td class="text-center"><?php echo $no++; ?></td>
                                 <td><?php echo $row['sparepart'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
                                 <td class="text-center">
                                   <?php 
                                     if($row['keterangan_sparepart'] == '-'){
@@ -402,48 +415,63 @@
                               <tr style="font-weight:bold">
                                 <td colspan="2" class="text-right">TOTAL :</td>
                                 <td class="text-right"><?php echo number_format($total_jumlah_sparepart, 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($total_diskon_sparepart, 0, ',', '.') ?></td>
                               </tr>
                             </table>
                         </td>
                       </tr>
 
+                      <tr>
+                        <th>Diskon Sparepart</th>
+                        <th>:</th>
+                        <td><?php echo number_format($data_perbaikan_kendaraan['diskon_sparepart'], 0 , ',', '.') ?></td>
+                      </tr>
 
                       <tr>
                         <th>Rincian Jasa Perbaikan</th>
                         <th>:</th>
                         <td>
-                            <table border="1" style="border-collapse: collapse;" width="100%">
+                            <table class="table table-bordered">
                               <tr>
-                                <th class="text-center" width="10%">NO</th>
-                                <th class="text-center" width="45%">Nama Jasa</th>
-                                <th class="text-center" width="25%">Biaya Jasa</th>
-                                <th class="text-center" width="20%">Diskon</th>
+                                <th class="text-center">NO</th>
+                                <th class="text-center">Nama Jasa</th>
+                                <th class="text-center">Biaya Jasa</th>
+                                <th class="text-center">Jenis Jasa</th>
                               </tr>
 
                               <?php 
                                 $no=1;
                                 $total_jumlah_jasa = 0;
-                                $total_diskon_jasa = 0;
                                 foreach($data_jasa_perbaikan as $row){ 
                                   $total_jumlah_jasa += $row['jumlah_jasa'];
-                                  $total_diskon_jasa += $row['diskon_jasa'];
                               ?>
                               <tr>
                                 <td class="text-center"><?php echo $no++; ?></td>
                                 <td><?php echo $row['jasa'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_jasa'], 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($row['diskon_jasa'], 0, ',', '.') ?></td>
+                                <td class="text-center">
+                                  <?php 
+                                    if($row['keterangan_jasa'] == '-' || $row['keterangan_jasa'] == ''){
+                                      echo '(Diisi Reviewer)';
+                                    }else{
+                                      echo $row['keterangan_jasa'];
+                                    }
+                                  ?>
+                                </td>
                               </tr>
                               <?php } ?>
 
                               <tr style="font-weight:bold">
                                 <td colspan="2" class="text-right">TOTAL :</td>
                                 <td class="text-right"><?php echo number_format($total_jumlah_jasa, 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($total_diskon_jasa, 0, ',', '.') ?></td>
                               </tr>
                             </table>
                         </td>
+                      </tr>
+
+                      <tr>
+                        <th>Diskon Jasa Perbaikan</th>
+                        <th>:</th>
+                        <td><?php echo number_format($data_perbaikan_kendaraan['diskon_jasa'], 0 , ',', '.') ?></td>
                       </tr>
                       
                     <?php } ?>
@@ -546,7 +574,7 @@
                       <th>:</th>
                       <td>
                         
-                        <table border="1" style="border-collapse: collapse;" width="100%">
+                        <table class="table table-bordered" width="100%">
                           <tr>
                             <th style="text-align: center">Pembayaran Ke</th>
                             <th style="text-align: center">Tanggal Bayar</th>
@@ -700,6 +728,10 @@
                     </tr>
 
                     <!-- Data Penyelesaian Request Pengaju -->
+                    <?php
+                      $no_invoice = strtoupper(trim($data_pengajuan['nomor_invoice']));
+                      if($no_invoice == 'ESTIMASI'){ 
+                    ?>
                     <tr style="background-color: orange">
                       <td colspan="3">
                         <b>PENYELESAIAN (REQUEST PENGAJU)</b>
@@ -780,6 +812,7 @@
                     </tr>
                     <!-- Data Penyelesaian -->
 
+                    <?php } ?>
 
                   </table>
 
@@ -808,6 +841,15 @@
                     <i class="fa fa-plus"></i> Tambah Dokumen
                   </a>
 
+                  <!-- Tombol Request Penyelesaian -->
+                  <?php 
+                    if($no_invoice == 'TBO'){ 
+                  ?>
+                  <a href="#" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-revisi_invoice">
+                    <i class="fa fa-refresh"></i> Revisi No. Invoice
+                  </a>
+                  <?php } ?>
+
                   <?php  
                   // Cek apakah tidak ada dokumen di pengajuan
                   $no_pengajuan = $data_pengajuan['nomor_pengajuan'];
@@ -833,8 +875,10 @@
                     <!-- <a href="<?php echo base_url().'pendingan_dokumen/verifikasi_dokumen/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-xs btn-success" onclick="return confirm('Apakah Anda Yakin Dokumen Sudah Lengkap & Akan Dikirim Ke Accounting?')">Dokumen Lengkap & Kirim Ke Accounting
                     </a> -->
 
-                    <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-kirim_accounting">Dokumen Lengkap & Kirim Ke Accounting
-                    </a>
+                    <?php if($data_pengajuan['status_dokumen'] != 'done'){ ?>
+                      <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-kirim_accounting">Dokumen Lengkap & Kirim Ke Accounting
+                      </a>
+                    <?php } ?>
 
                   <?php } ?>
 
@@ -851,7 +895,6 @@
 
                   <!-- Tombol Request Penyelesaian -->
                   <?php 
-                    $no_invoice = strtoupper(trim($data_pengajuan['nomor_invoice']));
                     if($no_invoice == 'ESTIMASI' AND $data_pengajuan['note_penyelesaian'] == '' AND $data_pengajuan['status_bayar']=='Telah Dibayar'){ 
                   ?>
                   <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-request_penyelesaian">
@@ -910,6 +953,41 @@
   </div>
   </form>
   <!-- / Modal Dokumen -->
+  
+
+  <!-- Modal Revisi Nomor Invoice -->
+  <form action="<?php echo base_url().'pendingan_dokumen/revisi_invoice' ?>" method="post">
+  <div class="modal fade" id="modal-revisi_invoice">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Revisi No. Invoice</h4>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" hidden name="nomor_pengajuan" value="<?php echo $data_pengajuan['nomor_pengajuan'] ?>">
+
+          <input type="text" hidden name="id" value="<?php echo $data_pengajuan['id_pengajuan'] ?>">
+
+          <div class="form-group">
+            <label for="alamat"></span> Keterangan Revisi :</label>
+            <textarea class="form-control" name="ket_revisi" rows="5" required></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm pull-left" data-dismiss="modal"> Batal</button>
+          <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-refresh"></i> Revisi</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Revisi Nomor Invoice -->
 
 
   <!-- Modal Tambah Dokumen -->
@@ -1102,8 +1180,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Note Penyelesaian</h4>
-          <em>Note ini akan menjadi acuan pengaju/cabang untuk melakukan penyelesaian</em>
+          <h4 class="modal-title">Kirim Dokumen Ke Accounting</h4>
         </div>
         <div class="modal-body">
 
@@ -1113,10 +1190,10 @@
 
           <input type="text" hidden name="tambah_dokumen_pic" value="<?php echo $departemen ?>">
 
-          <div class="form-group">
-            <label for="note_penyelesaian"></span> Isi Note :</label>
-            <textarea class="form-control" name="note_penyelesaian" rows="10" required></textarea>
-          </div>
+          <input type="text" hidden name="jenis_penyelesaian_reviewer" value="<?php echo $data_pengajuan['jenis_penyelesaian'] ?>">
+          <input type="text" hidden name="nomor_invoice" value="<?php echo $data_pengajuan['nomor_invoice'] ?>">
+
+          <h4>Apakah anda yakin dokumen telah lengkap & akan meneruskan ke Accounting Dept?</h4>
 
         </div>
         <div class="modal-footer">
@@ -1147,10 +1224,14 @@
         <div class="modal-body">
 
           <input type="text" hidden name="nomor_pengajuan" value="<?php echo $data_pengajuan['nomor_pengajuan'] ?>">
+          <input type="text" hidden name="jenis_biaya" value="<?php echo $data_pengajuan['jenis_biaya'] ?>">
+          <input type="text" hidden name="sub_biaya" value="<?php echo $data_pengajuan['sub_biaya'] ?>">
 
           <input type="text" hidden name="id" value="<?php echo $data_pengajuan['id_pengajuan'] ?>">
 
-          <input type="text" hidden name="tambah_dokumen_pic" value="<?php echo $departemen ?>">
+          <input type="text" hidden name="departemen" value="<?php echo $departemen ?>">
+
+          <input type="text" value="<?php echo $data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']) ?>" hidden name="total_pengajuan">
 
           <!-- <div class="form-group">
             <label for="jenis_penyelesaian" required>Jenis Penyelesaian :</label>
@@ -1163,7 +1244,7 @@
 
           <div class="form-group">
             <label for=""></span> Nominal Pengajuan Awal :</label>
-            <input type="number" class="form-control" value="<?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,',','.') ?>" readonly>
+            <input type="text" class="form-control" value="<?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,'.',',') ?>" readonly>
           </div>
 
           <div class="form-group">
@@ -1239,6 +1320,12 @@
           if(nominal_penyelesaian*1 > total_biaya*1){
             $('#jenis_penyelesaian').val('kekurangan');
             $('#selisih').val(rubah((nominal_penyelesaian*1) - (total_biaya*1)));
+          }else if(nominal_penyelesaian*1 == total_biaya*1){
+            $('#jenis_penyelesaian').val('Biaya Sesuai');
+            $('#selisih').val(rubah((nominal_penyelesaian*1) - (total_biaya*1)));
+          }else if(nominal_penyelesaian*1 == 0){
+            $('#jenis_penyelesaian').val('Biaya Dikembalikan');
+            $('#selisih').val(rubah((nominal_penyelesaian*1) - (total_biaya*1)));
           }else{
             $('#jenis_penyelesaian').val('kelebihan');
             $('#selisih').val(rubah((total_biaya*1) - (nominal_penyelesaian*1)));
@@ -1246,13 +1333,13 @@
         });
 
 
-        $(document).on('click', '#tombol-penyelesaian', function(){
-          const nominal_penyelesaian = $('#nominal_penyelesaian').val();
-          if(nominal_penyelesaian == 0){
-            alert("Nominal Penyelesaian Tidak Boleh 0");
-            return false;
-          }
-        });
+        // $(document).on('click', '#tombol-penyelesaian', function(){
+        //   const nominal_penyelesaian = $('#nominal_penyelesaian').val();
+        //   if(nominal_penyelesaian == 0){
+        //     alert("Nominal Penyelesaian Tidak Boleh 0");
+        //     return false;
+        //   }
+        // });
 
 
       });

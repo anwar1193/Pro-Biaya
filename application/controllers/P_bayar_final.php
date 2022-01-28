@@ -113,6 +113,7 @@ class P_bayar_final extends CI_Controller {
 		$hari_ini = date('Y-m-d');
 		$jam_sekarang = date('H:i:s');
 		$nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
+		$ref_no = $this->input->post('ref_no');
 
 		// Update tbl_bayar
 		$this->M_master->update_pengajuan('tbl_bayar', array(
@@ -160,8 +161,55 @@ class P_bayar_final extends CI_Controller {
 		}
 
 		mysqli_query($con_cashflow, $quer_cash);
-		
 		// Penutup Simpan Ke Proyeksi Cashflow
+
+
+		// Simpan File Bayar / Bukti Transfer................................
+		$folderUpload = "./file_bayar/".$hari_ini;
+
+		# periksa apakah folder tersedia
+		if (!is_dir($folderUpload)) {
+		  # jika tidak maka folder harus dibuat terlebih dahulu
+		  mkdir($folderUpload, 0777, $rekursif = true);
+		}
+
+		// ref_no diambil untuk nama file nya (pembeda antar pengajuan)
+		$refno = $this->input->post('ref_no');
+
+		$data = [];
+		$count = count($_FILES['files']['name']);
+		for($i=0; $i<$count; $i++){
+			if(!empty($_FILES['files']['name'][$i])){
+				$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+				$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+				$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+				$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+				$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+
+				$config['upload_path'] = $folderUpload;
+				$config['allowed_types'] = 'jpg|png|jpeg|pdf';
+				$config['max_size'] = 0;
+				// $config['file_name'] = $_FILES['files']['name'][$i];
+				$config['file_name'] = date('Y-m-d').'-'.$refno.'-'.substr(md5(rand()),0,5).'-'.$i;
+				// $config['encrypt_name'] = TRUE;
+
+				$this->load->library('upload', $config);
+
+				if($this->upload->do_upload('file')){
+					$uploadData = $this->upload->data();
+					$filename = $uploadData['file_name'];
+					$image[$i] = $filename;
+					$content = [
+						'nomor_pengajuan' => $nomor_pengajuan,
+						'file' => $image[$i],
+						'nama_file' => $this->input->post('nama_file')[$i]
+					];
+					$this->M_master->simpan_pengajuan('tbl_bayar_file', $content);
+				}
+			}
+		}
+
+		// END Simpan File Bayar / Bukti Transfer.............................
 
 		$this->session->set_flashdata('pesan','Pengajuan Telah Dibayar');
 		redirect('p_bayar_final');

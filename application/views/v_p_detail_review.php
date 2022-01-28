@@ -99,7 +99,15 @@
                     <tr>
                       <th style="text-align: right;">Jumlah (Sebelum Pajak)</th>
                       <th>:</th>
-                      <td><?php echo number_format($data_pengajuan['jumlah'],0,',','.') ?></td>
+                      <td>
+                        <?php 
+                          if($data_pengajuan['form'] != 'Kendaraan'){
+                            echo number_format($data_pengajuan['jumlah'],0,',','.');
+                          }else{
+                            echo number_format($data_pengajuan['jumlah'] - $data_pengajuan['ppn'],0,',','.');
+                          }
+                        ?>
+                      </td>
                     </tr>
 
                     <tr>
@@ -129,7 +137,15 @@
                     <tr>
                       <th style="text-align: right;">Total</th>
                       <th>:</th>
-                      <td><?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,',','.') ?></td>
+                      <td>
+                        <?php 
+                          if($data_pengajuan['form'] != 'Kendaraan'){
+                            echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23']+$data_pengajuan['pph42']+$data_pengajuan['pph21']),0,',','.');
+                          }else{
+                            echo number_format($data_pengajuan['jumlah'],0,',','.');
+                          }
+                        ?>
+                      </td>
                     </tr>
 
                     <tr>
@@ -308,6 +324,23 @@
                     </tr>
 
                     <tr>
+                      <th>Status Kendaraan</th>
+                      <th>:</th>
+                      <td>
+                        <?php  
+                          $nopol = $data_bbm['nopol'];
+                          // cek apakah nopol ada di dalam list kendaraan operasional
+                          $cek_kendaraan = $this->M_master->tampil_data_where('tbl_kendaraan', array('nopol' => $nopol))->num_rows();
+                          if($cek_kendaraan > 0){
+                            echo 'Kendaraan Operasional';
+                          }else{
+                            echo 'Kendaraan Pribadi';
+                          }
+                        ?>
+                      </td>
+                    </tr>
+
+                    <tr>
                       <th>Keperluan Pengajuan BBM</th>
                       <th>:</th>
                       <td><?php echo $data_bbm['keperluan_pengajuan_bbm'] ?></td>
@@ -365,12 +398,11 @@
                         <th>Rincian Sparepart</th>
                         <th>:</th>
                         <td>
-                            <table border="1" style="border-collapse: collapse;" width="100%">
+                            <table border="1" class="table table-bordered" width="100%">
                               <tr>
                                 <th class="text-center">NO</th>
                                 <th class="text-center">Nama Sparepart</th>
                                 <th class="text-center">Harga Sparepart</th>
-                                <th class="text-center">Diskon</th>
                                 <th class="text-center">Jenis Sparepart</th>
                                 <th class="text-center">Action</th>
                               </tr>
@@ -378,16 +410,16 @@
                               <?php 
                                 $no=1;
                                 $total_jumlah_sparepart = 0;
-                                $total_diskon_sparepart = 0;
                                 foreach($data_sparepart as $row){ 
-                                  $total_jumlah_sparepart += $row['jumlah_sparepart'];
-                                  $total_diskon_sparepart += $row['diskon_sparepart'];
+                                  if($row['status_sparepart'] != 'rejected'){
+                                    $total_jumlah_sparepart += $row['jumlah_sparepart'];
+                                  }
+                                  
                               ?>
                               <tr>
                                 <td class="text-center"><?php echo $no++; ?></td>
                                 <td><?php echo $row['sparepart'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
                                 <td class="text-center">
                                   <?php 
                                     if($row['keterangan_sparepart'] == '-'){
@@ -399,13 +431,21 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-sparepart" id="ubah_sparepart" 
-                                    data-id_sparepart="<?php echo $row['id'] ?>" 
-                                    data-nomor_pengajuan_sparepart="<?php echo $row['nomor_pengajuan'] ?>"
-                                    data-sparepart="<?php echo $row['sparepart'] ?>"
-                                    >
-                                      Ubah
-                                    </button>
+                                    <?php if($row['status_sparepart'] != 'rejected'){ ?>
+                                      <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-sparepart" id="ubah_sparepart" 
+                                      data-id_sparepart="<?php echo $row['id'] ?>" 
+                                      data-nomor_pengajuan_sparepart="<?php echo $row['nomor_pengajuan'] ?>"
+                                      data-sparepart="<?php echo $row['sparepart'] ?>"
+                                      >
+                                        Ubah
+                                      </button>
+
+                                      <a href="<?php echo base_url().'p_review/reject_sparepart/'.$row['id'].'/'.$data_pengajuan['id_pengajuan'].'/'.$row['jumlah_sparepart'] ?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin?')">
+                                        Reject
+                                      </a>
+                                    <?php }else{ ?>
+                                      <span class="text-danger"><b>Rejected</b></span>
+                                    <?php } ?>
                                 </td>
                               </tr>
                               <?php } ?>
@@ -413,48 +453,99 @@
                               <tr style="font-weight:bold">
                                 <td colspan="2" class="text-right">TOTAL :</td>
                                 <td class="text-right"><?php echo number_format($total_jumlah_sparepart, 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($total_diskon_sparepart, 0, ',', '.') ?></td>
                               </tr>
                             </table>
                         </td>
                       </tr>
+                      
+                      <tr>
+                        <th>Diskon Sparepart</th>
+                        <th>:</th>
+                        <td><?php echo number_format($data_perbaikan_kendaraan['diskon_sparepart'], 0 , ',', '.') ?></td>
+                      </tr>
 
+                      <tr>
+                        <th>Total Sparepart</th>
+                        <th>:</th>
+                        <td>
+                          <b><?php echo number_format($total_jumlah_sparepart-$data_perbaikan_kendaraan['diskon_sparepart'], 0 , ',', '.') ?></b>
+                        </td>
+                      </tr>
 
                       <tr>
                         <th>Rincian Jasa Perbaikan</th>
                         <th>:</th>
                         <td>
-                            <table border="1" style="border-collapse: collapse;" width="100%">
+                            <table class="table table-bordered" width="100%">
                               <tr>
-                                <th class="text-center" width="10%">NO</th>
-                                <th class="text-center" width="45%">Nama Jasa</th>
-                                <th class="text-center" width="25%">Biaya Jasa</th>
-                                <th class="text-center" width="20%">Diskon</th>
+                                <th class="text-center">NO</th>
+                                <th class="text-center">Nama Jasa</th>
+                                <th class="text-center">Biaya Jasa</th>
+                                <th class="text-center">Jenis Jasa</th>
+                                <th class="text-center">Action</th>
                               </tr>
 
                               <?php 
                                 $no=1;
                                 $total_jumlah_jasa = 0;
-                                $total_diskon_jasa = 0;
                                 foreach($data_jasa_perbaikan as $row){ 
-                                  $total_jumlah_jasa += $row['jumlah_jasa'];
-                                  $total_diskon_jasa += $row['diskon_jasa'];
+                                  if($row['status_jasa'] != 'rejected'){
+                                    $total_jumlah_jasa += $row['jumlah_jasa'];
+                                  }
                               ?>
                               <tr>
                                 <td class="text-center"><?php echo $no++; ?></td>
                                 <td><?php echo $row['jasa'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_jasa'], 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($row['diskon_jasa'], 0, ',', '.') ?></td>
+                                <td class="text-center">
+                                  <?php 
+                                    if($row['keterangan_jasa'] == '-' || $row['keterangan_jasa'] == ''){
+                                      echo '(Diisi Reviewer)';
+                                    }else{
+                                      echo $row['keterangan_jasa'];
+                                    }
+                                  ?>
+                                </td>
+
+                                <td class="text-center">
+                                    <?php if($row['status_jasa'] != 'rejected'){ ?>
+                                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-jasa" id="ubah_jasa" 
+                                        data-id_jasa="<?php echo $row['id'] ?>" 
+                                        data-nomor_pengajuan_jasa="<?php echo $row['nomor_pengajuan'] ?>"
+                                        data-jasa="<?php echo $row['jasa'] ?>"
+                                        >
+                                          Ubah
+                                        </button>
+
+                                        <a href="<?php echo base_url().'p_review/reject_jasa/'.$row['id'].'/'.$data_pengajuan['id_pengajuan'].'/'.$row['jumlah_jasa'] ?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin?')">
+                                          Reject
+                                        </a>
+                                    <?php }else{ ?>
+                                      <span class="text-danger"><b>Rejected</b></span>
+                                    <?php } ?>
+                                </td>
                               </tr>
                               <?php } ?>
 
                               <tr style="font-weight:bold">
                                 <td colspan="2" class="text-right">TOTAL :</td>
                                 <td class="text-right"><?php echo number_format($total_jumlah_jasa, 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($total_diskon_jasa, 0, ',', '.') ?></td>
                               </tr>
+
                             </table>
                         </td>
+                      </tr>
+
+                      <tr>
+                        <th>Diskon Jasa Perbaikan</th>
+                        <th>:</th>
+                        <td><?php echo number_format($data_perbaikan_kendaraan['diskon_jasa'], 0 , ',', '.') ?></td>
+                      </tr>
+
+                      <tr>
+                        <th>Total Jasa Perbaikan</th>
+                        <th>:</th>
+                        <td><b><?php echo number_format($total_jumlah_jasa-$data_perbaikan_kendaraan['diskon_jasa'], 0 , ',', '.') ?></b></td>
                       </tr>
                       
                     <?php } ?>
@@ -519,7 +610,7 @@
                         
                         <?php if($frek_byr == 1){ //jika pembayaran hanya sekali ?>
 
-                          <table border="1" style="border-collapse: collapse;" width="100%">
+                          <table class="table table-bordered" width="100%">
                             <tr>
                               <th>Bayar Ke</th>
                               <th>Tanggal Bayar</th>
@@ -540,9 +631,20 @@
                               <tr>
                                 <td style="text-align: center"><?php echo $no++; ?></td>
                                 <td><?php echo date('d-m-Y', strtotime($row_byr['tanggal_minta_bayar'])) ?></td>
-                                <td style="text-align: right;"><?php echo number_format($jml_sblm_pajak, 0, ',', '.') ?></td>
+
+                                <?php if($data_pengajuan['form'] != 'Kendaraan'){ ?>
+                                  <td style="text-align: right;"><?php echo number_format($jml_sblm_pajak, 0, ',', '.') ?></td>
+                                <?php }else{ ?>
+                                  <td style="text-align: right;"><?php echo number_format($jml_sblm_pajak - $dt_jml['ppn'], 0, ',', '.') ?></td>
+                                <?php } ?>
+
                                 <td style="text-align: right;"><?php echo number_format($dt_jml['ppn'], 0, ',', '.') ?></td>
-                                <td style="text-align: right;"><?php echo number_format($dt_jml['jumlah'] + $dt_jml['ppn'], 0, ',', '.') ?></td>
+
+                                <?php if($data_pengajuan['form'] != 'Kendaraan'){ ?>
+                                  <td style="text-align: right;"><?php echo number_format($dt_jml['jumlah'] + $dt_jml['ppn'], 0, ',', '.') ?></td>
+                                <?php }else{ ?>
+                                  <td style="text-align: right;"><?php echo number_format($dt_jml['jumlah'], 0, ',', '.') ?></td>
+                                <?php } ?>
                                 <td style="text-align: center;">
                                   <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-edit"
                                   data-id = "<?php echo $row_byr['id'] ?>"
@@ -1451,7 +1553,7 @@
 
           <div class="form-group">
             <label for="sparepart"></span> Nama Sparepart :</label>
-            <input type="text" name="sparepart" class="form-control" autocomplete="off" id="sparepart">
+            <input type="text" name="sparepart" class="form-control" autocomplete="off" id="sparepart" readonly>
           </div>
 
           <div class="form-group">
@@ -1476,6 +1578,50 @@
   </div>
   </form>
   <!-- / Modal Sparepart -->
+
+
+  <!-- Modal Jasa Perbaikan -->
+  <form action="<?php echo base_url().'p_review/ubah_jasa' ?>" method="post">
+  <div class="modal fade" id="modal-jasa">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Update Jenis Jasa</h4>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" name="id_jasa" autocomplete="off" id="id_jasa" hidden>
+          <input type="text" name="nomor_pengajuan_jasa" autocomplete="off" id="nomor_pengajuan_jasa" hidden>
+
+          <div class="form-group">
+            <label for="jasa"></span> Nama Jasa :</label>
+            <input type="text" name="jasa" class="form-control" autocomplete="off" id="jasa" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="jenis_jasa">Jenis Jasa :</label>
+            <select name="jenis_jasa" class="form-control" required="">
+              <option value="">- Pilih Jenis -</option>
+              <?php foreach($data_jasa_all as $row_jasa){ ?>
+                <option value="<?php echo $row_jasa['nama_jasa'] ?>"><?php echo $row_jasa['nama_jasa'] ?></option>
+              <?php } ?>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Update Data</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Jasa Perbaikan -->
 
 
   <!-- Script Jquery Edit Split Bayar -->
@@ -1884,6 +2030,18 @@
           $('#id_sparepart').val(id_sparepart);
           $('#nomor_pengajuan_sparepart').val(nomor_pengajuan_sparepart);
           $('#sparepart').val(sparepart);
+        });
+
+
+        // Ketika Tombol Ubah Jasa di klik
+        $(document).on('click', '#ubah_jasa', function(){
+          let id_jasa = $(this).data('id_jasa');
+          let nomor_pengajuan_jasa = $(this).data('nomor_pengajuan_jasa');
+          let jasa = $(this).data('jasa');
+
+          $('#id_jasa').val(id_jasa);
+          $('#nomor_pengajuan_jasa').val(nomor_pengajuan_jasa);
+          $('#jasa').val(jasa);
         });
 
       });

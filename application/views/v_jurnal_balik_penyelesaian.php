@@ -109,6 +109,8 @@ $level = $this->libraryku->tampil_user()->level;
             </tr>
           </table>
 
+          <button class="btn btn-success no-print" onclick="window.print()">Cetak Jurnal</button>
+
           <!-- <br>
           <b>Keterangan :</b> <?php echo $data_penyelesaian['kronologis'] ?> <br>
 

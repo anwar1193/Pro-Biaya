@@ -190,6 +190,11 @@
         </li>
         <!-- penutup Cetak Detail & Jurnal -->
 
+
+        <!-- Menu Data Relasi Sub Biaya -->
+        <li class="<?= $this->uri->segment(1)=='data_coa' ? 'active' : null ?>"><a href="<?php echo base_url().'data_coa' ?>"><i class="fa fa-database"></i> <span>Data COA</span></a></li>
+        <!-- End Menu Data Relasi Sub Biaya -->
+
         <?php } ?>
 
         <?php if($level!='ADCO' AND $level!='ADCOLL' AND $level!='CMC' AND $level!='ADD-CABANG' AND $level!='Departement PIC' AND $level!='admin' AND $nama_lengkap!='REGINA'){ ?>
@@ -528,10 +533,14 @@
             </ul>
           </li>
           <!-- Penutup Kirim Penyelesaian Biaya -->
+        
+        <?php } ?>
 
+
+        <?php if($level!='Department Head' AND $level!='Division Head' AND $level!='Director' AND $level!='Director Finance' AND $level!='President Director' AND $level!='admin'){ ?>
 
           <!-- Inquiry Penyelesaian Biaya -->
-          <li class="treeview <?= $this->uri->segment(1)=='inquiry_kelebihan_biaya' || $this->uri->segment(1)=='inquiry_kekurangan_biaya' ? 'active' : null ?>">
+          <li class="treeview <?= $this->uri->segment(1)=='inquiry_kelebihan_biaya' || $this->uri->segment(1)=='inquiry_kekurangan_biaya' || $this->uri->segment(1)=='inquiry_biaya_sesuai' || $this->uri->segment(1)=='inquiry_biaya_dikembalikan' ? 'active' : null ?>">
             <a href="#">
               <i class="fa fa-list"></i>
               <span>Inquiry Penyelesaian</span>
@@ -545,10 +554,18 @@
 
             <li class="<?= $this->uri->segment(1)=='inquiry_kekurangan_biaya' ? 'active' : null ?>"><a href="<?php echo base_url().'inquiry_kekurangan_biaya' ?>"><i class="fa fa-circle-o"></i> <span>Inquiry Kekurangan Biaya</span></a></li>
 
+            <li class="<?= $this->uri->segment(1)=='inquiry_biaya_sesuai' ? 'active' : null ?>"><a href="<?php echo base_url().'inquiry_biaya_sesuai' ?>"><i class="fa fa-circle-o"></i> <span>Inquiry Biaya Sesuai</span></a></li>
+
+            <li class="<?= $this->uri->segment(1)=='inquiry_biaya_dikembalikan' ? 'active' : null ?>"><a href="<?php echo base_url().'inquiry_biaya_dikembalikan' ?>"><i class="fa fa-circle-o"></i> <span>Inquiry Biaya Dikembalikan</span></a></li>
+
             </ul>
           </li>
           <!-- Penutup Inquiry Penyelesaian Biaya -->
 
+        <?php } ?>
+
+
+        <?php if($level!='Department Head' AND $level!='Division Head' AND $level!='Branch Manager' AND $level!='Area Manager' AND $level!='Director' AND $level!='Director Finance' AND $level!='President Director' AND $level!='admin'){ ?>
 
           <!-- Menu Pending Penyelesaian / Pengajuan Belum Diselesaikan -->
           <li class="<?= $this->uri->segment(1)=='pending_penyelesaian' ? 'active' : null ?>">
@@ -683,7 +700,7 @@
 
         <?php if($departemen=='ACCOUNTING'){ ?>
           <!-- Review Penyelesaian Biaya By Accounting -->
-          <li class="treeview <?= $this->uri->segment(1)=='review_kelebihan_accounting' || $this->uri->segment(1)=='review_kekurangan_accounting' ? 'active' : null ?>">
+          <li class="active treeview <?= $this->uri->segment(1)=='review_kelebihan_accounting' || $this->uri->segment(1)=='review_kekurangan_accounting' ? 'active' : null ?>">
               <a href="#">
                 <i class="fa fa-check-square-o"></i>
                 <span>All Penyelesaian (Cab/Dept)</span>
@@ -713,9 +730,61 @@
                 <span class="label label-danger pull-right"><?php echo $jml_all_peny_kekurangan; ?></span>
               </a></li>
 
+              <li class="<?= $this->uri->segment(1)=='review_penyelesaian_sesuai' ? 'active' : null ?>"><a href="<?php echo base_url().'review_penyelesaian_sesuai' ?>"><i class="fa fa-circle-o"></i> 
+                <span>All Peny. Sesuai</span>
+                <span class="pull-right-container">
+                <?php  
+                  $jml_all_peny_sesuai = $this->db->query("SELECT * FROM tbl_penyelesaian_sesuai WHERE status_verifikasi_penyelesaian='Verified By PIC'")->num_rows();
+                ?>
+                <span class="label label-primary pull-right"><?php echo $jml_all_peny_sesuai; ?></span>
+              </a></li>
+
+              <li class="<?= $this->uri->segment(1)=='review_penyelesaian_dikembalikan' ? 'active' : null ?>"><a href="<?php echo base_url().'review_penyelesaian_dikembalikan' ?>"><i class="fa fa-circle-o"></i> 
+                <span>All Peny. Dikembalikan</span>
+                <span class="pull-right-container">
+                <?php  
+                  $jml_all_peny_dikembalikan = $this->db->query("SELECT * FROM tbl_penyelesaian_dikembalikan WHERE status_verifikasi_penyelesaian='Verified By PIC'")->num_rows();
+                ?>
+                <span class="label label-warning pull-right"><?php echo $jml_all_peny_dikembalikan; ?></span>
+              </a></li>
+
               </ul>
             </li>
             <!-- Penutup Review Penyelesaian Biaya By Accounting -->
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-file-excel-o"></i> <span>Export Leggen</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li class="treeview">
+                  <a href="#"><i class="fa fa-circle-o"></i> Jurnal BMHD
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="#" data-toggle="modal" data-target="#headerLeggenPICPenyelesaian"><i class="fa fa-circle-o"></i> Header Data</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#detailLeggenPICPenyelesaian"><i class="fa fa-circle-o"></i> Detail Data</a></li>  
+                  </ul>
+                </li>
+
+                <li class="treeview">
+                  <a href="#"><i class="fa fa-circle-o"></i> Jurnal Payment
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="#" data-toggle="modal" data-target="#headerLeggenFINPenyelesaian"><i class="fa fa-circle-o"></i> Header Data</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#detailLeggenFINPenyelesaian"><i class="fa fa-circle-o"></i> Detail Data</a></li>  
+                  </ul>
+                </li>
+              </ul>
+            </li>
         <?php } ?>
 
         
@@ -902,6 +971,129 @@
   </div>
   </form>
   <!-- / Detail Leggen FINANCE -->
+
+
+  <!-- Header Leggen PIC Penyelesaian -->
+  <form action="<?php echo base_url().'review_kekurangan_accounting/header_leggen_pic' ?>" method="post">
+  <div class="modal fade" id="headerLeggenPICPenyelesaian">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Header Leggen Jurnal BMHD Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Header Leggen PIC Penyelesaian -->
+
+
+  <!-- Detail Leggen PIC Penyelesaian -->
+  <form action="<?php echo base_url().'review_kekurangan_accounting/detail_leggen_pic' ?>" method="post">
+  <div class="modal fade" id="detailLeggenPICPenyelesaian">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Detail Leggen Jurnal BMHD Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Detail Leggen PIC Penyelesaian -->
+
+
+  <!-- Header Leggen Finance Penyelesaian -->
+  <form action="<?php echo base_url().'review_kekurangan_accounting/header_leggen_fin' ?>" method="post">
+  <div class="modal fade" id="headerLeggenFINPenyelesaian">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Header Leggen Jurnal Payment Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Header Leggen Finance Penyelesaian -->
+
+  <!-- Detail Leggen FINANCE Penyelesaian -->
+  <form action="<?php echo base_url().'review_kekurangan_accounting/detail_leggen_fin' ?>" method="post">
+  <div class="modal fade" id="detailLeggenFINPenyelesaian">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Detail Leggen Jurnal Payment Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Detail Leggen FINANCE Penyelesaian -->
 
 
   <!-- Modal Report 1 -->

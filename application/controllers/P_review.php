@@ -122,6 +122,9 @@ class P_review extends CI_Controller {
 		// Tampil Data Sparepart
 		$data_sparepart_all = $this->M_master->tampil_data_order('tbl_sparepart', 'nama_sparepart')->result_array();
 
+		// Tampil Jasa Sparepart
+		$data_jasa_all = $this->M_master->tampil_data_order('tbl_jasa_perbaikan', 'nama_jasa')->result_array();
+
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_p_detail_review', array(
@@ -137,7 +140,8 @@ class P_review extends CI_Controller {
 			'no_jurnal' => $nojur_otomatis,
 			'data_byr2' => $data_byr2,
 			'data_memo' => $data_memo,
-			'data_sparepart_all' => $data_sparepart_all
+			'data_sparepart_all' => $data_sparepart_all,
+			'data_jasa_all' => $data_jasa_all
 		));
 		$this->load->view('footer');
 	}
@@ -486,6 +490,27 @@ class P_review extends CI_Controller {
 	}
 
 
+	public function ubah_jasa(){
+		$id_jasa = $this->input->post('id_jasa');
+		$no_pengajuan = $this->input->post('nomor_pengajuan_jasa');
+		$jasa = $this->input->post('jasa');
+		$jenis_jasa = $this->input->post('jenis_jasa');
+
+		// cari id pengajuan untuk redirect halaman
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+		$id_pengajuan = $data_pengajuan['id_pengajuan'];
+
+		$result = $this->M_master->update_pengajuan('tbl_rincian_jasa_perbaikan', array(
+			'keterangan_jasa' => $jenis_jasa
+		), array('id' => $id_jasa));
+
+		if($result>0){
+			$this->session->set_flashdata('pesan','Update Berhasil');
+			redirect('p_review/detail/'.$id_pengajuan);
+		}
+	}
+
+
 	public function ubah_split_multi(){
 		$no_pengajuan = $this->input->post('nomor_pengajuan');
 
@@ -622,6 +647,73 @@ class P_review extends CI_Controller {
 		$id_pengajuan = $data_pengajuan['id_pengajuan'];
 
 		$this->session->set_flashdata('pesan','Dokumen Baru Berhasil Diupdate');
+		redirect('p_review/detail/'.$id_pengajuan);
+	}
+
+	public function reject_sparepart($id_sparepart, $id_pengajuan, $nominal){
+		// Update Status tbl_rincian_sparepart
+		$this->M_master->update_data('tbl_rincian_sparepart', array(
+			'status_sparepart' => 'rejected'
+		), array('id' => $id_sparepart));
+
+		// Update tbl_pengajuan
+		$data_pengajuan = $this->M_master->tampil_data_where('tbl_pengajuan', array('id_pengajuan' => $id_pengajuan))->row_array();
+
+		$nomor_pengajuan = $data_pengajuan['nomor_pengajuan'];
+		$jumlah = $data_pengajuan['jumlah'];
+		$total = $data_pengajuan['total'];
+
+		$this->M_master->update_data('tbl_pengajuan', array(
+			'jumlah' => $jumlah - $nominal,
+			'total' => $total - $nominal
+		), array('id_pengajuan' => $id_pengajuan));
+
+
+		// Update tbl_bayar
+		$data_bayar = $this->M_master->tampil_data_where('tbl_bayar', array('nomor_pengajuan' => $nomor_pengajuan))->row_array();
+		$jumlah_bayar = $data_bayar['jumlah_bayar'];
+
+		$this->M_master->update_data('tbl_bayar', array(
+			'jumlah_bayar' => $jumlah_bayar - $nominal
+		), array('nomor_pengajuan' => $nomor_pengajuan));
+
+
+		// Alert Jika Proses Berhasil
+		$this->session->set_flashdata('pesan','Reject Data Berhasil');
+		redirect('p_review/detail/'.$id_pengajuan);
+	}
+
+
+	public function reject_jasa($id_jasa, $id_pengajuan, $nominal){
+		// Update Status tbl_rincian_jasa
+		$this->M_master->update_data('tbl_rincian_jasa_perbaikan', array(
+			'status_jasa' => 'rejected'
+		), array('id' => $id_jasa));
+
+		// Update tbl_pengajuan
+		$data_pengajuan = $this->M_master->tampil_data_where('tbl_pengajuan', array('id_pengajuan' => $id_pengajuan))->row_array();
+
+		$nomor_pengajuan = $data_pengajuan['nomor_pengajuan'];
+		$jumlah = $data_pengajuan['jumlah'];
+		$total = $data_pengajuan['total'];
+
+		$this->M_master->update_data('tbl_pengajuan', array(
+			'jumlah' => $jumlah - $nominal,
+			'total' => $total - $nominal
+		), array('id_pengajuan' => $id_pengajuan));
+
+
+		// Update tbl_bayar
+		$data_bayar = $this->M_master->tampil_data_where('tbl_bayar', array('nomor_pengajuan' => $nomor_pengajuan))->row_array();
+		$jumlah_bayar = $data_bayar['jumlah_bayar'];
+
+		$this->M_master->update_data('tbl_bayar', array(
+			'jumlah_bayar' => $jumlah_bayar - $nominal
+		), array('nomor_pengajuan' => $nomor_pengajuan));
+		
+
+		// Alert Jika Proses Berhasil
+		$this->session->set_flashdata('pesan','Reject Data Berhasil');
 		redirect('p_review/detail/'.$id_pengajuan);
 	}
 

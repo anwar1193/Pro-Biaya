@@ -85,11 +85,20 @@ class Pendingan_dokumen extends CI_Controller {
 
 	public function verifikasi_dokumen(){
 		$id_pengajuan = $this->input->post('id');
-		$note = $this->input->post('note_penyelesaian');
+
+		// Validasi : Cek Apakah Reviewer sudah melakukan rekomendasi penyelesaian
+		$jenis_penyelesaian_reviewer = $this->input->post('jenis_penyelesaian_reviewer');
+		$nomor_invoice = strtoupper(trim($this->input->post('nomor_invoice')));
+
+		if($nomor_invoice == 'ESTIMASI' AND $jenis_penyelesaian_reviewer == ''){
+			echo '<script>
+				alert("Reviewer Harap melakukan proses rekomendasi penyelesaian terlebih dahulu");history.go(-1);
+			</script>';
+			exit;
+		}
 
 		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
-			'status_dokumen' => 'done',
-			'note_penyelesaian' => $note
+			'status_dokumen' => 'done'
 		), array('id_pengajuan' => $id_pengajuan));
 
 		if($result>0){
@@ -100,15 +109,53 @@ class Pendingan_dokumen extends CI_Controller {
 
 
 	public function request_penyelesaian(){
+		date_default_timezone_set("Asia/Jakarta");
 		$id_pengajuan = $this->input->post('id');
 		$note = $this->input->post('note_penyelesaian');
 		$jenis_penyelesaian = $this->input->post('jenis_penyelesaian');
 
+		if($jenis_penyelesaian == 'Biaya Sesuai' || $jenis_penyelesaian == 'Biaya Dikembalikan'){
+			$status_penyelesaian = $jenis_penyelesaian;
+		}else{
+			$status_penyelesaian = '';
+		}
+
 		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
 			'jenis_penyelesaian' => $jenis_penyelesaian,
 			'nominal_penyelesaian_reviewer' => $this->input->post('nominal_penyelesaian'),
-			'note_penyelesaian' => $note
+			'note_penyelesaian' => $note,
+			'status_penyelesaian' => $status_penyelesaian
 		), array('id_pengajuan' => $id_pengajuan));
+
+		// pengkondisian berdasarkan jenis penyelesaian
+		if($jenis_penyelesaian == 'Biaya Sesuai'){
+			$this->M_master->simpan_pengajuan('tbl_penyelesaian_sesuai', array(
+				'nomor_pengajuan' => $this->input->post('nomor_pengajuan'),
+				'jenis_biaya' => $this->input->post('jenis_biaya'),
+				'sub_biaya' => $this->input->post('sub_biaya'),
+				'total_pengajuan' => $this->input->post('nominal_penyelesaian'),
+				'realisasi' => $this->input->post('nominal_penyelesaian'),
+				'selisih' => 0,
+				'tanggal_penyelesaian' => date('Y-m-d'),
+				'departemen_tujuan' => $this->input->post('departemen'),
+				'status_verifikasi_penyelesaian' => 'Verified By PIC',
+				'note_verifikasi_penyelesaian' => $this->input->post('note_penyelesaian')
+			));
+
+		}else if($jenis_penyelesaian == 'Biaya Dikembalikan'){
+			$this->M_master->simpan_pengajuan('tbl_penyelesaian_dikembalikan', array(
+				'nomor_pengajuan' => $this->input->post('nomor_pengajuan'),
+				'jenis_biaya' => $this->input->post('jenis_biaya'),
+				'sub_biaya' => $this->input->post('sub_biaya'),
+				'total_pengajuan' => $this->input->post('total_pengajuan'),
+				'realisasi' => 0,
+				'selisih' => $this->input->post('total_pengajuan'),
+				'tanggal_penyelesaian' => date('Y-m-d'),
+				'departemen_tujuan' => $this->input->post('departemen'),
+				'status_verifikasi_penyelesaian' => 'Verified By PIC',
+				'note_verifikasi_penyelesaian' => $this->input->post('note_penyelesaian')
+			));
+		}
 
 		if($result>0){
 			$this->session->set_flashdata('pesan','Request Penyelesaian Terkirim');
@@ -156,6 +203,20 @@ class Pendingan_dokumen extends CI_Controller {
 		if($result>0){
 			$this->session->set_flashdata('pesan','Request Tambah Dokumen Terkirim');
 			redirect('pendingan_dokumen/detail/'.$id_pengajuan);
+		}
+	}
+
+	public function revisi_invoice(){
+		$id_pengajuan = $this->input->post('id');
+
+		$result = $this->M_master->update_pengajuan('tbl_pengajuan',array(
+			'revisi_noinv' => 'ya',
+			'keterangan_revisi_noinv' => $this->input->post('ket_revisi')
+		), array('nomor_pengajuan' => $this->input->post('nomor_pengajuan')));
+
+		if($result>0){
+			$this->session->set_flashdata('pesan','Permintaan Revisi No. Invoice Terkirim');
+			redirect('pendingan_dokumen');
 		}
 	}
 

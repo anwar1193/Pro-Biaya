@@ -171,7 +171,7 @@ $level = $this->libraryku->tampil_user()->level;
 
         <div class="form-group">
             <label for="tanggal_rencana_bayar_penyelesaian"></span> Tgl Rencana Bayar :</label>
-            <input type="date" name="tanggal_rencana_bayar_penyelesaian" class="form-control" id="tanggal_rencana_bayar_penyelesaian" required min="<?php echo date('Y-m-d') ?>" max="2021-12-31"></input>
+            <input type="date" name="tanggal_rencana_bayar_penyelesaian" class="form-control" id="tanggal_rencana_bayar_penyelesaian" required min="<?php echo date('Y-m-d') ?>" max="2022-12-31"></input>
         </div>
 
         <div class="form-group">

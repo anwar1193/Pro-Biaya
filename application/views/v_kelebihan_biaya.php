@@ -101,6 +101,7 @@
                   <option value="">:: Pilih Cara Pengembalian ::</option>
                   <option value="Tunai (LPPD)">Tunai (LPPD)</option>
                   <option value="Transfer BCA 523 0304922">Transfer BCA 523 0304922 (Lampiran : Bukti Setor)</option>
+                  <option value="Tidak Ada Pengembalian">Tidak Ada Pengembalian (Untuk Kelebihan 0)</option>
               </select>
             </div>
 
@@ -305,7 +306,7 @@ $(document).ready(function(){
     var realisasi_reviewer = $('#realisasi_reviewer').val();
     var alasan_beda = $('#alasan_beda_realisasi').val();
 
-    if(realisasi_v == '' || realisasi_v == 0){
+    if(realisasi_v == ''){ // || realisasi_v == 0
         alert("Nilai Realisasi Tidak Boleh Kosong atau Nol");
         return false;
     }

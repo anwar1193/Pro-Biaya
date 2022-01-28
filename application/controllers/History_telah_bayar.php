@@ -75,6 +75,7 @@ class History_telah_bayar extends CI_Controller {
 			'nomor_pengajuan' => $no_pengajuan
 		))->result_array();
 		$data_file = $this->M_master->tampil_file('tbl_pengajuan_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
+		$data_file_bayar = $this->M_master->tampil_file('tbl_bayar_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
 		$data_check = $this->M_master->tampil_check_no('tbl_check', array('nomor_pengajuan' => $no_pengajuan))->row_array();
 		$data_check_file = $this->M_master->tampil_check_no('tbl_check_file', array('nomor_pengajuan' => $no_pengajuan))->result_array();
 		$data_perdin = $this->M_master->tampil_perdin('tbl_pengajuan_perdin', array('nomor_pengajuan' => $no_pengajuan))->row_array();
@@ -106,13 +107,14 @@ class History_telah_bayar extends CI_Controller {
 			'data_pengajuan' => $data_pengajuan,
 			'data_approve_history' => $data_approve_history,
 			'data_file' => $data_file,
+			'data_file_bayar' => $data_file_bayar,
 			'data_check' => $data_check,
 			'data_check_file' => $data_check_file,
 			'data_perdin' => $data_perdin,
 			'data_byr' => $data_byr,
 			'frek_byr' => $frek_byr,
 			'data_byr2' => $data_byr2,
-			'data_demo' => $data_demo
+			'data_memo' => $data_memo
 		));
 		$this->load->view('footer');
 	}
@@ -139,6 +141,65 @@ class History_telah_bayar extends CI_Controller {
 			'tanggal' => $tanggal
 		));
 		// Penutup Ke Report
+	}
+
+	public function tambah_dokumen(){
+		date_default_timezone_set("Asia/Jakarta");
+		$no_pengajuan = $this->input->post('nomor_pengajuan');
+		// Simpan File Pengajuan
+
+		$hari_ini = date("Y-m-d");
+
+		$folderUpload = "./file_bayar/".$hari_ini;
+
+		# periksa apakah folder tersedia
+		if (!is_dir($folderUpload)) {
+		  # jika tidak maka folder harus dibuat terlebih dahulu
+		  mkdir($folderUpload, 0777, $rekursif = true);
+		}
+
+		// ref_no diambil untuk nama file nya (pembeda antar pengajuan)
+		$refno = $this->input->post('ref_no');
+
+		$data = [];
+		$count = count($_FILES['files']['name']);
+		for($i=0; $i<$count; $i++){
+			if(!empty($_FILES['files']['name'][$i])){
+				$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+				$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+				$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+				$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+				$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+
+				$config['upload_path'] = $folderUpload;
+				$config['allowed_types'] = 'jpg|png|jpeg|pdf';
+				$config['max_size'] = 0;
+				// $config['file_name'] = $_FILES['files']['name'][$i];
+				$config['file_name'] = date('Y-m-d').'-'.$refno.'-'.substr(md5(rand()),0,5).'-'.$i;
+				// $config['encrypt_name'] = TRUE;
+
+				$this->load->library('upload', $config);
+
+				if($this->upload->do_upload('file')){
+					$uploadData = $this->upload->data();
+					$filename = $uploadData['file_name'];
+					$image[$i] = $filename;
+					$content = [
+						'nomor_pengajuan' => $no_pengajuan,
+						'file' => $image[$i],
+						'nama_file' => $this->input->post('nama_file')[$i]
+					];
+					$this->M_master->simpan_pengajuan('tbl_bayar_file', $content);
+				}
+			}
+		}
+
+		// cari id pengajuan untuk redirect halaman
+		// $data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+		// $id_pengajuan = $data_pengajuan['id_pengajuan'];
+
+		$this->session->set_flashdata('pesan','Bukti Transfer Berhasil Diupload');
+		redirect('history_telah_bayar');
 	}
 
 

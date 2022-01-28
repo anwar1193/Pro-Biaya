@@ -125,7 +125,12 @@
                   <td><?php echo $row_review['bagian'] ?></td>
                   <td><?php echo $row_review['jenis_biaya'] ?></td>
                   <td><?php echo $row_review['sub_biaya'] ?></td>
-                  <td style="text-align: right;"><?php echo number_format($row_review['jumlah'] + $row_review['ppn'] - $row_review['pph23'] - $row_review['pph42'] - $row_review['pph21'],0,',','.') ?></td>
+
+                  <?php if($row_review['form'] != 'Kendaraan'){ ?>
+                    <td style="text-align: right;"><?php echo number_format($row_review['jumlah'] + $row_review['ppn'] - $row_review['pph23'] - $row_review['pph42'] - $row_review['pph21'],0,',','.') ?></td>
+                  <?php }else{ ?>
+                    <td style="text-align: right;"><?php echo number_format($row_review['jumlah'] - $row_review['pph23'] - $row_review['pph42'] - $row_review['pph21'],0,',','.') ?></td>
+                  <?php } ?>
                   
                   <td style="color: green; font-weight: bold">
                     <?php echo '- '.$row_review['status_approve'].' by '.$row_review['approved_by'].' -'.'<br>'.$row_review['nama_pengapprove'] ?>

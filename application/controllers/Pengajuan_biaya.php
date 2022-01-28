@@ -422,7 +422,9 @@ class Pengajuan_biaya extends CI_Controller {
 						'nomor_pengajuan' => $nopeng_otomatis,
 						'nopol_perbaikan' => $this->input->post('nopol_perbaikan'),
 						'merk_kendaraan' => $this->input->post('merk_kendaraan'),
-						'kilometer_pengajuan' => $this->input->post('kilometer_pengajuan')
+						'kilometer_pengajuan' => $this->input->post('kilometer_pengajuan'),
+						'diskon_sparepart' => $this->input->post('diskon_sparepart'),
+						'diskon_jasa' => $this->input->post('diskon_jasa')
 					));
 
 
@@ -432,7 +434,6 @@ class Pengajuan_biaya extends CI_Controller {
 							'nomor_pengajuan' => $nopeng_otomatis,
 							'sparepart' => $this->input->post('sparepart')[$i],
 							'jumlah_sparepart' => $this->input->post('jumlah_sparepart')[$i],
-							'diskon_sparepart' => $this->input->post('diskon_sparepart')[$i],
 							'keterangan_sparepart' => '-'
 						));
 					}
@@ -444,7 +445,7 @@ class Pengajuan_biaya extends CI_Controller {
 							'nomor_pengajuan' => $nopeng_otomatis,
 							'jasa' => $this->input->post('jasa')[$i],
 							'jumlah_jasa' => $this->input->post('jumlah_jasa')[$i],
-							'diskon_jasa' => $this->input->post('diskon_jasa')[$i]
+							'keterangan_jasa' => '-'
 						));
 					}
 

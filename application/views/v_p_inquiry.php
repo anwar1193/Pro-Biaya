@@ -1,13 +1,19 @@
   <?php  
 
     error_reporting(0);
+    date_default_timezone_set("Asia/Jakarta");
     $nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
     $cabang = $this->libraryku->tampil_user()->cabang;
     $departemen = $this->libraryku->tampil_user()->departemen;
     $level = $this->libraryku->tampil_user()->level;
+ 
+    $tgl_sekarang = date("Y-m-d");
+    $yy_now = substr($tgl_sekarang, 0, 4);
+    $mm_now = substr($tgl_sekarang, 5, 2);
+    $dd_now = substr($tgl_sekarang, 8, 2);
 
   ?>
-  <?php date_default_timezone_set("Asia/Jakarta"); ?>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
@@ -278,7 +284,16 @@
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_inquiry['tanggal'])) ?></td>
                   <td><?php echo $row_inquiry['nomor_pengajuan'] ?></td>
-                  <td><?php echo $row_inquiry['nomor_invoice'] ?></td>
+
+                  <td>
+                    <?php echo $row_inquiry['nomor_invoice'] ?><br>
+                    <?php if($row_inquiry['nomor_invoice'] == 'TBO'){ ?>
+                      <a href="<?php echo base_url().'p_on_proccess/revisi_invoice_v/'.$row_inquiry['id_pengajuan'].'/inq_inv' ?>" class="btn btn-warning btn-xs">
+                        <i class="fa fa-edit"></i> Ubah No.Invoice
+                      </a>
+                    <?php } ?>
+                  </td>
+
                   <td><?php echo $row_inquiry['cabang'] ?></td>
                   <td><?php echo $row_inquiry['bagian'] ?></td>
                   <td><?php echo $row_inquiry['jenis_biaya'] ?></td>
@@ -404,7 +419,7 @@
 
                         <?php }else{ ?>
                           <span style="color: black">
-                          Batas Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari Lagi
+                          Sisa Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari
                           </span>
                         <?php } ?>
 
@@ -419,7 +434,6 @@
 
                       <!-- Cari Due Date -->
                       <?php
-                        date_default_timezone_set("Asia/Jakarta");
                         $tanggal_bayar = $row_inquiry['tanggal_bayar'];
                         $tgl_bayar = substr($tanggal_bayar, 8,2);
                         $bln_bayar = substr($tanggal_bayar, 5,2);
@@ -444,7 +458,7 @@
 
                         <?php }else{ ?>
                           <span style="color: black">
-                          Batas Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari Lagi
+                          Sisa Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari
                           </span>
                         <?php } ?>
 
@@ -464,12 +478,29 @@
                   <td style="text-align: center;">
                     <?php if($row_inquiry['status_dokumen'] == 'done acc'){ ?>
                       <span style="color:green; font-weight:bold">Selesai</span>
+
                     <?php }else{ ?>
-                      <?php if($row_inquiry['jenis_penyelesaian_pengaju'] != ''){ ?>
+
+                      <?php if(strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI' AND $row_inquiry['jenis_penyelesaian_pengaju'] != '' AND $row_inquiry['jenis_penyelesaian'] == ''){ ?>
                         <span style="color:blue; font-weight:bold">Telah Diajukan</span>
+
+                      <?php }elseif(strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI' AND $row_inquiry['jenis_penyelesaian_pengaju'] != '' AND $row_inquiry['jenis_penyelesaian'] != '' OR $row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['jenis_penyelesaian'] != ''){ ?>
+                        <span style="color:green; font-weight:bold">On Proccess</span>
+
+                      <?php }elseif(strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI' AND $row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['jenis_penyelesaian'] == '' AND $row_inquiry['status_bayar']=='Telah Dibayar'){ ?>
+                        <span style="color:orange; font-weight:bold">Belum Diselesaikan :</span><br>
+                        <?php  
+                          $waktu_bayar = mktime(0,0,0,$bln_bayar,$tgl_bayar,$thn_bayar);
+                          $waktu_sekarang = mktime(0,0,0,$mm_now,$dd_now,$yy_now);
+                          $selisih0 = $waktu_sekarang-$waktu_bayar;
+	                        $selisih = $selisih0 / (60*60*24);
+                        ?>
+                        <span style="font-weight:bold"><?php echo $selisih ?> Hari</span>
+
                       <?php }else{ ?>
                         <span>-</span>
                       <?php } ?>
+
                     <?php } ?>
 
                   </td>
@@ -488,7 +519,7 @@
                         <i class="fa fa-print"></i> Cetak List Dokumen
                       </a>
 
-                      <?php if($row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['status_dokumen'] != 'done acc' AND strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI'){ ?>
+                      <?php if($row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['jenis_penyelesaian'] == '' AND $row_inquiry['status_dokumen'] != 'done acc' AND strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI'){ ?>
                         <a href="#" data-toggle="modal" data-target="#ajukan_penyelesaian" class="btn btn-info btn-xs" style="margin-top: 5px;"
                           id="pilih_penyelesaian"
                           data-nomor_pengajuan="<?php echo $row_inquiry['nomor_pengajuan'] ?>"
@@ -635,6 +666,8 @@
               <option value="">-Pilih-</option>
               <option value="kelebihan">Kelebihan</option>
               <option value="kekurangan">Kekurangan</option>
+              <option value="biaya_sesuai">Biaya Sesuai</option>
+              <option value="biaya_dikembalikan">Biaya Dikembalikan</option>
             </select>
           </div>
 
@@ -655,7 +688,6 @@
   </div>
   </form>
   <!-- / Modal Ajukan Penyelesaian -->
-
 
   <!-- Script Jquery Cancel -->
   <script>

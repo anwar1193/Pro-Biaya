@@ -1,13 +1,19 @@
   <?php  
 
     error_reporting(0);
+    date_default_timezone_set("Asia/Jakarta");
     $nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
     $cabang = $this->libraryku->tampil_user()->cabang;
     $departemen = $this->libraryku->tampil_user()->departemen;
     $level = $this->libraryku->tampil_user()->level;
 
+    $tgl_sekarang = date("Y-m-d");
+    $yy_now = substr($tgl_sekarang, 0, 4);
+    $mm_now = substr($tgl_sekarang, 5, 2);
+    $dd_now = substr($tgl_sekarang, 8, 2);
+
   ?>
-  <?php date_default_timezone_set("Asia/Jakarta"); ?>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
@@ -364,6 +370,7 @@
                   <th>NO</th>
                   <th>Tanggal</th>
                   <th>NO Pengajuan</th>
+                  <th class="text-center">NO Invoice</th>
                   <th>Cabang</th>
                   <th>Dept</th>
                   <th>Jenis Biaya</th>
@@ -373,6 +380,7 @@
                   <th style="text-align: center">Sts Check</th>
                   <th style="text-align: center">Sts Bayar</th>
                   <th style="text-align: center">Sts Dokumen</th>
+                  <th style="text-align: center">Sts Penyelesaian</th>
                   <th style="text-align: center" width="10%">Action</th>
                 </tr>
                 </thead>
@@ -385,6 +393,7 @@
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_inquiry['tanggal'])) ?></td>
                   <td><?php echo $row_inquiry['nomor_pengajuan'] ?></td>
+                  <td><?php echo $row_inquiry['nomor_invoice'] ?></td>
                   <td><?php echo $row_inquiry['cabang'] ?></td>
                   <td><?php echo $row_inquiry['bagian'] ?></td>
                   <td><?php echo $row_inquiry['jenis_biaya'] ?></td>
@@ -509,7 +518,7 @@
 
                         <?php }else{ ?>
                           <span style="color: black">
-                          Batas Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari Lagi
+                          Sisa Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari
                           </span>
                         <?php } ?>
 
@@ -533,10 +542,43 @@
                   <!-- / Kolom Status Dokumen -->
 
 
+                  <!-- Kolom Status Penyelesaian -->
+                  <td style="text-align: center;">
+                    <?php if($row_inquiry['status_dokumen'] == 'done acc'){ ?>
+                      <span style="color:green; font-weight:bold">Selesai</span>
+
+                    <?php }else{ ?>
+
+                      <?php if(strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI' AND $row_inquiry['jenis_penyelesaian_pengaju'] != '' AND $row_inquiry['jenis_penyelesaian'] == ''){ ?>
+                        <span style="color:blue; font-weight:bold">Telah Diajukan</span>
+
+                      <?php }elseif(strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI' AND $row_inquiry['jenis_penyelesaian_pengaju'] != '' AND $row_inquiry['jenis_penyelesaian'] != '' OR $row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['jenis_penyelesaian'] != ''){ ?>
+                        <span style="color:green; font-weight:bold">On Proccess</span>
+
+                      <?php }elseif(strtoupper(trim($row_inquiry['nomor_invoice'])) == 'ESTIMASI' AND $row_inquiry['jenis_penyelesaian_pengaju'] == '' AND $row_inquiry['jenis_penyelesaian'] == '' AND $row_inquiry['status_bayar']=='Telah Dibayar'){ ?>
+                        <span style="color:orange; font-weight:bold">Belum Diselesaikan :</span><br>
+                        <?php  
+                          $waktu_bayar = mktime(0,0,0,$bln_bayar,$tgl_bayar,$thn_bayar);
+                          $waktu_sekarang = mktime(0,0,0,$mm_now,$dd_now,$yy_now);
+                          $selisih0 = $waktu_sekarang-$waktu_bayar;
+	                        $selisih = $selisih0 / (60*60*24);
+                        ?>
+                        <span style="font-weight:bold"><?php echo $selisih ?> Hari</span>
+
+                      <?php }else{ ?>
+                        <span>-</span>
+                      <?php } ?>
+
+                    <?php } ?>
+
+                  </td>
+                  <!-- / Kolom Status Penyelesaian -->
+
+
                   <!-- Kolom Action -->
                   <td style="text-align: center;">
 
-                    <a href="<?php echo base_url().'inquiry_all/detail/'.$row_inquiry['id_pengajuan'] ?>" class="btn btn-warning btn-xs">
+                    <a href="<?php echo base_url().'inquiry_all/detail/'.$row_inquiry['id_pengajuan'] ?>" target="_blank" class="btn btn-warning btn-xs">
                       <i class="fa fa-eye"></i> Detail
                     </a>
 

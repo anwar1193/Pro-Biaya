@@ -174,5 +174,31 @@ class Review_kekurangan_accounting extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function header_leggen_pic(){
+		$tanggal = $this->input->post('tanggal');
+		$data_pengajuan = $this->M_master->tampil_pengajuan_tanggal_penyelesaian($tanggal)->result_array();
+		$this->load->view('v_header_leggen_pic_penyelesaian',array('row'=>$data_pengajuan));
+	}
+
+	public function detail_leggen_pic(){
+		$tanggal = $this->input->post('tanggal');
+		$data_pengajuan = $this->M_master->tampil_pengajuan_tanggal_penyelesaian($tanggal)->result_array();
+
+		$this->load->view('v_detail_leggen_pic_penyelesaian',array('row'=>$data_pengajuan));
+	}
+
+	public function header_leggen_fin(){
+		$tanggal = $this->input->post('tanggal');
+		$data_pengajuan = $this->M_master->tampil_pengajuan_tanggal_jfin_penyelesaian($tanggal)->result_array();
+		$this->load->view('v_header_leggen_fin_penyelesaian',array('row'=>$data_pengajuan));
+	}
+
+	public function detail_leggen_fin(){
+		$tanggal = $this->input->post('tanggal');
+		$data_pengajuan = $this->M_master->tampil_pengajuan_tanggal_jfin_penyelesaian($tanggal)->result_array();
+
+		$this->load->view('v_detail_leggen_fin_penyelesaian',array('row'=>$data_pengajuan));
+	}
+
 
 }

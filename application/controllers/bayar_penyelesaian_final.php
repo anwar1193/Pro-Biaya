@@ -142,4 +142,66 @@ class Bayar_penyelesaian_final extends CI_Controller {
 	}
 
 
+	public function cetak(){
+		date_default_timezone_set("Asia/Jakarta");
+		$tanggal = $this->input->post('tanggal');
+		$bank_penerima = $this->input->post('bank_penerima');
+
+		if($bank_penerima == 'Semua Bank'){
+
+			// Ambil Data Pengajuan Dipilih Untuk Proses2 di bawah
+			$data_penyelesaian = $this->M_master->pilih_cetak_penyelesaian(array(
+				'tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian' => $tanggal
+			))->result_array();
+
+			// Cari tanggal untuk di cetak
+			$data_tunggal = $this->M_master->pilih_cetak_penyelesaian(array(
+				'tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian' => $tanggal
+			))->row_array();
+
+			$tanggal = $data_tunggal['tanggal_rencana_bayar_penyelesaian'];
+
+			// Cek Apakah Data Yang Mau Di Cetak Ada
+			$cek_ada = $this->M_master->pilih_cetak_penyelesaian(array(
+				'tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian' => $tanggal
+			))->num_rows();
+
+		}else{
+
+			// Ambil Data Pengajuan Dipilih Untuk Proses2 di bawah
+			$data_penyelesaian = $this->M_master->pilih_cetak_penyelesaian(array(
+				'tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian' => $tanggal,
+				'tbl_penyelesaian_kekurangan.bank' => $bank_penerima
+			))->result_array();
+
+			// Cari tanggal untuk di cetak
+			$data_tunggal = $this->M_master->pilih_cetak_penyelesaian(array(
+				'tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian' => $tanggal,
+				'tbl_penyelesaian_kekurangan.bank' => $bank_penerima
+			))->row_array();
+
+			$tanggal = $data_tunggal['tanggal_rencana_bayar_penyelesaian'];
+
+			// Cek Apakah Data Yang Mau Di Cetak Ada
+			$cek_ada = $this->M_master->pilih_cetak_penyelesaian(array(
+				'tbl_penyelesaian_kekurangan.tanggal_rencana_bayar_penyelesaian' => $tanggal,
+				'tbl_penyelesaian_kekurangan.bank' => $bank_penerima
+			))->num_rows();
+
+		}
+
+
+		if($cek_ada > 0){ //jika data yang di cetak ada
+			// Ke Report
+			$this->load->view('v_pdf_bayar_penyelesaian', array(
+				'data_penyelesaian' => $data_penyelesaian,
+				'tanggal' => $tanggal
+			));
+		}else{ //jika tidak ada data yang di cetak
+			redirect('bayar_penyelesaian_final');
+		}
+
+	}
+
+
 }

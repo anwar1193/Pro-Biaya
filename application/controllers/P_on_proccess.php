@@ -541,4 +541,106 @@ class P_on_proccess extends CI_Controller {
 	}
 
 
+	public function revisi_invoice()
+	{
+		cek_belum_login();
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$data_revInv = $this->db->query("SELECT * FROM tbl_pengajuan WHERE revisi_noinv = 'ya' AND bagian='$departemen'")->result_array();
+			$identitas = $departemen;
+		}else{
+			$data_revInv = $this->db->query("SELECT * FROM tbl_pengajuan WHERE revisi_noinv = 'ya' AND cabang='$cabang' AND bagian='$level'")->result_array();
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_p_revinv', array('data_revInv' => $data_revInv));
+		$this->load->view('footer');
+	}
+
+	public function revisi_invoice_detail($id){
+		$data_pengajuan = $this->M_master->tampil_pengajuan_detail($id)->row_array();
+		$no_pengajuan = $data_pengajuan['nomor_pengajuan'];
+		$data_approve_history = $this->M_master->tampil_approve_history('tbl_approved_history', array(
+			'nomor_pengajuan' => $no_pengajuan
+		))->result_array();
+		$data_file = $this->M_master->tampil_file('tbl_pengajuan_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
+		$data_perdin = $this->M_master->tampil_perdin('tbl_pengajuan_perdin', array('nomor_pengajuan' => $no_pengajuan))->row_array();
+
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_revinv_detail', array(
+			'data_pengajuan' => $data_pengajuan,
+			'data_approve_history' => $data_approve_history,
+			'data_file' => $data_file,
+			'data_perdin' => $data_perdin
+		));
+		$this->load->view('footer');
+	}
+
+	public function revisi_invoice_v($id, $page){
+		$data_pengajuan = $this->M_master->tampil_pengajuan_detail($id)->row_array();
+		$no_pengajuan = $data_pengajuan['nomor_pengajuan'];
+
+		$cabang = $this->libraryku->tampil_user()->cabang;
+		$departemen = $this->libraryku->tampil_user()->departemen;
+		$level = $this->libraryku->tampil_user()->level;
+
+		if($cabang=='HEAD OFFICE'){
+			$identitas = $departemen;
+		}else{
+			$identitas = $level;
+		}
+		
+		$data_jb = $this->M_master->tampil_relasi_biaya(array('departemen' => $identitas))->result_array();
+
+		$this->load->view('header');
+		$this->load->view('sidebar', array('data_jb'=>$data_jb));
+		$this->load->view('v_revisi_invoice', array(
+			'data_pengajuan' => $data_pengajuan,
+			'page' => $page
+		));
+		$this->load->view('footer');
+	}
+
+	public function update_invoice(){
+		$nomor_pengajuan = $this->input->post('nomor_pengajuan');
+		$id_pengajuan = $this->input->post('id_pengajuan');
+		$page = $this->input->post('page');
+
+		// Update status revisi_finance
+		$result = $this->M_master->update_pengajuan('tbl_pengajuan',array(
+			'nomor_invoice' => $this->input->post('nomor_invoice'),
+			'revisi_noinv' => ''
+		), array('nomor_pengajuan' => $nomor_pengajuan));
+
+		if($result>0){
+			if($page == 'inq_inv'){
+				$this->session->set_flashdata('pesan','Nomor Invoice Berhasil Di Revisi & Dikirim Kembali');
+				redirect('inquiry_pengajuan');
+			}else{
+				$this->session->set_flashdata('pesan','Nomor Invoice Berhasil Di Revisi & Dikirim Kembali');
+				redirect('p_on_proccess/revisi_invoice');
+			}
+		}
+	}
+
+
 }

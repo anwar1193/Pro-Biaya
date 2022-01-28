@@ -116,6 +116,8 @@ $level = $this->libraryku->tampil_user()->level;
             <b>On : <?php echo date('d-m-Y', strtotime($data_penyelesaian['tanggal_approved_penyelesaian'])) ?></b>
           </div><br>
 
+          <button class="btn btn-success no-print" onclick="window.print()">Cetak Jurnal</button>
+
           <!-- <a href="<?php echo base_url().'all_pengajuan_tanggal' ?>" class="btn btn-danger btn-xs">
             <i class="fa fa-backward"></i> Kembali
           </a> -->

@@ -216,6 +216,7 @@ class Inbox extends CI_Controller {
 			//Jika Pengajuan Diatas Limit Maksimal Approve, Lanjut ke Kadiv
 			$limit_approve = $this->M_master->ambil_limit('tbl_level', array('level'=>$level))->row_array();
 			$max_approve = $limit_approve['max_approve'];
+			
 			$total_pengajuan = $data_pengajuan['total'];
 			$jenis_biaya = $data_pengajuan['jenis_biaya'];
 
@@ -244,8 +245,17 @@ class Inbox extends CI_Controller {
 						}else{ //jika tidak punya kadiv
 
 							// Ambil Limit Kadiv
-							$q_limit_kadiv = $this->db->query("SELECT * FROM tbl_level WHERE level='Division Head'")->row_array();
-							$limit_kadiv = $q_limit_kadiv['max_approve'];
+							// Perbedaan Limit Cabang & Pusat
+							$cabang_pengajuan = $data_pengajuan['cabang'];
+
+							if($cabang_pengajuan == 'HEAD OFFICE'){
+								//Penentuan Limit Approve
+								$limit_kadiv = 500000;
+							}else{
+								//Penentuan Limit Approve
+								$q_limit_kadiv = $this->db->query("SELECT * FROM tbl_level WHERE level='Division Head'")->row_array();
+								$limit_kadiv = $q_limit_kadiv['max_approve'];
+							}
 
 							if($total_pengajuan > $limit_kadiv){ //jika pengajuan melebihi limit kadiv
 								$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
@@ -618,8 +628,17 @@ class Inbox extends CI_Controller {
 							}else{ //jika tidak punya kadiv
 
 								// Ambil Limit Kadiv
-								$q_limit_kadiv = $this->db->query("SELECT * FROM tbl_level WHERE level='Division Head'")->row_array();
-								$limit_kadiv = $q_limit_kadiv['max_approve'];
+								// Perbedaan Limit Cabang & Pusat
+								$cabang_pengajuan = $data_pengajuan['cabang'];
+
+								if($cabang_pengajuan == 'HEAD OFFICE'){
+									//Penentuan Limit Approve
+									$limit_kadiv = 500000;
+								}else{
+									//Penentuan Limit Approve
+									$q_limit_kadiv = $this->db->query("SELECT * FROM tbl_level WHERE level='Division Head'")->row_array();
+									$limit_kadiv = $q_limit_kadiv['max_approve'];
+								}
 
 								if($total_pengajuan > $limit_kadiv){ //jika pengajuan melebihi limit kadiv
 									$this->M_master->simpan_approve_history('tbl_approved_history', array(

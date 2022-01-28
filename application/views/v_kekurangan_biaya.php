@@ -79,7 +79,7 @@ Penyelesaian Kekurangan Biaya
         </div>
 
         <div class="form-group">
-          <label for="realisasi">Realisasi</label>
+          <label for="realisasi">Realisasi (Sebaiknya sama dengan Rekomendasi Reviewer)</label>
           <input type="text" name="realisasi" id="realisasi" class="form-control" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off">
         </div>
 

@@ -1,12 +1,18 @@
   <?php  
 
+    date_default_timezone_set("Asia/Jakarta");
     $nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
     $cabang = $this->libraryku->tampil_user()->cabang;
     $departemen = $this->libraryku->tampil_user()->departemen;
     $level = $this->libraryku->tampil_user()->level;
 
+    $tgl_sekarang = date("Y-m-d");
+    $yy_now = substr($tgl_sekarang, 0, 4);
+    $mm_now = substr($tgl_sekarang, 5, 2);
+    $dd_now = substr($tgl_sekarang, 8, 2);
+
   ?>
-  <?php date_default_timezone_set("Asia/Jakarta"); ?>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -125,7 +131,7 @@
 
                         <?php }else{ ?>
                           <span style="color: black">
-                          Batas Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari Lagi
+                          Sisa Waktu Penyerahan : <?php echo $sisa_waktu; ?> Hari
                           </span>
                         <?php } ?>
 
@@ -150,13 +156,33 @@
 
                   <!-- Kolom Status Penyelesaian -->
                   <td style="text-align: center;">
-                    <?php if($row_pendok['jenis_penyelesaian_pengaju'] != '' AND $row_pendok['jenis_penyelesaian'] == ''){ ?>
-                      <span style="color:blue; font-weight:bold">Telah Diajukan</span>
-                    <?php }elseif($row_pendok['jenis_penyelesaian_pengaju'] != '' AND $row_pendok['jenis_penyelesaian'] != ''){ ?>
-                      <span style="color:blue; font-weight:bold">On Proccess</span>
+                    <?php if($row_pendok['status_dokumen'] == 'done acc'){ ?>
+                      <span style="color:green; font-weight:bold">Selesai</span>
+
                     <?php }else{ ?>
-                      <span>-</span>
+
+                      <?php if(strtoupper(trim($row_pendok['nomor_invoice'])) == 'ESTIMASI' AND $row_pendok['jenis_penyelesaian_pengaju'] != '' AND $row_pendok['jenis_penyelesaian'] == ''){ ?>
+                        <span style="color:blue; font-weight:bold">Telah Diajukan</span>
+
+                      <?php }elseif(strtoupper(trim($row_pendok['nomor_invoice'])) == 'ESTIMASI' AND $row_pendok['jenis_penyelesaian_pengaju'] != '' AND $row_pendok['jenis_penyelesaian'] != '' OR $row_pendok['jenis_penyelesaian_pengaju'] == '' AND $row_pendok['jenis_penyelesaian'] != ''){ ?>
+                        <span style="color:green; font-weight:bold">On Proccess</span>
+
+                      <?php }elseif(strtoupper(trim($row_pendok['nomor_invoice'])) == 'ESTIMASI' AND $row_pendok['jenis_penyelesaian_pengaju'] == '' AND $row_pendok['jenis_penyelesaian'] == '' AND $row_pendok['status_bayar']=='Telah Dibayar'){ ?>
+                        <span style="color:orange; font-weight:bold">Belum Diselesaikan :</span><br>
+                        <?php  
+                          $waktu_bayar = mktime(0,0,0,$bln_bayar,$tgl_bayar,$thn_bayar);
+                          $waktu_sekarang = mktime(0,0,0,$mm_now,$dd_now,$yy_now);
+                          $selisih0 = $waktu_sekarang-$waktu_bayar;
+	                        $selisih = $selisih0 / (60*60*24);
+                        ?>
+                        <span style="font-weight:bold"><?php echo $selisih ?> Hari</span>
+
+                      <?php }else{ ?>
+                        <span>-</span>
+                      <?php } ?>
+
                     <?php } ?>
+
                   </td>
                   <!-- / Kolom Status Penyelesaian -->
                   

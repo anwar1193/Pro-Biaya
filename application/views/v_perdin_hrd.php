@@ -133,8 +133,18 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="jenis_invoice">Jenis Invoice :</label>
+                  <select id="jenis_invoice" class="form-control" required="">
+                    <option value="">- Pilih -</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="estimasi">Estimasi</option>
+                    <option value="tbo">Fixed (TBO)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
                   <label for="nomor_invoice">Nomor Invoice :</label>
-                  <input type="text" name="nomor_invoice" class="form-control" required placeholder="Optional" autocomplete="off">
+                  <input type="text" name="nomor_invoice" id="nomor_invoice" class="form-control" required autocomplete="off" readonly autofocus>
                 </div>
 
                 <!-- Departemen Tujuan -->
@@ -409,7 +419,7 @@
                       <table width="100%">
                         <tr>
                           <td>
-                            <input class="form-control" type="date" min="<?php echo date('Y-m-d') ?>" max="2021-12-31" name="tanggal_minta_bayar[]" required></input>
+                            <input class="form-control" type="date" min="<?php echo date('Y-m-d') ?>" max="2022-12-31" name="tanggal_minta_bayar[]" required></input>
                           </td>
 
                           <td>
@@ -783,6 +793,49 @@
     // $(document).on('click', '#tombol_kirim', function(){
     //   $(this).hide();
     // });
+
+    $('#jenis_invoice').change(function(){
+        let jenis_invoice = $(this).val();
+
+        if(jenis_invoice == 'fixed'){
+          $('#nomor_invoice').removeAttr('readonly').val('').attr({'placeholder' : 'Masukkan Nomor Invoice'}).focus();
+        }else if(jenis_invoice == 'estimasi'){
+          $('#nomor_invoice').removeAttr('placeholder').val('ESTIMASI').attr({'readonly' : ''});
+        }else if(jenis_invoice == 'tbo'){
+          $('#nomor_invoice').removeAttr('placeholder').val('TBO').attr({'readonly' : ''});
+        }
+      });
+
+      $(document).on('click', '#tombol_kirim', function(){
+        var nomor_invoice = $('#nomor_invoice').val();
+        if(nomor_invoice == '0'){
+          alert("Nomor Invoice Tidak Boleh 0");
+          $('#nomor_invoice').val('').focus();
+        }
+      });
+
+      // Nomor Invoice Tidak Bisa Tulis Spasi
+      $("#nomor_invoice").on({
+      keydown: function(e) {
+        if (e.which === 32)
+          return false;
+        },
+        keyup: function(){
+        this.value = this.value.toLowerCase();
+        },
+        change: function() {
+          this.value = this.value.replace(/\s/g, "");
+        }
+      });
+
+      // Nomor Invoice Tidak Boleh Diawali - (minus)
+      $('#tombol_kirim').on('click', function(){
+        var nomor_invoice = $('#nomor_invoice').val();
+        if(nomor_invoice.substr(0,1) == '-'){
+          alert("Nomor Invoice Tidak Boleh Diawali Tanda - (Minus)");
+          return false;
+        }
+      });
     
   </script>
   <!-- / Script Pilih Lama Menginap -->

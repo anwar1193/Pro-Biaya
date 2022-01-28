@@ -175,18 +175,20 @@ $level = $this->libraryku->tampil_user()->level;
             <div class="col-sm-6 col-sm-offset-3" style="border:1px dotted gray; padding: 10px;">
 
               <span>
-                <a href="<?php echo base_url().'review_kelebihan_accounting' ?>" class="btn btn-danger btn-xs">Kembali</a>
+                <a href="<?php echo base_url().'review_kelebihan_accounting' ?>" class="btn btn-danger btn-xs no-print">Kembali</a>
               </span>
 
               <span>
-                <a href="<?php echo base_url().'kelebihan_biaya/detail/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-info btn-xs" target="_blank">Detail Pengajuan</a>
+                <a href="<?php echo base_url().'kelebihan_biaya/detail/'.$data_pengajuan['id_pengajuan'] ?>" class="btn btn-info btn-xs no-print" target="_blank">Detail Pengajuan</a>
               </span>
               
               <?php if($data_penyelesaian['status_verifikasi_penyelesaian'] != 'Verified By Accounting'){ ?>
                 <span>
-                  <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-verifikasi">Verifikasi</a>
+                  <a href="#" class="btn btn-success btn-xs no-print" data-toggle="modal" data-target="#modal-verifikasi">Verifikasi</a>
                 </span>
               <?php } ?>
+
+              <button class="btn btn-warning btn-xs no-print" onclick="window.print()">Cetak Penyelesaian</button>
 
               <!-- <span>
                 <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal-pending">Pending</a>

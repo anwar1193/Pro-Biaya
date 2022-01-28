@@ -73,12 +73,17 @@ $level = $this->libraryku->tampil_user()->level;
               <td style="text-align: right;"><?php echo number_format($row_inquiry['kurang_bayar'],0,',','.') ?></td>
               <td><?php echo date('d-m-Y', strtotime($row_inquiry['tanggal_request_transfer'])) ?></td>
               <td><?php echo $row_inquiry['departemen_tujuan'] ?></td>
-              <td style="font-weight:bold">
+              <td style="font-weight:bold; <?= $row_inquiry['status_approve_penyelesaian'] == 'cancel by request' ? 'color:red' : NULL ?>">
                 <?php echo $row_inquiry['status_approve_penyelesaian'] ?> 
 
                 <?php if($row_inquiry['status_approve_penyelesaian'] != 'On Proccess' AND $row_inquiry['status_approve_penyelesaian'] != 'cancel' AND $row_inquiry['status_approve_penyelesaian'] != 'cancel by request'){ ?>
                   By <?php echo $row_inquiry['approved_by_penyelesaian'] ?><br>
                   (<?php echo $row_inquiry['nama_pengapprove_penyelesaian'] ?>)
+                <?php } ?>
+
+                <br>
+                <?php if($row_inquiry['status_approve_penyelesaian'] == 'cancel by request'){ ?>
+                  Note : "<?php echo $row_inquiry['note_cancel'] ?>"
                 <?php } ?>
 
               </td>
@@ -113,6 +118,7 @@ $level = $this->libraryku->tampil_user()->level;
                   <i class="fa fa-eye"></i> Detail
                 </a>
 
+                <?php if($row_inquiry['status_approve_penyelesaian'] != 'cancel by request'){ ?>
                 <div>
                     <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-cancel" id="pilih_cancel" 
                     data-id="<?php echo $row_inquiry['id_penyelesaian'] ?>"
@@ -120,6 +126,7 @@ $level = $this->libraryku->tampil_user()->level;
                     <i class="fa fa-times"></i> Cancel By Request
                     </a>
                 </div>
+                <?php } ?>
 
               </td>
               <!-- / Kolom Action -->

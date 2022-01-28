@@ -127,8 +127,18 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="jenis_invoice">Jenis Invoice :</label>
+                  <select id="jenis_invoice" class="form-control" required="">
+                    <option value="">- Pilih -</option>
+                    <option value="fixed" <?= $data_pengajuan['nomor_invoice']!='ESTIMASI' && $data_pengajuan['nomor_invoice']!='TBO' ? 'selected' : null ?>>Fixed</option>
+                    <option value="estimasi" <?= $data_pengajuan['nomor_invoice']=='ESTIMASI' ? 'selected' : null ?>>Estimasi</option>
+                    <option value="tbo" <?= $data_pengajuan['nomor_invoice']=='TBO' ? 'selected' : null ?>>Fixed (TBO)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
                   <label for="nomor_invoice">Nomor Invoice :</label>
-                  <input type="text" name="nomor_invoice" class="form-control" value="<?php echo $data_pengajuan['nomor_invoice'] ?>" autocomplete="off">
+                  <input type="text" name="nomor_invoice" id="nomor_invoice" class="form-control" value="<?php echo $data_pengajuan['nomor_invoice'] ?>" autocomplete="off" required readonly>
                 </div>
 
                 <!-- Departemen Tujuan -->
@@ -511,7 +521,7 @@
                     <select name="tipe_transaksi" class="form-control input-sm" id="tipe_transaksi">
                       <option value="0">- Pilih Tipe Transaksi -</option>
                       <option value="1">Biaya (1 Kali Pembayaran)</option>
-                      <option value="2">Uang Muka (2 Kali Pembayaran)</option>
+                      <!-- <option value="2">Uang Muka (2 Kali Pembayaran)</option>
                       <option value="3">Uang Muka (3 Kali Pembayaran)</option>
                       <option value="4">Uang Muka (4 Kali Pembayaran)</option>
                       <option value="5">Uang Muka (5 Kali Pembayaran)</option>
@@ -521,7 +531,7 @@
                       <option value="9">Uang Muka (9 Kali Pembayaran)</option>
                       <option value="10">Uang Muka (10 Kali Pembayaran)</option>
                       <option value="11">Uang Muka (11 Kali Pembayaran)</option>
-                      <option value="12">Uang Muka (12 Kali Pembayaran)</option>
+                      <option value="12">Uang Muka (12 Kali Pembayaran)</option> -->
                     </select>
                   </div>
 
@@ -544,7 +554,7 @@
 
                         <tr>
                           <td>
-                            <input class="form-control" type="date" min="<?php echo date('Y-m-d') ?>" max="2021-12-31" name="tanggal_minta_bayar[]" id="tgl_min_bayar1"></input>
+                            <input class="form-control" type="date" min="<?php echo date('Y-m-d') ?>" max="2022-12-31" name="tanggal_minta_bayar[]" id="tgl_min_bayar1"></input>
                           </td>
 
                           <td>
@@ -2164,6 +2174,50 @@
         // $(document).on('click', '#tgl_min_bayar1, #tgl_min_bayar2, #tgl_min_bayar3, #tgl_min_bayar4, #tgl_min_bayar5, #tgl_min_bayar6, #tgl_min_bayar7, #tgl_min_bayar8, #tgl_min_bayar9, #tgl_min_bayar10, #tgl_min_bayar11, #tgl_min_bayar12', function(){
         //   tampilkan_tombol2();
         // });
+
+        // Pilihan Jenis Invoice
+        $('#jenis_invoice').change(function(){
+          let jenis_invoice = $(this).val();
+
+          if(jenis_invoice == 'fixed'){
+            $('#nomor_invoice').removeAttr('readonly').val('').attr({'placeholder' : 'Masukkan Nomor Invoice'}).focus();
+          }else if(jenis_invoice == 'estimasi'){
+            $('#nomor_invoice').removeAttr('placeholder').val('ESTIMASI').attr({'readonly' : ''});
+          }else if(jenis_invoice == 'tbo'){
+            $('#nomor_invoice').removeAttr('placeholder').val('TBO').attr({'readonly' : ''});
+          }
+        });
+
+        $(document).on('click', '#tombol_kirim', function(){
+          var nomor_invoice = $('#nomor_invoice').val();
+          if(nomor_invoice == '0'){
+            alert("Nomor Invoice Tidak Boleh 0");
+            $('#nomor_invoice').val('').focus();
+          }
+        });
+
+      // Nomor Invoice Tidak Bisa Tulis Spasi
+      $("#nomor_invoice").on({
+      keydown: function(e) {
+        if (e.which === 32)
+          return false;
+        },
+        keyup: function(){
+        this.value = this.value.toLowerCase();
+        },
+        change: function() {
+          this.value = this.value.replace(/\s/g, "");
+        }
+      });
+
+      // Nomor Invoice Tidak Boleh Diawali - (minus)
+      $('#tombol_kirim').on('click', function(){
+        var nomor_invoice = $('#nomor_invoice').val();
+        if(nomor_invoice.substr(0,1) == '-'){
+          alert("Nomor Invoice Tidak Boleh Diawali Tanda - (Minus)");
+          return false;
+        }
+      });
       
 
       });

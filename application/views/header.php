@@ -74,6 +74,14 @@
         opacity: 1;
       }
     }
+
+    @media print
+    {    
+        .no-print, .no-print *
+        {
+            display: none !important;
+        }
+    }
   </style>
 
 </head>
@@ -94,7 +102,8 @@
     $this->uri->segment(1)=='kelebihan_biaya' && $this->uri->segment(2)=='detail' ||
     $this->uri->segment(1)=='review_kekurangan_accounting' && $this->uri->segment(2)=='jurnal_pic' ||
     $this->uri->segment(1)=='review_kekurangan_accounting' && $this->uri->segment(2)=='jurnal_finance' ||
-    $this->uri->segment(1)=='review_kelebihan_accounting' && $this->uri->segment(2)=='jurnal_balik'
+    $this->uri->segment(1)=='review_kelebihan_accounting' && $this->uri->segment(2)=='jurnal_balik' ||
+    $this->uri->segment(1)=='review_penyelesaian_dikembalikan' && $this->uri->segment(2)=='jurnal_balik'
 ? 'sidebar-collapse' : null ?>"
 >
 

@@ -71,6 +71,29 @@
       <?php } ?>
 
 
+      <!-- Jika Ada revisi nomor invoice, tampil di dashboard -->
+      <?php 
+        if($cabang == 'HEAD OFFICE'){
+          $cek_noinv = $this->db->query("SELECT * FROM tbl_pengajuan WHERE revisi_noinv='ya' AND bagian='$departemen'")->num_rows();
+        }else{
+          $cek_noinv = $this->db->query("SELECT * FROM tbl_pengajuan WHERE revisi_noinv='ya' AND cabang='$cabang' AND bagian='$level'")->num_rows();
+        }
+        
+      ?>
+
+      <?php if($cek_noinv > 0 AND $cabang=='HEAD OFFICE' AND $level=='Departement PIC' OR $cek_noinv > 0 AND $cabang !='HEAD OFFICE'){ ?> <!-- jika ada tambahan dokumen tampilkan notifikasi -->
+        <!-- Notifikasi Tambahan Dokumen -->
+        <div class="callout callout-danger">
+            <h4 class="perhatian">Perhatian !</h4>
+            <p>
+              Anda memiliki permintaan revisi <b>Nomor Invoice</b> dari PIC Reviewer, Silahkan Klik :
+              <a href="<?php echo base_url().'p_on_proccess/revisi_invoice' ?>"> Revisi Nomor Invoice</a>
+            </p>
+        </div>
+      <?php } ?>
+      <!-- END Jika Ada revisi nomor invoice, tampil di dashboard -->
+
+
       <!-- Jika Ada revisi data by finance, tampil di dashboard (khusus PIC Dept) -->
       <?php 
 

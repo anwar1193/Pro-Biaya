@@ -165,6 +165,16 @@ $level = $this->libraryku->tampil_user()->level;
             <?php } ?>
             </tbody>
           </table>
+
+          <!-- Tombol cetak pengajuan -->
+          <center>
+            <span>
+              <button type="button" data-toggle="modal" data-target="#modal-cetak" class="btn btn-primary btn-xs">
+                <i class="fa fa-print"></i> Cetak Bayar Penyelesaian
+              </button>
+            </span>
+          </center>
+
         </div>
         <!-- /.box-body -->
       </div>
@@ -319,6 +329,45 @@ $level = $this->libraryku->tampil_user()->level;
   </form>
   <!-- / Modal Rekening -->
 
+  <!-- Modal Cetak -->
+  <form action="<?php echo base_url().'bayar_penyelesaian_final/cetak' ?>" method="post">
+  <div class="modal fade" id="modal-cetak">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Cetak Bayar Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="alamat"></span> Tanggal Rencana Bayar :</label>
+            <input type="date" name="tanggal" class="form-control" required></input>
+          </div>
+
+          <div class="form-group">
+            <label for="alamat"></span> Bank Penerima :</label>
+            <select name="bank_penerima" class="form-control">
+              <option value="Semua Bank">Semua Bank</option>
+              <?php foreach($data_bank_pengaju as $row_bank){ ?>
+              <option value="<?php echo $row_bank['nama_bank'] ?>"><?php echo $row_bank['nama_bank'] ?></option>
+              <?php } ?>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm pull-left" data-dismiss="modal"> Batal</button>
+          <button type="submit" class="btn btn-sm btn-success"> Cetak Pengajuan</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Cetak -->
 
 
 <!-- Script Jquery Modal Setuju Bayar -->

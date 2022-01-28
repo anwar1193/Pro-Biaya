@@ -301,6 +301,23 @@
                     </tr>
 
                     <tr>
+                      <th>Status Kendaraan</th>
+                      <th>:</th>
+                      <td>
+                        <?php  
+                          $nopol = $data_bbm['nopol'];
+                          // cek apakah nopol ada di dalam list kendaraan operasional
+                          $cek_kendaraan = $this->M_master->tampil_data_where('tbl_kendaraan', array('nopol' => $nopol))->num_rows();
+                          if($cek_kendaraan > 0){
+                            echo 'Kendaraan Operasional';
+                          }else{
+                            echo 'Kendaraan Pribadi';
+                          }
+                        ?>
+                      </td>
+                    </tr>
+
+                    <tr>
                       <th>Keperluan Pengajuan BBM</th>
                       <th>:</th>
                       <td><?php echo $data_bbm['keperluan_pengajuan_bbm'] ?></td>
@@ -359,28 +376,24 @@
                         <th>Rincian Sparepart</th>
                         <th>:</th>
                         <td>
-                            <table border="1" style="border-collapse: collapse;" width="100%">
+                            <table class="table table-bordered" width="100%">
                               <tr>
                                 <th class="text-center">NO</th>
                                 <th class="text-center">Nama Sparepart</th>
                                 <th class="text-center">Harga Sparepart</th>
-                                <th class="text-center">Diskon</th>
                                 <th class="text-center">Jenis Sparepart</th>
                               </tr>
 
                               <?php 
                                 $no=1;
                                 $total_jumlah_sparepart = 0;
-                                $total_diskon_sparepart = 0;
                                 foreach($data_sparepart as $row){ 
                                   $total_jumlah_sparepart += $row['jumlah_sparepart'];
-                                  $total_diskon_sparepart += $row['diskon_sparepart'];
                               ?>
                               <tr>
                                 <td class="text-center"><?php echo $no++; ?></td>
                                 <td><?php echo $row['sparepart'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_sparepart'], 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($row['diskon_sparepart'], 0, ',', '.') ?></td>
                                 <td class="text-center">
                                   <?php 
                                     if($row['keterangan_sparepart'] == '-'){
@@ -396,48 +409,63 @@
                               <tr style="font-weight:bold">
                                 <td colspan="2" class="text-right">TOTAL :</td>
                                 <td class="text-right"><?php echo number_format($total_jumlah_sparepart, 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($total_diskon_sparepart, 0, ',', '.') ?></td>
                               </tr>
                             </table>
                         </td>
                       </tr>
 
+                      <tr>
+                        <th>Diskon Sparepart</th>
+                        <th>:</th>
+                        <td><?php echo number_format($data_perbaikan_kendaraan['diskon_sparepart'], 0 , ',', '.') ?></td>
+                      </tr>
 
                       <tr>
                         <th>Rincian Jasa Perbaikan</th>
                         <th>:</th>
                         <td>
-                            <table border="1" style="border-collapse: collapse;" width="100%">
+                            <table class="table table-bordered">
                               <tr>
-                                <th class="text-center" width="10%">NO</th>
-                                <th class="text-center" width="45%">Nama Jasa</th>
-                                <th class="text-center" width="25%">Biaya Jasa</th>
-                                <th class="text-center" width="20%">Diskon</th>
+                                <th class="text-center">NO</th>
+                                <th class="text-center">Nama Jasa</th>
+                                <th class="text-center">Biaya Jasa</th>
+                                <th class="text-center">Jenis Jasa</th>
                               </tr>
 
                               <?php 
                                 $no=1;
                                 $total_jumlah_jasa = 0;
-                                $total_diskon_jasa = 0;
                                 foreach($data_jasa_perbaikan as $row){ 
                                   $total_jumlah_jasa += $row['jumlah_jasa'];
-                                  $total_diskon_jasa += $row['diskon_jasa'];
                               ?>
                               <tr>
                                 <td class="text-center"><?php echo $no++; ?></td>
                                 <td><?php echo $row['jasa'] ?></td>
                                 <td class="text-right"><?php echo number_format($row['jumlah_jasa'], 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($row['diskon_jasa'], 0, ',', '.') ?></td>
+                                <td class="text-center">
+                                  <?php 
+                                    if($row['keterangan_jasa'] == '-' || $row['keterangan_jasa'] == ''){
+                                      echo '(Diisi Reviewer)';
+                                    }else{
+                                      echo $row['keterangan_jasa'];
+                                    }
+                                  ?>
+                                </td>
                               </tr>
                               <?php } ?>
 
                               <tr style="font-weight:bold">
                                 <td colspan="2" class="text-right">TOTAL :</td>
                                 <td class="text-right"><?php echo number_format($total_jumlah_jasa, 0, ',', '.') ?></td>
-                                <td class="text-right"><?php echo number_format($total_diskon_jasa, 0, ',', '.') ?></td>
                               </tr>
                             </table>
                         </td>
+                      </tr>
+
+                      <tr>
+                        <th>Diskon Jasa Perbaikan</th>
+                        <th>:</th>
+                        <td><?php echo number_format($data_perbaikan_kendaraan['diskon_jasa'], 0 , ',', '.') ?></td>
                       </tr>
                       
                     <?php } ?>
@@ -501,7 +529,7 @@
                       <th>:</th>
                       <td>
                         
-                        <table border="1" style="border-collapse: collapse;" width="100%">
+                        <table class="table table-bordered" width="100%">
                           <tr>
                             <th style="text-align: center">Pembayaran Ke</th>
                             <th style="text-align: center">Tanggal Bayar</th>

@@ -134,8 +134,18 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="jenis_invoice">Jenis Invoice :</label>
+                  <select id="jenis_invoice" class="form-control" required="">
+                    <option value="">- Pilih -</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="estimasi">Estimasi</option>
+                    <option value="tbo">Fixed (TBO)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
                   <label for="nomor_invoice">Nomor Invoice :</label>
-                  <input type="text" name="nomor_invoice" class="form-control" required placeholder="Optional" autocomplete="off">
+                  <input type="text" name="nomor_invoice" id="nomor_invoice" class="form-control" required autocomplete="off" readonly autofocus>
                 </div>
 
                 <!-- Departemen Tujuan -->
@@ -152,7 +162,6 @@
                   <div class="col-md-6">
 
                     <input type="number" name="jumlah" id="jumlah" placeholder="Rp" hidden>
-                    <input type="number" name="ppn" id="ppn" placeholder="Rp" hidden>
                     <input type="number" name="pph23" id="pph23" placeholder="Rp" hidden>
 
                     
@@ -246,7 +255,6 @@
                       <th>No</th>
                       <th>Nama Sparepart</th>
                       <th>Jumlah</th>
-                      <th>Diskon</th>
                       <th>Jenis Sparepart</th>
                       <th class="text-center">
                         <button class="btn btn-primary btn-xs" id="BarisBaru_sparepart">
@@ -262,19 +270,30 @@
                     <tr style="font-weight:bold;" class="text-right">
                       <td colspan="2" class="text-right">TOTAL :</td>
                       <td><span id="tot_jumlah_sparepart">0</span></td>
-                      <td><span id="tot_diskon_sparepart">0</span></td>
                     </tr>
                   </tfoot>
                 </table>
+
+                <div class="form-group">
+                  <label for="diskon_sparepart">Diskon Sparepart :</label>
+                  <input type="text" name="diskon_sparepart" class="form-control" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="0" id="diskon_sparepart">
+                </div>
+
+                <div class="form-group">
+                  <label for="total">Total Sparepart :</label>
+                  <br>
+                  <!-- Total yang ada pemisah rupiah nya -->
+                  <span id="total_sparepart" style="font-weight: bold; font-size: 20px; padding: 5px;">0</span>
+                </div>
 
                 <b>Rincian Data Jasa Perbaikan :</b>
                 <table class="table table-bordered mt-5" id="tableLoop_jasa">
                   <thead>
                     <tr class="bg-success">
                       <th>No</th>
-                      <th width="40%">Nama Jasa</th>
-                      <th width="25%">Jumlah</th>
-                      <th width="25%">Diskon</th>
+                      <th>Nama Jasa</th>
+                      <th>Jumlah</th>
+                      <th>Jenis Jasa</th>
                       <th class="text-center">
                         <button class="btn btn-primary btn-xs" id="BarisBaru_jasa">
                           <i class="fa fa-plus"></i> Tambah
@@ -289,18 +308,36 @@
                     <tr style="font-weight:bold;" class="text-right">
                       <td colspan="2" class="text-right">TOTAL :</td>
                       <td><span id="tot_jumlah_jasa">0</span></td>
-                      <td><span id="tot_diskon_jasa">0</span></td>
                     </tr>
                   </tfoot>
                 </table>
 
                 <div class="form-group">
-                  <label for="total">Total (Nett) :</label>
+                  <label for="diskon_jasa">Diskon Jasa Perbaikan :</label>
+                  <input type="text" name="diskon_jasa" class="form-control" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="0" id="diskon_jasa">
+                </div>
+
+                <div class="form-group">
+                  <label for="total">Total Jasa :</label>
+                  <br>
+                  <!-- Total yang ada pemisah rupiah nya -->
+                  <span id="total_jasa" style="font-weight: bold; font-size: 20px; padding: 5px;">0</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="ppn">PPN :</label>
+                  <input type="text" name="ppn" class="form-control" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="0" id="ppn">
+                </div>
+
+                <div class="form-group">
+                  <label for="total">Total (Sparepart + Jasa + PPN) :</label>
                   <input type="number" name="total" id="total" placeholder="Rp" hidden><br>
 
                   <!-- Total yang ada pemisah rupiah nya -->
                   <span id="total_rp" style="font-weight: bold; font-size: 20px; padding: 5px;">0</span>
                 </div>
+
+
 
                 <div class="form-group">
                   <label for="tipe_transaksi"></span> Tipe Transaksi :</label>
@@ -323,7 +360,7 @@
                       <table width="100%">
                         <tr>
                           <td>
-                            <input class="form-control" type="date" min="<?php echo date('Y-m-d') ?>" max="2021-12-31" name="tanggal_minta_bayar[]" required></input>
+                            <input class="form-control" type="date" min="<?php echo date('Y-m-d') ?>" max="2022-12-31" name="tanggal_minta_bayar[]" required></input>
                           </td>
 
                           <td>
@@ -472,24 +509,24 @@
          return ribuan;
        }
 
-      function hitung_otomatis(){
-        var lain_lain = $('#lain_lain').val();
-        tot_perdin = (lain_lain*1);
-        $('#jumlah').val(tot_perdin);
+      // function hitung_otomatis(){
+      //   var lain_lain = $('#lain_lain').val();
+      //   tot_perdin = (lain_lain*1);
+      //   $('#jumlah').val(tot_perdin);
 
-        var jumlah = $('#jumlah').val();
-        var ppn = $('#ppn').val();
-        var pph23 = $('#pph23').val();
+      //   var jumlah = $('#jumlah').val();
+      //   var ppn = $('#ppn').val();
+      //   var pph23 = $('#pph23').val();
 
-        total = (jumlah*1) + (ppn*1) + (pph23*1); //perkalian salah satu trik biar angka bisa ditambah
-        $('#total').val(total);
-        $('#total_rp').text('Rp ' + rubah(total));
-      }
+      //   total = (jumlah*1) + (ppn*1) + (pph23*1); //perkalian salah satu trik biar angka bisa ditambah
+      //   $('#total').val(total);
+      //   $('#total_rp').text('Rp ' + rubah(total));
+      // }
 
       // Panggil fungsi ubah data (realtime) saat form (price_item, qty_item, discount_item) di ketik / di klik
-      $(document).on('keyup mouseup', '#jumlah, #ppn, #pph23, #lain_lain', function(){
-        hitung_otomatis();
-      });
+      // $(document).on('keyup mouseup', '#jumlah, #ppn, #pph23, #lain_lain', function(){
+      //   hitung_otomatis();
+      // });
 
     });
   </script>
@@ -630,10 +667,6 @@
 
                 Baris += '<td>';
                   Baris += '<input type="number" name="jumlah_sparepart[]" id="jumlah_sparepart" class="form-control" value="0">';
-                Baris += '</td>'; 
-
-                Baris += '<td>';
-                  Baris += '<input type="number" name="diskon_sparepart[]" id="diskon_sparepart" class="form-control" value="0" autocomplete="off">';
                 Baris += '</td>';
 
                 Baris += '<td>';
@@ -714,10 +747,10 @@
 
                 Baris += '<td>';
                   Baris += '<input type="number" name="jumlah_jasa[]" id="jumlah_jasa" class="form-control" value="0">';
-                Baris += '</td>'; 
+                Baris += '</td>';
 
                 Baris += '<td>';
-                  Baris += '<input type="number" name="diskon_jasa[]" id="diskon_jasa" class="form-control" value="0" autocomplete="off">';
+                  Baris += '<input type="text" name="keterangan_jasa[]" id="keterangan_jasa" class="form-control" autocomplete="off" placeholder="Diisi Oleh Reviewer" disabled>';
                 Baris += '</td>';
 
                 Baris += '<td class="text-center">';
@@ -744,38 +777,41 @@
       
 
       function hitung_total_jasa(){
-        var total_jasa = 0;
-        var diskon_jasa = 0;
         var total_sparepart = 0;
-        var diskon_sparepart = 0;
-
+        var total_jasa = 0;
         var total_selisih = 0;
 
         $('#table_data_jasa tr').each(function(){
         total_jasa += parseInt($(this).find('#jumlah_jasa').val());
-        diskon_jasa += parseInt($(this).find('#diskon_jasa').val());
         });
 
         $('#table_data_sparepart tr').each(function(){
         total_sparepart += parseInt($(this).find('#jumlah_sparepart').val());
-        diskon_sparepart += parseInt($(this).find('#diskon_sparepart').val());
         });
 
-        total_selisih = total_jasa - diskon_jasa + total_sparepart - diskon_sparepart;
+        var diskon_sparepart = $('#diskon_sparepart').val();
+        var diskon_jasa = $('#diskon_jasa').val();
+
+        var ppn = $('#ppn').val();
+
+        final_sparepart = total_sparepart - diskon_sparepart;
+        final_jasa = total_jasa - diskon_jasa;
+
+        total_selisih = total_jasa + total_sparepart + (ppn*1) - diskon_sparepart - diskon_jasa;
 
         isNaN(total_jasa) ? $('#total_rp').text(0) : $('#total_rp').text(rubah_jasa(total_selisih));
         isNaN(total_jasa) ? $('#jumlah').val(0) : $('#jumlah').val(total_selisih);
         isNaN(total_jasa) ? $('#total').val(0) : $('#total').val(total_selisih);
 
         isNaN(total_jasa) ? $('#tot_jumlah_sparepart').text(0) : $('#tot_jumlah_sparepart').text(rubah_jasa(total_sparepart));
-        isNaN(total_jasa) ? $('#tot_diskon_sparepart').text(0) : $('#tot_diskon_sparepart').text(rubah_jasa(diskon_sparepart));
-
         isNaN(total_jasa) ? $('#tot_jumlah_jasa').text(0) : $('#tot_jumlah_jasa').text(rubah_jasa(total_jasa));
-        isNaN(total_jasa) ? $('#tot_diskon_jasa').text(0) : $('#tot_diskon_jasa').text(rubah_jasa(diskon_jasa));
+
+        isNaN(total_jasa) ? $('#total_sparepart').text(0) : $('#total_sparepart').text(rubah_jasa(final_sparepart));
+        isNaN(total_jasa) ? $('#total_jasa').text(0) : $('#total_jasa').text(rubah_jasa(final_jasa));
 
     }
 
-    $(document).on('keyup', '#jumlah_jasa, #diskon_jasa, #jumlah_sparepart, #diskon_sparepart', function(){
+    $(document).on('keyup', '#jumlah_jasa, #jumlah_sparepart, #diskon_sparepart, #diskon_jasa, #ppn', function(){
         hitung_total_jasa();
     });
 
@@ -826,6 +862,49 @@
         $('#tombol_reset').hide();
         $('#total_rp').text('');
         $('#totalFr_rp').text('');
+      });
+
+      $('#jenis_invoice').change(function(){
+        let jenis_invoice = $(this).val();
+
+        if(jenis_invoice == 'fixed'){
+          $('#nomor_invoice').removeAttr('readonly').val('').attr({'placeholder' : 'Masukkan Nomor Invoice'}).focus();
+        }else if(jenis_invoice == 'estimasi'){
+          $('#nomor_invoice').removeAttr('placeholder').val('ESTIMASI').attr({'readonly' : ''});
+        }else if(jenis_invoice == 'tbo'){
+          $('#nomor_invoice').removeAttr('placeholder').val('TBO').attr({'readonly' : ''});
+        }
+      });
+
+      $(document).on('click', '#tombol_kirim', function(){
+        var nomor_invoice = $('#nomor_invoice').val();
+        if(nomor_invoice == '0'){
+          alert("Nomor Invoice Tidak Boleh 0");
+          $('#nomor_invoice').val('').focus();
+        }
+      });
+
+      // Nomor Invoice Tidak Bisa Tulis Spasi
+      $("#nomor_invoice").on({
+      keydown: function(e) {
+        if (e.which === 32)
+          return false;
+        },
+        keyup: function(){
+        this.value = this.value.toLowerCase();
+        },
+        change: function() {
+          this.value = this.value.replace(/\s/g, "");
+        }
+      });
+
+      // Nomor Invoice Tidak Boleh Diawali - (minus)
+      $('#tombol_kirim').on('click', function(){
+        var nomor_invoice = $('#nomor_invoice').val();
+        if(nomor_invoice.substr(0,1) == '-'){
+          alert("Nomor Invoice Tidak Boleh Diawali Tanda - (Minus)");
+          return false;
+        }
       });
 
     });

@@ -46,6 +46,7 @@ class P_telah_dibayar extends CI_Controller {
       'nomor_pengajuan' => $no_pengajuan
     ))->result_array();
     $data_file = $this->M_master->tampil_file('tbl_pengajuan_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
+    $data_file_bayar = $this->M_master->tampil_file('tbl_bayar_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
     $data_check = $this->M_master->tampil_check_no('tbl_check', array('nomor_pengajuan' => $no_pengajuan))->row_array();
     $data_check_file = $this->M_master->tampil_check_no('tbl_check_file', array('nomor_pengajuan' => $no_pengajuan))->result_array();
     $data_perdin = $this->M_master->tampil_perdin('tbl_pengajuan_perdin', array('nomor_pengajuan' => $no_pengajuan))->row_array();
@@ -77,6 +78,7 @@ class P_telah_dibayar extends CI_Controller {
       'data_pengajuan' => $data_pengajuan,
       'data_approve_history' => $data_approve_history,
       'data_file' => $data_file,
+      'data_file_bayar' => $data_file_bayar,
       'data_check' => $data_check,
       'data_check_file' => $data_check_file,
       'data_perdin' => $data_perdin,

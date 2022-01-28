@@ -1108,6 +1108,19 @@ class M_master extends CI_Model {
 		return $result;
 	}
 
+	// Tampil Penyelesaian Kekurangan Untuk Export Ke Leggen (BMHD)
+	public function tampil_pengajuan_tanggal_penyelesaian($tanggal){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE tanggal_proses_bayar_penyelesaian='$tanggal' AND status_bayar_penyelesaian='Proses Bayar' OR tanggal_proses_bayar_penyelesaian='$tanggal' AND status_bayar_penyelesaian='Telah Dibayar'");
+		return $result;
+	}
+
+
+	// Tampil Penyelesaian Kekurangan Untuk Export Ke Leggen (Payment)
+	public function tampil_pengajuan_tanggal_jfin_penyelesaian($tanggal){
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan WHERE tanggal_bayar_penyelesaian='$tanggal' AND status_bayar_penyelesaian='Telah Dibayar'");
+		return $result;
+	}
+
 	// Tampil File/Berkas Pendukung (Bisa Dipanggil Dimana Aja)
 	public function tampil_file($tbl, $where){
 		$result = $this->db->get_where($tbl, $where);
@@ -1158,7 +1171,7 @@ class M_master extends CI_Model {
 	// Tampil Pendingan Dokumen Pengajuan Masuk (By Departemen)
 	public function pendingan_dokumen($dept){
 		$result = $this->db->query("SELECT * FROM tbl_pengajuan WHERE
-			status_approve = 'final approved' AND dept_tujuan='$dept' AND status_dokumen!='done acc'
+			status_approve = 'final approved' AND dept_tujuan='$dept' AND status_dokumen!='done acc' AND revisi_noinv!='ya'
 			ORDER BY id_pengajuan DESC");
 		return $result;
 	}
@@ -1462,6 +1475,19 @@ class M_master extends CI_Model {
 		$this->db->where("tbl_bayar.status_bayar = 'Proses Bayar'");
 		$this->db->where($where);
 		$this->db->where("revisi_rekening != 'ya'");
+		$result = $this->db->get();
+
+		return $result;
+	}
+
+	public function pilih_cetak_penyelesaian($where){
+		// $result = $this->db->get_where($tbl, $where);
+
+		$this->db->select('tbl_penyelesaian_kekurangan.*');
+		$this->db->from('tbl_penyelesaian_kekurangan');
+		$this->db->where("tbl_penyelesaian_kekurangan.status_bayar_penyelesaian = 'Proses Bayar'");
+		$this->db->where($where);
+		$this->db->where("revisi_rekening_penyelesaian != 'ya'");
 		$result = $this->db->get();
 
 		return $result;

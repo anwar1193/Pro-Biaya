@@ -166,6 +166,7 @@ class Inquiry_pengajuan extends CI_Controller {
 			'nomor_pengajuan' => $no_pengajuan
 		))->result_array();
 		$data_file = $this->M_master->tampil_file('tbl_pengajuan_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
+		$data_file_bayar = $this->M_master->tampil_file('tbl_bayar_file', array('nomor_pengajuan'=>$no_pengajuan))->result_array();
 		$data_perdin = $this->M_master->tampil_perdin('tbl_pengajuan_perdin', array('nomor_pengajuan' => $no_pengajuan))->row_array();
 
 		$cabang = $this->libraryku->tampil_user()->cabang;
@@ -195,6 +196,7 @@ class Inquiry_pengajuan extends CI_Controller {
 			'data_pengajuan' => $data_pengajuan,
 			'data_approve_history' => $data_approve_history,
 			'data_file' => $data_file,
+			'data_file_bayar' => $data_file_bayar,
 			'data_perdin' => $data_perdin,
 			'data_byr' => $data_byr,
 			'frek_byr' => $frek_byr,
@@ -263,8 +265,8 @@ class Inquiry_pengajuan extends CI_Controller {
 	public function tambah_dokumen(){
 		date_default_timezone_set("Asia/Jakarta");
 		$no_pengajuan = $this->input->post('nomor_pengajuan');
-		// Simpan File Pengajuan
 
+		// Simpan File Pengajuan
 		$hari_ini = date("Y-m-d");
 
 		$folderUpload = "./file_upload/".$hari_ini;

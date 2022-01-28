@@ -213,6 +213,7 @@
                       <button class="btn btn-xs btn-success" id="pilih_bayar" data-toggle="modal" data-target="#modal-bayar"
                         data-id = "<?php echo $row_bayar['id'] ?>"
                         data-nopeng = "<?php echo $row_bayar['nomor_pengajuan'] ?>"
+                        data-ref_no = "<?php echo $row_bayar['ref_no'] ?>"
                         data-jumlah_bayar = "<?php echo $row_bayar['jumlah']+$row_bayar['ppn']-($row_bayar['pph23']+$row_bayar['pph42']+$row_bayar['pph21']) ?>"
                       >
                         <i class="fa fa-check"></i> Bayar Pengajuan
@@ -223,6 +224,7 @@
                       <button class="btn btn-xs btn-success" id="pilih_bayar" data-toggle="modal" data-target="#modal-bayar"
                         data-id = "<?php echo $row_bayar['id'] ?>"
                         data-nopeng = "<?php echo $row_bayar['nomor_pengajuan'] ?>"
+                        data-ref_no = "<?php echo $row_bayar['ref_no'] ?>"
                         data-jumlah_bayar = "<?php echo $row_bayar['jumlah_bayar']+$row_bayar['ppn_bayar']-($row_bayar['pph23_bayar']+$row_bayar['pph42_bayar']+$row_bayar['pph21_bayar']) ?>"
                       >
                         <i class="fa fa-check"></i> Bayar Pengajuan
@@ -290,7 +292,7 @@
 
           <div class="form-group">
             <label for="nik"></span> Tanggal Bayar :</label>
-            <input type="date" name="tanggal_rencana_bayar" class="form-control" autocomplete="off" id="tanggal_rencana_bayar" required min="<?php echo date('Y-m-d') ?>" max="2021-12-31">
+            <input type="date" name="tanggal_rencana_bayar" class="form-control" autocomplete="off" id="tanggal_rencana_bayar" required min="<?php echo date('Y-m-d') ?>" max="2022-12-31">
           </div>
 
         </div>
@@ -424,7 +426,7 @@
   <!-- Modal Bayar Pengajuan -->
   <form action="<?php echo base_url().'p_bayar_final/bayar' ?>" method="post" enctype="multipart/form-data">
   <div class="modal fade" id="modal-bayar">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -436,6 +438,7 @@
           <input type="text" name="id" id="id_bayar" hidden>
           <input type="text" name="nomor_pengajuan" id="nopeng" hidden>
           <input type="text" name="nomor_pymt" value="<?php echo $nojur_pymt ?>" hidden>
+          <input type="text" name="ref_no" id="ref_no" hidden>
 
           <!-- <div class="form-group">
             <label for="tanggal_bayar"></span> Jumlah (Sebelum Pajak) :</label>
@@ -454,6 +457,26 @@
 
             <!-- Total yang ada pemisah rupiah nya -->
             <span id="total_rp" style="font-weight: bold; font-size: 20px; padding: 5px;"></span>
+
+            <br><br>
+
+            <b>Upload Bukti Transfer (Optional) :</b>
+            <table class="table table-bordered" id="tableLoop">
+              <thead>
+                <tr class="bg-success">
+                  <th>No</th>
+                  <th>Upload File</th>
+                  <th>Nama File</th>
+                  <th class="text-center">
+                    <button class="btn btn-primary btn-xs" id="BarisBaru">
+                      <i class="fa fa-plus"></i> Tambah File
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody></tbody>
+            </table>
 
           </div>
 
@@ -532,6 +555,7 @@
         var nopeng = $(this).data('nopeng');
         var jml_bayar = $(this).data('jumlah_bayar');
         var pph23 = $(this).data('pph23');
+        var ref_no = $(this).data('ref_no');
 
         $('#id_bayar').val(id);
         $('#nopeng').val(nopeng);
@@ -541,6 +565,7 @@
         $('#pph21').val(pph21);
         $('#totals').val(jml_bayar);
         $('#total_rp').text(ubah_format(jml_bayar));
+        $('#ref_no').val(ref_no);
 
       });
 
@@ -629,3 +654,68 @@
     });
   </script>
   <!-- / Script Hitung Total Otomatis -->
+
+
+  <!-- Script Upload Multiple File -->
+<script type="text/javascript">
+
+$(document).ready(function(){
+  for(b=1; b<=1; b++){
+    barisBaru();
+  }
+  $('#BarisBaru').click(function(e){
+    e.preventDefault();
+    barisBaru();
+  });
+
+  $("tableLoop tbody").find('input[type=text]').filter(':visible:first').focus();
+});
+
+function barisBaru(){
+  $(document).ready(function(){
+    $("[data-toggle='tooltip'").tooltip();
+  });
+
+  var Nomor = $("#tableLoop tbody tr").length + 1;
+  var Baris = '<tr>';
+          Baris += '<td class="text-center">'+Nomor+'</td>';
+
+          Baris += '<td>';
+            Baris += '<input type="file" id="pilih_file" name="files[]" class="form-control" placeholder="Upload File">';
+          Baris += '</td>';
+
+          Baris += '<td>';
+            Baris += '<input type="text" name="nama_file[]" class="form-control" placeholder="Nama File" id="nama_file" autocomplete="off">';
+          Baris += '</td>';
+
+          Baris += '<td class="text-center">';
+            Baris += '<a class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Baris" id="HapusBaris"><i class="fa fa-times"></i></a>';
+          Baris += '</td>';
+      Baris += '</tr>';
+
+  $("#tableLoop tbody").append(Baris);
+  $("#tableLoop tbody tr").each(function(){
+    $(this).find('td:nth-child(2) input').focus();
+  });
+
+}
+
+$(document).on('click', '#HapusBaris', function(e){
+  e.preventDefault();
+  var Nomor = 1;
+  $(this).parent().parent().remove();
+  $('tableLoop tbody tr').each(function(){
+    $(this).find('td:nth-child(1)').html(Nomor);
+    Nomor++;
+  });
+});
+
+
+// Jika file upload di klik, nama file akan jadi required/wajib
+$(document).ready(function() {
+  $("#pilih_file").click(function() {
+    $("#nama_file").attr("required","");
+  })
+});
+
+</script>
