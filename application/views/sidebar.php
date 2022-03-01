@@ -792,6 +792,8 @@
 
         <?php if($level=='admin'){ ?>
         <li class="<?= $this->uri->segment(1)=='data_user' ? 'active' : null ?>"><a href="<?php echo base_url().'data_user' ?>"><i class="fa fa-user"></i> Menejemen User</a></li>
+
+        <li class="<?= $this->uri->segment(1)=='data_user_alternate' ? 'active' : null ?>"><a href="<?php echo base_url().'data_user_alternate' ?>"><i class="fa fa-user-secret"></i> User Alternate</a></li>
         <?php } ?>
 
         <li class="<?= $this->uri->segment(1)=='ganti_password' ? 'active' : null ?>"><a href="<?php echo base_url().'ganti_password' ?>"><i class="fa fa-key"></i> <span>Ganti Password</span></a></li>

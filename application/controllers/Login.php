@@ -87,6 +87,9 @@ class Login extends CI_Controller {
 		$login_ip = get_client_ip();
 		$login_browser = get_client_browser();
 
+		$jenis_user = $row_login['jenis_user'];
+		$status_user = $row_login['status_user'];
+
 		if($sedang_login == 'ya'){ //jika user tsb sedang login
 
 			echo '<script>alert("Akun Anda Sedang Login Di Device Lain atau Lupa Logout, Silahkan Hubungi Tim Aplikasi");window.location="index"</script>';
@@ -94,6 +97,12 @@ class Login extends CI_Controller {
 		}else{ // jika tidak sedang login, lanjut ke periksa
 
 			if($cek>0){
+
+				// Validasi jika user yang digunakan adalah user alternate
+				if($jenis_user == 'alternate' && $status_user != 'aktif'){
+					echo '<script>alert("Anda menggunakan akun alternate yang status nya Nonaktif, Silahkan Hubungi Tim Aplikasi");window.location="index"</script>';
+					exit;
+				}
 
 				if($pwd == 'Profi@123'){ //jika password standar, arahkan ke ganti password
 					$row = $result->row_array();

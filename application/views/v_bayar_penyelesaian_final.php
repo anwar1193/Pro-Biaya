@@ -239,7 +239,7 @@ $level = $this->libraryku->tampil_user()->level;
 
           <div class="form-group">
             <label for="nik"></span> Tanggal Bayar :</label>
-            <input type="date" name="tanggal_rencana_bayar" class="form-control" autocomplete="off" id="tanggal_rencana_bayar" required min="<?php echo date('Y-m-d') ?>" max="2021-12-31">
+            <input type="date" name="tanggal_rencana_bayar" class="form-control" autocomplete="off" id="tanggal_rencana_bayar" required min="<?php echo date('Y-m-d') ?>" max="2022-12-31">
           </div>
 
         </div>

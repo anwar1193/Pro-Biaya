@@ -7,12 +7,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Data User
+        Data User Alternate
         <small>PT Procar Int'l Finance</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data User</li>
+        <li class="active">Data User Alternate</li>
       </ol>
     </section>
 
@@ -25,7 +25,7 @@
               <h3 class="box-title">View Data</h3>
 
               <span style="display:block; position:absolute; right:10px; top:10px">
-                <a href="<?php echo base_url().'data_user/tambah' ?>" class="btn btn-info btn-xs">
+                <a href="<?php echo base_url().'data_user_alternate/tambah' ?>" class="btn btn-info btn-xs">
                   <i class="fa fa-plus"></i> Tambah User
                 </a>
               </span>
@@ -37,6 +37,7 @@
                 <thead>
                 <tr>
                   <th>NO</th>
+                  <th>Alternate To</th>
                   <th>Level</th>
                   <th>NIK</th>
                   <th>Nama</th>
@@ -45,9 +46,7 @@
                   <th>Email</th>
                   <th>Username</th>
                   <th>Atasan</th>
-                  <th width="10%">Last Login</th>
-                  <th width="10%">Last Clearlog</th>
-                  <th width="10%">Clearlog IP</th>
+                  <th>Status User</th>
                   <th style="text-align: center" width="10%">Action</th>
                 </tr>
                 </thead>
@@ -58,6 +57,7 @@
                 ?>
                 <tr>
                   <td><?php echo $no++; ?></td>
+                  <td><?php echo $row_user['alternate_untuk'] ?></td>
                   <td><?php echo $row_user['level'] ?></td>
                   <td><?php echo $row_user['nik'] ?></td>
                   <td><?php echo $row_user['nama_lengkap'] ?></td>
@@ -66,34 +66,34 @@
                   <td><?php echo $row_user['email'] ?></td>
                   <td><?php echo $row_user['username'] ?></td>
                   <td><?php echo $row_user['atasan'] ?></td>
+                  <td class="text-center">
+                    <?php if($row_user['status_user'] == 'aktif'){ ?>
+                        <span style="background-color:green; color:white; padding:2px; border-radius:5px">
+                            <?php echo $row_user['status_user'] ?>
+                        </span> <br>
 
-                  <td>
-                    <?php echo $row_user['last_login'] ?><br>
+                        <a href="<?php echo base_url().'data_user_alternate/nonaktifkan_user/'.$row_user['id'] ?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin untuk menonaktifkan user ini?')">
+                            <i class="fa fa-minus-square"></i> Nonaktifkan User
+                        </a>
+                    <?php }else{ ?>
+                        <span style="background-color:red; color:white; padding:2px; border-radius:5px">
+                            <?php echo $row_user['status_user'] ?>
+                        </span> <br>
 
-                    <a class="btn btn-warning btn-xs" href="<?php echo base_url().'data_user/log_login/'.$row_user['id'] ?>" onclick="window.open(&apos;&apos;, &apos;popupwindow&apos;, &apos;scrollbars=yes, width=900, height=500&apos;);return true" target="popupwindow">
-                        <i class="fa fa-eye"></i> Log Login
-                    </a>
-                  </td>
-
-                  <td>
-                    <?php echo $row_user['clearlog_waktu'] ?>
-
-                    <?php if($row_user['clearlog_waktu'] != ''){ ?>
-                      <a class="btn btn-info btn-xs" href="<?php echo base_url().'data_user/history_clearlog/'.$row_user['id'] ?>" onclick="window.open(&apos;&apos;, &apos;popupwindow&apos;, &apos;scrollbars=yes, width=900, height=500&apos;);return true" target="popupwindow">
-                        <i class="fa fa-eye"></i> History
-                      </a>
+                        <a href="<?php echo base_url().'data_user_alternate/aktifkan_user/'.$row_user['id'] ?>" class="btn btn-success btn-xs" onclick="return confirm('Apakah anda yakin untuk mengaktifkan user ini?')">
+                            <i class="fa fa-check-circle"></i> Aktifkan User
+                        </a>
                     <?php } ?>
-
                   </td>
 
-                  <td><?php echo $row_user['clearlog_ip'].'<br>('.$row_user['clearlog_browser'].')' ?></td>
+                  
                   <td style="text-align: center;">
 
-                    <a href="<?php echo base_url().'data_user/edit/'.$row_user['id'] ?>" class="btn btn-success btn-xs">
+                    <a href="<?php echo base_url().'data_user_alternate/edit/'.$row_user['id'] ?>" class="btn btn-success btn-xs">
                       <i class="fa fa-edit"></i> Edit
                     </a>
 
-                    <a href="<?php echo base_url().'data_user/hapus/'.$row_user['id'] ?>" class="btn btn-danger btn-xs" onclick="return confirm('Anda Yakin?')">
+                    <a href="<?php echo base_url().'data_user_alternate/hapus/'.$row_user['id'] ?>" class="btn btn-danger btn-xs" onclick="return confirm('Anda Yakin?')">
                       <i class="fa fa-trash"></i> Hapus
                     </a>
 

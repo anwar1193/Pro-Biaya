@@ -49,6 +49,8 @@ $level = $this->libraryku->tampil_user()->level;
               <th style="text-align: center">Realisasi</th>
               <th style="text-align: center">Kurang Bayar</th>
               <th style="text-align: center">Tanggal Minta Transfer</th>
+              <th style="text-align: center">Tanggal BMHD</th>
+              <th style="text-align: center">Tanggal Payment</th>
               <th style="text-align: center">PIC Reviewer</th>
               <th style="text-align: center">Status Penyelesaian</th>
               <th style="text-align: center">Status Bayar</th>
@@ -70,6 +72,8 @@ $level = $this->libraryku->tampil_user()->level;
               <td style="text-align: right;"><?php echo number_format($row_review['realisasi'],0,',','.') ?></td>
               <td style="text-align: right;"><?php echo number_format($row_review['kurang_bayar'],0,',','.') ?></td>
               <td><?php echo date('d-m-Y', strtotime($row_review['tanggal_request_transfer'])) ?></td>
+              <td><?php echo date('d-m-Y', strtotime($row_review['tanggal_proses_bayar_penyelesaian'])) ?></td>
+              <td><?php echo date('d-m-Y', strtotime($row_review['tanggal_bayar_penyelesaian'])) ?></td>
               <td><?php echo $row_review['departemen_tujuan'] ?></td>
               <td style="font-weight:bold">
                 <?php echo $row_review['status_approve_penyelesaian'] ?> 

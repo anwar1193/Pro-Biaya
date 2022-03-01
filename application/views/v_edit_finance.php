@@ -187,6 +187,9 @@
                     <option value="Permata">Permata</option>
                     <option value="Danamon">Danamon</option>
                     <option value="BRI">BRI</option>
+                    <option value="BSI">BSI</option>
+                    <option value="BCA Syariah">BCA Syariah</option>
+                    <option value="NOBU">NOBU</option>
                   </select>
                 </div>
 
