@@ -37,15 +37,13 @@
                 <thead>
                 <tr>
                   <th>NO</th>
+                  <th>Username</th>
                   <th>Alternate To</th>
                   <th>Level</th>
                   <th>NIK</th>
                   <th>Nama</th>
                   <th>Cabang</th>
                   <th>Dept</th>
-                  <th>Email</th>
-                  <th>Username</th>
-                  <th>Atasan</th>
                   <th>Status User</th>
                   <th style="text-align: center" width="10%">Action</th>
                 </tr>
@@ -57,15 +55,19 @@
                 ?>
                 <tr>
                   <td><?php echo $no++; ?></td>
-                  <td><?php echo $row_user['alternate_untuk'] ?></td>
+                  <td><?php echo $row_user['username'] ?></td>
+
+                  <td>
+                    <span style="background-color:orange; color:white; padding:2px; border-radius:5px">
+                      <?php echo $row_user['alternate_untuk'] ?>
+                    </span>
+                  </td>
+
                   <td><?php echo $row_user['level'] ?></td>
                   <td><?php echo $row_user['nik'] ?></td>
                   <td><?php echo $row_user['nama_lengkap'] ?></td>
                   <td><?php echo $row_user['cabang'] ?></td>
                   <td><?php echo $row_user['departemen'] ?></td>
-                  <td><?php echo $row_user['email'] ?></td>
-                  <td><?php echo $row_user['username'] ?></td>
-                  <td><?php echo $row_user['atasan'] ?></td>
                   <td class="text-center">
                     <?php if($row_user['status_user'] == 'aktif'){ ?>
                         <span style="background-color:green; color:white; padding:2px; border-radius:5px">

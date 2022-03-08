@@ -92,7 +92,7 @@ class Login extends CI_Controller {
 
 		if($sedang_login == 'ya'){ //jika user tsb sedang login
 
-			echo '<script>alert("Akun Anda Sedang Login Di Device Lain atau Lupa Logout, Silahkan Hubungi Tim Aplikasi");window.location="index"</script>';
+			echo '<script>alert("Akun Anda Sedang Login Di Device Lain atau Lupa Logout, Silahkan Klik Tombol Clear Session Di Halaman Login");window.location="index"</script>';
 
 		}else{ // jika tidak sedang login, lanjut ke periksa
 
@@ -115,7 +115,8 @@ class Login extends CI_Controller {
 						'jabatan_khusus' => $row['jabatan_khusus'],
 						'atasan' => $row['atasan'],
 						'nama_kadiv' => $row['nama_kadiv'],
-						'password' => $row['password']
+						'password' => $row['password'],
+						'jenis_user' => $row['jenis_user']
 					);
 					$this->session->set_userdata($data_login);
 

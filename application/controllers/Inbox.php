@@ -167,6 +167,7 @@ class Inbox extends CI_Controller {
 		$nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
 		$direktur = $this->libraryku->tampil_user()->atasan;
 		$kadiv = $this->libraryku->tampil_user()->nama_kadiv;
+		$jenis_user = $this->libraryku->tampil_user()->jenis_user;
 		$data_pengajuan = $this->M_master->tampil_pengajuan_detail($id)->row_array();
 		$no_pengajuan = $data_pengajuan['nomor_pengajuan'];
 
@@ -578,7 +579,8 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
-					'note' => $this->input->post('note')
+					'note' => $this->input->post('note'),
+					'status_alternate' => $jenis_user
 				));
 				
 
@@ -590,7 +592,8 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
-					'note' => $this->input->post('note')
+					'note' => $this->input->post('note'),
+					'status_alternate' => $jenis_user
 				));
 
 			}elseif($level=='Department Head'){ // Jika Yang Approved Dept Head
@@ -622,7 +625,8 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
-									'note' => $this->input->post('note')
+									'note' => $this->input->post('note'),
+									'status_alternate' => $jenis_user
 								));
 
 							}else{ //jika tidak punya kadiv
@@ -647,7 +651,8 @@ class Inbox extends CI_Controller {
 										'approved_by' => 'dept head pic',
 										'nama_pengapprove' => $nama_lengkap,
 										'tanggal' => date('Y-m-d'),
-										'note' => $this->input->post('note')
+										'note' => $this->input->post('note'),
+										'status_alternate' => $jenis_user
 									));
 
 								}else{ //jika tidak melebihi limit kadiv
@@ -657,7 +662,8 @@ class Inbox extends CI_Controller {
 										'approved_by' => 'dept head pic',
 										'nama_pengapprove' => $nama_lengkap,
 										'tanggal' => date('Y-m-d'),
-										'note' => $this->input->post('note')
+										'note' => $this->input->post('note'),
+										'status_alternate' => $jenis_user
 									));
 								}
 							}
@@ -670,7 +676,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
-								'note' => $this->input->post('note')
+								'note' => $this->input->post('note'),
+								'status_alternate' => $jenis_user
 							));
 						}
 
@@ -681,7 +688,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'dept head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}
 
@@ -700,7 +708,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
-								'note' => $this->input->post('note')
+								'note' => $this->input->post('note'),
+								'status_alternate' => $jenis_user
 							));
 
 						}else{ //jika tidak punya kadiv
@@ -716,7 +725,8 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
-									'note' => $this->input->post('note')
+									'note' => $this->input->post('note'),
+									'status_alternate' => $jenis_user
 								));
 
 							}else{ //jika tidak melebihi limit kadiv
@@ -726,7 +736,8 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
-									'note' => $this->input->post('note')
+									'note' => $this->input->post('note'),
+									'status_alternate' => $jenis_user
 								));
 							}
 								
@@ -740,7 +751,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'dept head pic',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}
 				}
@@ -777,7 +789,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'division head',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
-								'note' => $this->input->post('note')
+								'note' => $this->input->post('note'),
+								'status_alternate' => $jenis_user
 							));
 						}else{
 							$this->M_master->simpan_approve_history('tbl_approved_history', array(
@@ -786,7 +799,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'division head',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
-								'note' => $this->input->post('note')
+								'note' => $this->input->post('note'),
+								'status_alternate' => $jenis_user
 							));
 						}
 
@@ -797,7 +811,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}
 
@@ -810,7 +825,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}else{
 						$this->M_master->simpan_approve_history('tbl_approved_history', array(
@@ -819,7 +835,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}
 
@@ -846,7 +863,8 @@ class Inbox extends CI_Controller {
 						'approved_by' => 'director',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
-						'note' => $this->input->post('note')
+						'note' => $this->input->post('note'),
+						'status_alternate' => $jenis_user
 					));
 
 				}elseif($dir_login != $dir_asal AND $dir_login == $dir_tujuan){ //sebagai direktur tujuan
@@ -858,7 +876,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 						$this->M_master->simpan_approve_history('tbl_approved_history', array(
@@ -867,7 +886,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}
 
@@ -880,7 +900,8 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
-							'note' => $this->input->post('note')
+							'note' => $this->input->post('note'),
+							'status_alternate' => $jenis_user
 						));
 					}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 
@@ -893,7 +914,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'director',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
-								'note' => $this->input->post('note')
+								'note' => $this->input->post('note'),
+								'status_alternate' => $jenis_user
 							));
 						}else{ //kalau bukan internal audit, selesai
 							$this->M_master->simpan_approve_history('tbl_approved_history', array(
@@ -902,7 +924,8 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'director',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
-								'note' => $this->input->post('note')
+								'note' => $this->input->post('note'),
+								'status_alternate' => $jenis_user
 							));
 						}
 						
@@ -924,7 +947,8 @@ class Inbox extends CI_Controller {
 						'approved_by' => 'director finance',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
-						'note' => $this->input->post('note')
+						'note' => $this->input->post('note'),
+						'status_alternate' => $jenis_user
 					));
 				}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 					$this->M_master->simpan_approve_history('tbl_approved_history', array(
@@ -933,7 +957,8 @@ class Inbox extends CI_Controller {
 						'approved_by' => 'director finance',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
-						'note' => $this->input->post('note')
+						'note' => $this->input->post('note'),
+						'status_alternate' => $jenis_user
 					));
 				}
 
@@ -945,7 +970,8 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
-					'note' => $this->input->post('note')
+					'note' => $this->input->post('note'),
+					'status_alternate' => $jenis_user
 				));
 
 			}

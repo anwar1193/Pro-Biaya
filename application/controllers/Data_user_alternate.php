@@ -40,7 +40,7 @@ class Data_user_alternate extends CI_Controller {
 		$data_user = $this->M_master->tampil_user()->result_array();
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
-		$this->load->view('v_tambah_user', array(
+		$this->load->view('v_tambah_user_alternate', array(
 			'data_karyawan' => $data_karyawan,
 			'data_level' => $data_level,
 			'data_user' => $data_user
@@ -49,68 +49,86 @@ class Data_user_alternate extends CI_Controller {
 	}
 
 	public function simpan(){
+		$alternate_untuk_username = $this->input->post('alternate_untuk_username');
+		$user_alternate_nik = $this->input->post('user_alternate_nik');
+		$user_alternate_nama = $this->input->post('user_alternate_nama');
+
+		// Copy data user asli untuk data user alternate
+		$data_user_asli = $this->db->query("SELECT * FROM tbl_user WHERE username='$alternate_untuk_username'")->row_array();
+		$level_asli = $data_user_asli['level'];
+		$cabang_asli = $data_user_asli['cabang'];
+		$divisi_asli = $data_user_asli['divisi'];
+		$departemen_asli = $data_user_asli['departemen'];
+		$nomor_wa_asli = $data_user_asli['nomor_wa'];
+		$email_asli = $data_user_asli['email'];
+		$atasan_asli = $data_user_asli['atasan'];
+		$level_atasan_asli = $data_user_asli['level_atasan'];
+
 		$result = $this->M_master->simpan_user('tbl_user', array(
-			'level' => $this->input->post('level'),
-			'nik' => $this->input->post('nik'),
-			'nama_lengkap' => $this->input->post('nama'),
-			'cabang' => $this->input->post('cabang'),
-			'divisi' => $this->input->post('divisi'),
-			'departemen' => $this->input->post('departemen'),
-			'nomor_wa' => $this->input->post('nomor_wa'),
-			'email' => $this->input->post('email'),
+			'level' => $level_asli,
+			'nik' => $user_alternate_nik,
+			'nama_lengkap' => $user_alternate_nama,
+			'cabang' => $cabang_asli,
+			'divisi' => $divisi_asli,
+			'departemen' => $departemen_asli,
+			'nomor_wa' => $nomor_wa_asli,
+			'email' => $email_asli,
 			'username' => $this->input->post('username'),
 			'password' => sha1($this->input->post('password')),
-			'atasan' => $this->input->post('atasan'),
-			'level_atasan' => $this->input->post('level_atasan')
+			'atasan' => $atasan_asli,
+			'level_atasan' => $level_atasan_asli,
+			'jenis_user' => 'alternate',
+			'alternate_untuk' => $alternate_untuk_username,
+			'status_user' => 'aktif'
 		));
 
 		if($result>0){
-			echo '<script>alert("Data User Tersimpan");window.location="index"</script>';
+			echo '<script>alert("Data User Alternate Tersimpan");window.location="index"</script>';
 		}
 	}
 
 	public function edit($id){
 		$data_jb = $this->M_master->tampil_jenis_biaya()->result_array();
 		$data_karyawan = $this->M_master->tampil_karyawan()->result_array();
-		$data_level = $this->M_master->tampil_level()->result_array();
 		$data_user = $this->M_master->tampil_user()->result_array();
 		$data_user_edit = $this->M_master->tampil_user_id('tbl_user', array('id' => $id))->row_array();
 
+		// cari nama lengkap alternate untuk
+		$alternate_untuk = $data_user_edit['alternate_untuk'];
+		$cari_nama = $this->db->query("SELECT * FROM tbl_user WHERE username='$alternate_untuk'")->row_array();
+		$alternate_untuk_nama = $cari_nama['nama_lengkap'];
+
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
-		$this->load->view('v_edit_user', array(
+		$this->load->view('v_edit_user_alternate', array(
 			'data_karyawan' => $data_karyawan,
-			'data_level' => $data_level,
 			'data_user' => $data_user,
-			'data_user_edit' => $data_user_edit
+			'data_user_edit' => $data_user_edit,
+			'alternate_untuk_nama' => $alternate_untuk_nama
 		));
 		$this->load->view('footer');
 	}
 
 	public function update(){
+		$user_alternate_nik = $this->input->post('user_alternate_nik');
+		$user_alternate_nama = $this->input->post('user_alternate_nama');
+
 		$result = $this->M_master->update_user('tbl_user', array(
-			'level' => $this->input->post('level'),
-			'nik' => $this->input->post('nik'),
-			'nama_lengkap' => $this->input->post('nama'),
-			'cabang' => $this->input->post('cabang'),
-			'divisi' => $this->input->post('divisi'),
-			'departemen' => $this->input->post('departemen'),
-			'nomor_wa' => $this->input->post('nomor_wa'),
-			'email' => $this->input->post('email'),
-			'username' => $this->input->post('username'),
-			'atasan' => $this->input->post('atasan'),
-			'level_atasan' => $this->input->post('level_atasan')
+			'nik' => $user_alternate_nik,
+			'nama_lengkap' => $user_alternate_nama,
+			'username' => $this->input->post('username')
 		), array('id' => $this->input->post('id')));
 
 		if($result>0){
-			echo '<script>alert("Data User Diubah");window.location="index"</script>';
+			echo '<script>alert("Data User Alternate Diubah");window.location="index"</script>';
 		}
 	}
 
 	public function hapus($id){
 		$result = $this->M_master->hapus_user('tbl_user', array('id' => $id));
 		if($result>0){
-			redirect('data_user');
+			$this->session->set_flashdata('pesan','User Alternate Berhasil Dihapus');
+			redirect('data_user_alternate');
 		}
 	}
 
@@ -120,7 +138,7 @@ class Data_user_alternate extends CI_Controller {
 		), array('id' => $id));
 
 		$this->session->set_flashdata('pesan','Reset Password Berhasil');
-		redirect('data_user');
+		redirect('data_user_alternate');
 	}
 
 	public function history_clearlog($id){

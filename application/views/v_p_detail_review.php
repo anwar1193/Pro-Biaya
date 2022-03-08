@@ -759,7 +759,12 @@
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
                                 <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
                                 <br>
-                                :: <?php echo $row['nama_pengapprove'] ?> ::
+                                :: 
+                                  <?php echo $row['nama_pengapprove'] ?> 
+                                  <?php if($row['status_alternate'] == 'alternate'){ ?>
+                                    (USER ALTERNATE)
+                                  <?php } ?>
+                                ::
                                 <br>
                                 Note : "<?php echo $row['note'] ?>"
                               </li>
