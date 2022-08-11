@@ -129,6 +129,7 @@
               <option value="Permata">Permata</option>
               <option value="Danamon">Danamon</option>
               <option value="BRI">BRI</option>
+              <option value="BSI">BSI</option>
             </select>
           </div>
 

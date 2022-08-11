@@ -44,8 +44,10 @@
 
     if($departemen=='BRANCH'){ //biar cabang tampil nama_bagiannya
       $dept = $level;
+      $departemen_update = $level;
     }else{
       $dept = $departemen;
+      $departemen_update = $this->libraryku->tampil_user()->departemen_update;
     }
 
   ?>
@@ -120,7 +122,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="bagian">Bagian (Departemen) :</label>
-                      <input type="text" name="bagian" value="<?php echo $dept ?>" class="form-control" readonly>
+                      <input type="text" name="bagian" value="<?php echo $dept ?>" hidden>
+                      <input type="text" value="<?php echo $departemen_update ?>" class="form-control" readonly>
                     </div>
                   </div>
                 </div>
@@ -1939,9 +1942,9 @@
         if (e.which === 32)
           return false;
         },
-        keyup: function(){
-        this.value = this.value.toLowerCase();
-        },
+        // keyup: function(){
+        // this.value = this.value.toLowerCase();
+        // },
         change: function() {
           this.value = this.value.replace(/\s/g, "");
         }

@@ -100,6 +100,12 @@
         </tr>
 
         <tr>
+          <th style="text-align: right;">PPH 4(2)</th>
+          <th>:</th>
+          <td><?php echo number_format($data_pengajuan['pph42'],0,',','.') ?></td>
+        </tr>
+
+        <tr>
           <th style="text-align: right;">Total</th>
           <th>:</th>
           <td><?php echo number_format($data_pengajuan['jumlah']+$data_pengajuan['ppn']-($data_pengajuan['pph23'] + $data_pengajuan['pph42'] + $data_pengajuan['pph21']),0,',','.') ?></td>

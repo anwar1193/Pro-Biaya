@@ -111,6 +111,7 @@ class Login extends CI_Controller {
 						'nama_lengkap' => $row['nama_lengkap'],
 						'cabang' => $row['cabang'],
 						'departemen' => $row['departemen'],
+						'departemen_update' => $row['departemen_update'],
 						'level' => $row['level'],
 						'jabatan_khusus' => $row['jabatan_khusus'],
 						'atasan' => $row['atasan'],
@@ -118,7 +119,7 @@ class Login extends CI_Controller {
 						'password' => $row['password'],
 						'jenis_user' => $row['jenis_user']
 					);
-					$this->session->set_userdata($data_login);
+					$this->session->set_userdata('login_probiaya', $data_login);
 
 					// Ubah status sedang_login di tbl_user
 					$id_user = $row['id'];
@@ -139,13 +140,15 @@ class Login extends CI_Controller {
 						'nama_lengkap' => $row['nama_lengkap'],
 						'cabang' => $row['cabang'],
 						'departemen' => $row['departemen'],
+						'departemen_update' => $row['departemen_update'],
 						'level' => $row['level'],
 						'jabatan_khusus' => $row['jabatan_khusus'],
 						'atasan' => $row['atasan'],
 						'nama_kadiv' => $row['nama_kadiv'],
-						'password' => $row['password']
+						'password' => $row['password'],
+						'jenis_user' => $row['jenis_user']
 					);
-					$this->session->set_userdata($data_login);
+					$this->session->set_userdata('login_probiaya', $data_login);
 
 					// Ubah status sedang_login di tbl_user
 					$id_user = $row['id'];
@@ -170,13 +173,13 @@ class Login extends CI_Controller {
 	}
 
 	public function logout(){
-		$data_login = array('id','nama_lengkap','level');
+		$data_login = array('id','nama_lengkap','level', 'cabang', 'departemen', 'departemen_update', 'level', 'jabatan_khusus', 'atasan', 'nama_kadiv', 'password', 'jenis_user');
 
 		// Ubah status sedang_login di tbl_user
 		$id_user = $this->libraryku->tampil_user()->id;
 		$this->db->query("UPDATE tbl_user SET sedang_login='' WHERE id=$id_user");
 
-		$this->session->unset_userdata($data_login);
+		$this->session->unset_userdata('login_probiaya', $data_login);
 		redirect('login');
 	}
 

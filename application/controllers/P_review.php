@@ -156,6 +156,9 @@ class P_review extends CI_Controller {
 		$q_tp = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$nmr_pengajuan'");
 		$tp_trans = $q_tp->num_rows();
 
+		$jam_sekarang = date('H:i:s');
+		$nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
+
 		// buat simpan ke tbl_check dan update status_check di tbl_pengajuan (tambah field status_check dulu)
 		$result = $this->M_master->simpan_pengajuan('tbl_check', array(
 			'id_pengajuan' => $this->input->post('id'),
@@ -239,11 +242,14 @@ class P_review extends CI_Controller {
 					'total' => $this->input->post('total'),
 					'status_check' => 'Checked',
 					'checked_by' => $departemen,
+					'checked_name' => $nama_lengkap,
 					'checked_level' => 'PIC',
 					'checked_on' => date('Y-m-d'),
+					'checked_time' => $jam_sekarang,
 					'balik_lagi' => 'Ya',
 					'ket_balik' => $this->input->post('ket_balik'),
-					'nomor_jurnal' => $this->input->post('nomor_jurnal')
+					'nomor_jurnal' => $this->input->post('nomor_jurnal'),
+					'minta_bukti_transfer' => $this->input->post('minta_bukti_transfer')
 				), array('nomor_pengajuan' => $this->input->post('nomor_pengajuan')));
 
 
@@ -278,9 +284,12 @@ class P_review extends CI_Controller {
 					'total' => $this->input->post('total'),
 					'status_check' => 'Checked',
 					'checked_by' => $departemen,
+					'checked_name' => $nama_lengkap,
 					'checked_level' => 'PIC',
 					'checked_on' => date('Y-m-d'),
-					'nomor_jurnal' => $this->input->post('nomor_jurnal')
+					'checked_time' => $jam_sekarang,
+					'nomor_jurnal' => $this->input->post('nomor_jurnal'),
+					'minta_bukti_transfer' => $this->input->post('minta_bukti_transfer')
 				), array('nomor_pengajuan' => $this->input->post('nomor_pengajuan')));
 
 				$this->session->set_flashdata('pesan','Pengajuan Berhasil Di Verifikasi');
@@ -715,6 +724,29 @@ class P_review extends CI_Controller {
 		// Alert Jika Proses Berhasil
 		$this->session->set_flashdata('pesan','Reject Data Berhasil');
 		redirect('p_review/detail/'.$id_pengajuan);
+	}
+
+
+	public function ubah_rekening(){
+		$no_pengajuan = $this->input->post('nomor_pengajuan');
+		$bank_penerima = $this->input->post('bank_penerima');
+		$norek_penerima = $this->input->post('norek_penerima');
+		$atas_nama = $this->input->post('atas_nama');
+
+		// cari id pengajuan untuk redirect halaman
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_pengajuan WHERE nomor_pengajuan='$no_pengajuan'")->row_array();
+		$id_pengajuan = $data_pengajuan['id_pengajuan'];
+
+		$result = $this->M_master->update_pengajuan('tbl_pengajuan', array(
+			'bank_penerima' => $bank_penerima,
+			'norek_penerima' => $norek_penerima,
+			'atas_nama' => $atas_nama
+		), array('id_pengajuan' => $id_pengajuan));
+
+		if($result>0){
+			$this->session->set_flashdata('pesan','Update Rekening Berhasil');
+			redirect('p_review/detail/'.$id_pengajuan);
+		}
 	}
 
 }

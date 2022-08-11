@@ -101,13 +101,18 @@
                   // cari frekuensi bayar by nomor pengajuan
                   $frek_byr = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan'")->num_rows();
 
+                  // Yang tampil di view, field departemen update
+                  $bagian = $row_bayar['bagian'];
+                  $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                  $nama_departemen_update = $data_departemen['nama_departemen_update'];
+
                 ?>
                 <tr style="text-align: center">
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_bayar['tanggal_minta_bayar'])) ?></td>
                   <td><?php echo $row_bayar['nomor_pengajuan'] ?></td>
                   <td><?php echo $row_bayar['cabang'] ?></td>
-                  <td><?php echo $row_bayar['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update ?></td>
                   <td><?php echo $row_bayar['jenis_biaya'] ?></td>
                   <td><?php echo $row_bayar['sub_biaya'] ?></td>
 

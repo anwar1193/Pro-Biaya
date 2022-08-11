@@ -181,15 +181,10 @@
                 <div class="form-group">
                   <label for="bank_penerima">Bank Penerima :</label>
                   <select class="form-control" name="bank_penerima">
-                    <option value="Mandiri">Mandiri</option>
-                    <option value="BCA">BCA</option>
-                    <option value="Mega">Mega</option>
-                    <option value="Permata">Permata</option>
-                    <option value="Danamon">Danamon</option>
-                    <option value="BRI">BRI</option>
-                    <option value="BSI">BSI</option>
-                    <option value="BCA Syariah">BCA Syariah</option>
-                    <option value="NOBU">NOBU</option>
+                    <option value="<?php echo $data_pengajuan['bank_penerima']; ?>"><?php echo $data_pengajuan['bank_penerima']; ?></option>
+                    <?php foreach($data_bank_pengaju as $row_bank){ ?>
+                      <option value="<?php echo $row_bank['nama_bank']; ?>"><?php echo $row_bank['nama_bank']; ?></option>
+                    <?php } ?>
                   </select>
                 </div>
 

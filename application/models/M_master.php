@@ -1022,7 +1022,7 @@ class M_master extends CI_Model {
 	}
 
 	public function tampil_bayar_penyelesaian(){
-		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' AND tbl_penyelesaian_kekurangan.status_bayar_penyelesaian=''");
+		$result = $this->db->query("SELECT * FROM tbl_penyelesaian_kekurangan INNER JOIN tbl_pengajuan USING(nomor_pengajuan) WHERE (tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified' OR tbl_penyelesaian_kekurangan.status_verifikasi_penyelesaian='Verified By ACC') AND tbl_penyelesaian_kekurangan.status_bayar_penyelesaian=''");
 		return $result;
 	}
 
@@ -1250,7 +1250,8 @@ class M_master extends CI_Model {
 			level_pengaju='Departement PIC' AND status_approve='approved' AND approved_by='division head' AND kadiv_asal!='' AND bagian!='$departemen' AND dept_tujuan='$departemen' OR
 
 			-- sebagai departemen asal
-			level_pengaju='Departement PIC' AND bagian='$departemen' AND status_approve='on proccess' AND jalur_khusus='$jabatan_khusus' OR
+			-- level_pengaju='Departement PIC' AND bagian='$departemen' AND status_approve='on proccess' AND jalur_khusus='$jabatan_khusus' OR
+			level_pengaju='Departement PIC' AND bagian='$departemen' AND status_approve='on proccess' OR
 
 			-- jika balik lagi
 			status_approve='final approved' AND nama_pengapprove='$nama_lengkap' AND balik_lagi='Ya' AND dept_tujuan='$departemen'
@@ -1513,7 +1514,7 @@ class M_master extends CI_Model {
 	// Ranah Tampil Whatsapp Blast.................................................................
 
 	public function tampil_wa_blast(){
-		$result = $this->db->query("SELECT * FROM tbl_pengajuan WHERE wa_blast='on'");
+		$result = $this->db->query("SELECT * FROM tbl_pengajuan WHERE status_approve='on proccess' OR status_approve='approved'");
 		return $result;
 	}
 

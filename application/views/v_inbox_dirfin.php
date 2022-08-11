@@ -46,13 +46,17 @@
                 <?php
                   $no=1;
                   foreach($data_inbox as $row_inbox){
+                    // Yang tampil di view, field departemen update
+                    $bagian = $row_inbox['bagian'];
+                    $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                    $nama_departemen_update = $data_departemen['nama_departemen_update'];
                 ?>
                 <tr>
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_inbox['tanggal'])) ?></td>
                   <td><?php echo $row_inbox['nomor_pengajuan'] ?></td>
                   <td><?php echo $row_inbox['cabang'] ?></td>
-                  <td><?php echo $row_inbox['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update ?></td>
                   <td><?php echo $row_inbox['jenis_biaya'] ?></td>
                   <td><?php echo $row_inbox['sub_biaya'] ?></td>
                   <td style="text-align: right;"><?php echo number_format($row_inbox['jumlah'] + $row_inbox['ppn'] - $row_inbox['pph23'] - $row_inbox['pph42'] - $row_inbox['pph21'],0,',','.') ?></td>

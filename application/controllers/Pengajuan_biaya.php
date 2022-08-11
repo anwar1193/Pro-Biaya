@@ -222,6 +222,32 @@ class Pengajuan_biaya extends CI_Controller {
 				}
 			// Penutup Mencari Jalur Khusus
 
+
+			// Mencari Next Approve.....................................................
+			if($cabang == 'HEAD OFFICE'){ //jika pusat
+
+				if($jalur_khusus == ''){
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$departemen' AND level='Department Head'")->row_array();
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+				}else{
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$departemen' AND level='Department Head' AND jabatan_khusus='$jalur_khusus'")->row_array();
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+				}
+				
+			}else{ //jika cabang
+
+				$q_next = $this->db->query("SELECT * FROM tbl_user WHERE cabang='$cabang' AND level='Branch Manager'")->row_array();
+				$next_approve_nama = $q_next['nama_lengkap'];
+				$next_approve_level = $q_next['level'];
+				$next_approve_email = $q_next['email'];
+
+			}
+			// END Mencari Next Approve....................................................
+
 			$result = $this->M_master->simpan_pengajuan('tbl_pengajuan', array(
 				'tanggal' => date('Y-m-d',strtotime($this->input->post('tanggal'))),
 				'nomor_pengajuan' => $nopeng_otomatis,
@@ -255,6 +281,15 @@ class Pengajuan_biaya extends CI_Controller {
 			));
 
 			if($result>0){
+
+				// Simpan Next Approve ke tbl_next_approve...................................
+				$this->M_master->simpan_pengajuan('tbl_next_approve', array(
+					'nomor_pengajuan' => $nopeng_otomatis,
+					'next_approve_nama' => $next_approve_nama,
+					'next_approve_level' => $next_approve_level,
+					'next_approve_email' => $next_approve_email
+				));
+				// END Simpan Next Approve ke tbl_next_approve...............................
 
 				// Simpan File Pengajuan
 				$hari_ini = date("Y-m-d");

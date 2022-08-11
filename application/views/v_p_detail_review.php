@@ -75,7 +75,15 @@
                     <tr>
                       <th>Bagian</th>
                       <th>:</th>
-                      <td><?php echo $data_pengajuan['bagian'] ?></td>
+                      <td>
+                        <?php 
+                          // Yang tampil di view, field departemen update
+                          $bagian = $data_pengajuan['bagian'];
+                          $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                          $nama_departemen_update = $data_departemen['nama_departemen_update'];
+                          echo $nama_departemen_update;
+                        ?>
+                      </td>
                     </tr>
 
                     <tr>
@@ -145,19 +153,35 @@
                             echo number_format($data_pengajuan['jumlah'],0,',','.');
                           }
                         ?>
+
+                        <br>
+                        <input type="checkbox" class="form-checkbox" id="total_biaya_sesuai"> 
+                        <label for="total_biaya_sesuai">Harap Ceklis Jika Jumlah Biaya Sudah Sesuai</label>
+                        
                       </td>
                     </tr>
 
                     <tr>
                       <th>Bank Penerima</th>
                       <th>:</th>
-                      <td><?php echo $data_pengajuan['bank_penerima'] ?></td>
+                      <td>
+                        <?php echo $data_pengajuan['bank_penerima'] ?>
+                      </td>
                     </tr>
 
                     <tr>
                       <th>Nomor Rekening</th>
                       <th>:</th>
-                      <td><?php echo $data_pengajuan['norek_penerima'] ?></td>
+                      <td>
+                        <?php echo $data_pengajuan['norek_penerima'] ?> &nbsp;
+                        <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal-ubahRekening">
+                          Ubah Rekening
+                        </button>
+
+                        <br>
+                        <input type="checkbox" class="form-checkbox" id="rekening_sesuai"> 
+                        <label for="rekening_sesuai">Harap Ceklis Jika Data Rekening Sudah Sesuai</label>
+                      </td>
                     </tr>
 
                     <tr>
@@ -757,7 +781,16 @@
 
                               <li style="color: green; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: 
                                   <?php echo $row['nama_pengapprove'] ?> 
@@ -773,7 +806,16 @@
 
                               <li style="color: green; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                              </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>
@@ -784,7 +826,16 @@
 
                               <li style="color: orange; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>
@@ -795,7 +846,16 @@
 
                               <li style="color: red; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>
@@ -845,16 +905,16 @@
                   <?php if($level=='Departement PIC'){ ?>
 
                     <?php if($data_pengajuan['cek_fisik'] == 'ya'){ ?>
-                      <a href="#" data-toggle="modal" data-target="#modal-lanjut-item" class="btn btn-success btn-xs">
+                      <a href="#" data-toggle="modal" data-target="#modal-lanjut-item" class="btn btn-success btn-xs tombol_verifikasi">
                         <i class="fa fa-check"></i> Verifikasi Item
                       </a>
                     <?php }elseif($data_pengajuan['cek_fisik'] == 'tidak'){ ?>
                       <?php if($data_pengajuan['form']=='Perdin'){ ?>
-                        <a href="#" data-toggle="modal" data-target="#modal-lanjut-perdin" class="btn btn-success btn-xs">
+                        <a href="#" data-toggle="modal" data-target="#modal-lanjut-perdin" class="btn btn-success btn-xs tombol_verifikasi">
                           <i class="fa fa-check"></i> Verifikasi Perdin
                         </a>
                       <?php }else{ ?>
-                        <a href="#" data-toggle="modal" data-target="#modal-lanjut" class="btn btn-success btn-xs">
+                        <a href="#" data-toggle="modal" data-target="#modal-lanjut" class="btn btn-success btn-xs tombol_verifikasi">
                           <i class="fa fa-check"></i> Verifikasi
                         </a>
                       <?php } ?>
@@ -1012,6 +1072,11 @@
             <textarea name="ket_balik" class="form-control"></textarea>
           </div>
 
+          <!-- CheckList Minta Bukti Transfer -->
+          <input type="checkbox" class="form-checkbox" id="ceklis_bukti_transfer"> 
+          <input type="text" name="minta_bukti_transfer" id="minta_bukti_transfer" hidden>
+          <label for="ceklis_bukti_transfer" class="perhatian">Minta Bukti Transfer</label>
+
           <!-- Loading Lanjut -->
           <img id="loadingLanjut" src="../../asset/gambar/loading3_baru.gif" alt="" width="280" style="opacity:0.7">
 
@@ -1127,6 +1192,11 @@
             <label>Keterangan (Jika Ada Kenaikan Harga) :</label>
             <textarea name="ket_balik" class="form-control"></textarea>
           </div>
+
+          <!-- CheckList Minta Bukti Transfer -->
+          <!-- <input type="checkbox" class="form-checkbox" id="ceklis_bukti_transfer">  -->
+          <input type="text" name="minta_bukti_transfer" hidden>
+          <!-- <label for="ceklis_bukti_transfer">Minta Bukti Transfer</label> -->
 
           <!-- Loading Lanjut Item -->
           <img id="loadingLanjutItem" src="../../asset/gambar/loading3_baru.gif" alt="" width="280" style="opacity:0.7">
@@ -1629,6 +1699,59 @@
   <!-- / Modal Jasa Perbaikan -->
 
 
+  <!-- Modal Ubah Rekening -->
+  <form action="<?php echo base_url().'p_review/ubah_rekening' ?>" method="post">
+  <div class="modal fade" id="modal-ubahRekening">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Ubah Rekening</h4>
+        </div>
+        <div class="modal-body">
+
+          <input type="text" name="nomor_pengajuan" autocomplete="off" value="<?php echo $data_pengajuan['nomor_pengajuan'] ?>" hidden>
+
+          <div class="form-group">
+            <label for="bank_penerima">Bank Penerima :</label>
+            <select name="bank_penerima" class="form-control">
+              <option value="<?php echo $data_pengajuan['bank_penerima'] ?>"><?php echo $data_pengajuan['bank_penerima'] ?></option>
+              
+              <?php  
+                $data_bank = $this->M_master->tampil_data('tbl_bank_pengaju')->result_array();
+                foreach($data_bank as $row){
+              ?>
+              <option value="<?php echo $row['nama_bank'] ?>"><?php echo $row['nama_bank'] ?></option>
+              <?php } ?>
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="norek_penerima">Nomor Rekening :</label>
+            <input type="text" class="form-control" name="norek_penerima" value="<?php echo $data_pengajuan['norek_penerima'] ?>" required="" autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="atas_nama">Atas Nama :</label>
+            <input type="text" class="form-control" name="atas_nama" value="<?php echo $data_pengajuan['atas_nama'] ?>" required="" autocomplete="off">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> Update Rekening</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Modal Ubah Rekening -->
+
+
   <!-- Script Jquery Edit Split Bayar -->
   <script>
     $(document).ready(function(){
@@ -2000,8 +2123,17 @@
 
         // Setelah tombol verifikasi di klik, tombol tsb menghilang
         $(document).on('click', '#tombol_verifikasi1', function(){
-          $(this).hide();
-          $('#loadingLanjut').show();
+
+          // Validasi harus checklist jumlah & rekening sesuai
+          if($('#total_biaya_sesuai').is(':checked') && $('#rekening_sesuai').is(':checked')){
+            $(this).hide();
+            $('#loadingLanjut').show();
+
+          }else{
+            alert("Verifikasi Gagal, Pastikan Anda Telah Checklist Pada Kolom 'Total' & 'Nomor Rekening'");
+            return false;
+          }
+          
         });
 
         // Setelah tombol verifikasi di klik, tombol tsb menghilang
@@ -2047,6 +2179,16 @@
           $('#id_jasa').val(id_jasa);
           $('#nomor_pengajuan_jasa').val(nomor_pengajuan_jasa);
           $('#jasa').val(jasa);
+        });
+
+        
+        // Ketika ceklis minta 
+        $(document).on('click', '#ceklis_bukti_transfer', function(){
+          if($(this).is(':checked')){
+            $('#minta_bukti_transfer').val('ya');
+          }else{
+            $('#minta_bukti_transfer').val('');
+          }
         });
 
       });

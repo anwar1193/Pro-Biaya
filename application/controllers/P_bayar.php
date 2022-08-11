@@ -133,7 +133,7 @@ class P_bayar extends CI_Controller {
 			$tanggal_0 = $this->input->post('tanggal_bayar');
 			$tanggal = date('d-m-Y', strtotime($tanggal_0));
 
-			$con_cashflow = mysqli_connect('localhost','root','','db_cashflow');
+			$con_cashflow = mysqli_connect('localhost','root','Profi@123','db_cashflow');
 
 			$quer_cash = "UPDATE tbl_cashoutproj SET tanggal='$tanggal' WHERE kode_status='$kode_cashflow' AND tanggal='$tanggal_sebelumnya'";
 
@@ -225,7 +225,7 @@ class P_bayar extends CI_Controller {
 				$tanggal = date('d-m-Y', strtotime($tanggal_0));
 				$total =$data_pengajuan['jumlah_bayar'];
 
-				$con_cashflow = mysqli_connect('localhost','root','','db_cashflow');
+				$con_cashflow = mysqli_connect('localhost','root','Profi@123','db_cashflow');
 
 				// Cek Apa Proyeksi Sudah Ada Sebelumnya
 				$q_cek = "SELECT * FROM tbl_cashoutproj WHERE kode_status='$kode_cashflow' AND tanggal='$tanggal'";
@@ -359,7 +359,7 @@ class P_bayar extends CI_Controller {
 		$tanggal = date('d-m-Y', strtotime($tanggal_0));
 		$total = $jml_bayar;
 
-		$con_cashflow = mysqli_connect('localhost','root','','db_cashflow');
+		$con_cashflow = mysqli_connect('localhost','root','Profi@123','db_cashflow');
 
 		// Cek Apa Proyeksi Sudah Ada Sebelumnya
 		$q_cek = "SELECT * FROM tbl_cashoutproj WHERE kode_status='$kode_cashflow' AND tanggal='$tanggal'";

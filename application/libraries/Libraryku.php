@@ -9,7 +9,15 @@ Class Libraryku{
 
 	function tampil_user(){
 		$this->ci->load->model('m_login');
-		$id = $this->ci->session->userdata('id');
+		$sess_var = $this->ci->session->userdata('login_probiaya');
+
+		// Ambil ID dari session untuk di lempar ke database
+		// $data_login = array(
+		// 	'sess_id' => $sess_var['id']
+		// );
+
+		$id = $sess_var['id'];
+
 		$user_data = $this->ci->m_login->ambil_user($id)->row();
 		return $user_data;
 	}

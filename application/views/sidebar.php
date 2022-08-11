@@ -3,6 +3,7 @@
     $nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
     $cabang = $this->libraryku->tampil_user()->cabang;
     $departemen = $this->libraryku->tampil_user()->departemen;
+    $departemen_update = $this->libraryku->tampil_user()->departemen_update;
     $level = $this->libraryku->tampil_user()->level;
     $jabatan_khusus = $this->libraryku->tampil_user()->jabatan_khusus;
 
@@ -32,7 +33,7 @@
                 if($level=='Director' || $level=='Director Finance' || $level=='President Director'){
                   echo $cabang;
                 }else{
-                  echo $departemen;
+                  echo $departemen_update;
                 }
               }else{
                 echo $cabang;
@@ -459,7 +460,7 @@
         </li>
 
         <!-- Menu Dashboard -->
-        <li class="<?= $this->uri->segment(1)=='wa_blast' ? 'active' : null ?>"><a href="<?php echo base_url().'wa_blast' ?>"><i class="fa fa-whatsapp"></i> <span>Whatsapp/Email Blast</span></a></li>
+        <li class="<?= $this->uri->segment(1)=='wa_blast' ? 'active' : null ?>"><a href="<?php echo base_url().'wa_blast' ?>"><i class="fa fa-envelope"></i> <span>Email Blast</span></a></li>
         <?php } ?>
 
         <?php if($level == 'Director' || $level == 'President Director'){ ?>
@@ -754,7 +755,7 @@
 
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-file-excel-o"></i> <span>Export Leggen</span>
+                <i class="fa fa-file-excel-o"></i> <span>Export Leggen Kekurangan</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
@@ -785,6 +786,53 @@
                 </li>
               </ul>
             </li>
+
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-file-excel-o"></i> <span>Export Leggen Kelebihan</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li class="treeview">
+                  <a href="#"><i class="fa fa-circle-o"></i> Jurnal Balik
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="#" data-toggle="modal" data-target="#headerLeggenPICPenyelesaianKelebihan"><i class="fa fa-circle-o"></i> Header Data</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#detailLeggenPICPenyelesaianKelebihan"><i class="fa fa-circle-o"></i> Detail Data</a></li>  
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-file-excel-o"></i> <span>Exprt Leggen Dikembalikan</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li class="treeview">
+                  <a href="#"><i class="fa fa-circle-o"></i> Jurnal Balik
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="#" data-toggle="modal" data-target="#headerLeggenPICPenyelesaianDikembalikan"><i class="fa fa-circle-o"></i> Header Data</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#detailLeggenPICPenyelesaianDikembalikan"><i class="fa fa-circle-o"></i> Detail Data</a></li>  
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
         <?php } ?>
 
         
@@ -975,7 +1023,7 @@
   <!-- / Detail Leggen FINANCE -->
 
 
-  <!-- Header Leggen PIC Penyelesaian -->
+  <!-- Header Leggen PIC Penyelesaian Kekurangan -->
   <form action="<?php echo base_url().'review_kekurangan_accounting/header_leggen_pic' ?>" method="post">
   <div class="modal fade" id="headerLeggenPICPenyelesaian">
     <div class="modal-dialog">
@@ -1003,10 +1051,10 @@
     <!-- /.modal-dialog -->
   </div>
   </form>
-  <!-- / Header Leggen PIC Penyelesaian -->
+  <!-- / Header Leggen PIC Penyelesaian Kekurangan -->
 
 
-  <!-- Detail Leggen PIC Penyelesaian -->
+  <!-- Detail Leggen PIC Penyelesaian Kekurangan -->
   <form action="<?php echo base_url().'review_kekurangan_accounting/detail_leggen_pic' ?>" method="post">
   <div class="modal fade" id="detailLeggenPICPenyelesaian">
     <div class="modal-dialog">
@@ -1034,10 +1082,10 @@
     <!-- /.modal-dialog -->
   </div>
   </form>
-  <!-- / Detail Leggen PIC Penyelesaian -->
+  <!-- / Detail Leggen PIC Penyelesaian Kekurangan -->
 
 
-  <!-- Header Leggen Finance Penyelesaian -->
+  <!-- Header Leggen Finance Penyelesaian Kekurangan -->
   <form action="<?php echo base_url().'review_kekurangan_accounting/header_leggen_fin' ?>" method="post">
   <div class="modal fade" id="headerLeggenFINPenyelesaian">
     <div class="modal-dialog">
@@ -1065,9 +1113,9 @@
     <!-- /.modal-dialog -->
   </div>
   </form>
-  <!-- / Header Leggen Finance Penyelesaian -->
+  <!-- / Header Leggen Finance Penyelesaian Kekurangan -->
 
-  <!-- Detail Leggen FINANCE Penyelesaian -->
+  <!-- Detail Leggen FINANCE Penyelesaian Kekurangan -->
   <form action="<?php echo base_url().'review_kekurangan_accounting/detail_leggen_fin' ?>" method="post">
   <div class="modal fade" id="detailLeggenFINPenyelesaian">
     <div class="modal-dialog">
@@ -1095,7 +1143,131 @@
     <!-- /.modal-dialog -->
   </div>
   </form>
-  <!-- / Detail Leggen FINANCE Penyelesaian -->
+  <!-- / Detail Leggen FINANCE Penyelesaian Kekurangan -->
+
+
+  <!-- Header Leggen PIC Penyelesaian Kelebihan -->
+  <form action="<?php echo base_url().'review_kelebihan_accounting/header_leggen_pic' ?>" method="post">
+  <div class="modal fade" id="headerLeggenPICPenyelesaianKelebihan">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Header Leggen Jurnal Balik Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Header Leggen PIC Penyelesaian Kelebihan -->
+
+
+  <!-- Detail Leggen PIC Penyelesaian Kelebihan -->
+  <form action="<?php echo base_url().'review_kelebihan_accounting/detail_leggen_pic' ?>" method="post">
+  <div class="modal fade" id="detailLeggenPICPenyelesaianKelebihan">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Detail Leggen Jurnal Balik Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Detail Leggen PIC Penyelesaian Kelebihan -->
+
+
+  <!-- Header Leggen PIC Penyelesaian Dikembalikan -->
+  <form action="<?php echo base_url().'review_penyelesaian_dikembalikan/header_leggen_pic' ?>" method="post">
+  <div class="modal fade" id="headerLeggenPICPenyelesaianDikembalikan">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Header Leggen Jurnal Balik Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Header Leggen PIC Penyelesaian Dikembalikan -->
+
+
+  <!-- Detail Leggen PIC Penyelesaian Dikembalikan -->
+  <form action="<?php echo base_url().'review_penyelesaian_dikembalikan/detail_leggen_pic' ?>" method="post">
+  <div class="modal fade" id="detailLeggenPICPenyelesaianDikembalikan">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Detail Leggen Jurnal Balik Penyelesaian</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="">Pilih Tanggal</label>
+            <input type="date" name="tanggal" class="form-control"></input>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  </form>
+  <!-- / Detail Leggen PIC Penyelesaian Dikembalikan -->
 
 
   <!-- Modal Report 1 -->
@@ -1164,6 +1336,11 @@
             </select>
           </div>
 
+          <div class="form-group">
+            <label for="">Tahun Periode :</label>
+            <input type="number" name="tahun" class="form-control" required="">
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
@@ -1213,6 +1390,11 @@
               <option value="ADCOLL">ADCOLL</option>
               <option value="CMC">CMC</option>
             </select>
+          </div>
+
+          <div class="form-group">
+            <label for="">Tahun Periode :</label>
+            <input type="number" name="tahun" class="form-control" required="">
           </div>
 
         </div>

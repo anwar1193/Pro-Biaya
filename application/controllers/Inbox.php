@@ -162,14 +162,22 @@ class Inbox extends CI_Controller {
 
 	public function approve(){
 		date_default_timezone_set("Asia/Jakarta");
+		$jam = date('H:i:s');
 		$id = $this->input->post('id');
 		$level = $this->libraryku->tampil_user()->level;
+		$cabang = $this->libraryku->tampil_user()->cabang;
 		$nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
 		$direktur = $this->libraryku->tampil_user()->atasan;
 		$kadiv = $this->libraryku->tampil_user()->nama_kadiv;
 		$jenis_user = $this->libraryku->tampil_user()->jenis_user;
 		$data_pengajuan = $this->M_master->tampil_pengajuan_detail($id)->row_array();
 		$no_pengajuan = $data_pengajuan['nomor_pengajuan'];
+		$wilayah = $data_pengajuan['wilayah'];
+		$dept_tujuan = $data_pengajuan['dept_tujuan'];
+		$kadiv_tujuan = $data_pengajuan['kadiv_tujuan'];
+		$kadiv_asal = $data_pengajuan['kadiv_asal'];
+		$direktur_asal = $data_pengajuan['direktur_asal'];
+		$direktur_tujuan = $data_pengajuan['direktur_tujuan'];
 
 		if($level=='Branch Manager'){ //Jika Yang Approved Kacab
 
@@ -178,6 +186,20 @@ class Inbox extends CI_Controller {
 				'approved_by' => 'kacab',
 				'nama_pengapprove' => $nama_lengkap
 			), array('id_pengajuan' => $id));
+
+			// Update Next Approve........................................
+			$q_next = $this->db->query("SELECT * FROM tbl_user WHERE cabang='$wilayah' AND level='Area Manager'")->row_array();
+			
+			$next_approve_nama = $q_next['nama_lengkap'];
+			$next_approve_level = $q_next['level'];
+			$next_approve_email = $q_next['email'];
+
+			$this->M_master->update_data('tbl_next_approve', array(
+				'next_approve_nama' => $next_approve_nama,
+				'next_approve_level' => $next_approve_level,
+				'next_approve_email' => $next_approve_email
+			), array('nomor_pengajuan' => $no_pengajuan));
+			// END Update Next Approve.....................................
 
 		}elseif($level=='Area Manager'){ // Jika Yang Approved Kawil
 
@@ -197,7 +219,15 @@ class Inbox extends CI_Controller {
 				}elseif($wilayah == 'WILAYAH 6' OR $wilayah == 'WILAYAH 7'){
 					$jalur_khusus = 'collwil_3';
 				}
-			}else{
+			}
+			elseif($parameter_tambahan == 'Under91Up'){ // Jika Dibawah 91 Up
+				if($wilayah == 'WILAYAH 1' OR $wilayah == 'WILAYAH 6' OR $wilayah == 'WILAYAH 7'){
+					$jalur_khusus = 'collwilUnder_1';
+				}elseif($wilayah == 'WILAYAH 2' OR $wilayah == 'WILAYAH 5'){
+					$jalur_khusus = 'collwilUnder_2';
+				}
+			}
+			else{
 				$jalur_khusus = '';
 			}
 
@@ -207,6 +237,25 @@ class Inbox extends CI_Controller {
 				'nama_pengapprove' => $nama_lengkap,
 				'jalur_khusus' => $jalur_khusus
 			), array('id_pengajuan' => $id));
+
+			// Update Next Approve........................................
+			if($jalur_khusus == ''){
+				$q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$dept_tujuan' AND level='Department Head'")->row_array();
+			}else{
+				$q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$dept_tujuan' AND level='Department Head' AND jabatan_khusus='$jalur_khusus'")->row_array();
+			}
+			
+			$next_approve_nama = $q_next['nama_lengkap'];
+			$next_approve_level = $q_next['level'];
+			$next_approve_email = $q_next['email'];
+
+			$this->M_master->update_data('tbl_next_approve', array(
+				'next_approve_nama' => $next_approve_nama,
+				'next_approve_level' => $next_approve_level,
+				'next_approve_email' => $next_approve_email
+			), array('nomor_pengajuan' => $no_pengajuan));
+			// END Update Next Approve.....................................
+
 
 		}elseif($level=='Department Head'){ // Jika Yang Approved Dept Head
 			
@@ -234,6 +283,7 @@ class Inbox extends CI_Controller {
 						$kadiv = $q_cekUser['nama_kadiv'];
 
 						if($kadiv != ''){ //jika punya kadiv, lanjut ke kadiv
+
 							$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 								'status_approve' => 'approved',
 								'approved_by' => 'dept head pic',
@@ -242,6 +292,20 @@ class Inbox extends CI_Controller {
 								'kadiv_tujuan' => $kadiv,
 								'balik_lagi' => ''
 							), array('id_pengajuan' => $id));
+
+							// Update Next Approve........................................
+							$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$kadiv_tujuan' AND level='Division Head'")->row_array();
+							
+							$next_approve_nama = $q_next['nama_lengkap'];
+							$next_approve_level = $q_next['level'];
+							$next_approve_email = $q_next['email'];
+
+							$this->M_master->update_data('tbl_next_approve', array(
+								'next_approve_nama' => $next_approve_nama,
+								'next_approve_level' => $next_approve_level,
+								'next_approve_email' => $next_approve_email
+							), array('nomor_pengajuan' => $no_pengajuan));
+							// END Update Next Approve.....................................
 
 						}else{ //jika tidak punya kadiv
 
@@ -268,6 +332,20 @@ class Inbox extends CI_Controller {
 									'balik_lagi' => ''
 								), array('id_pengajuan' => $id));
 
+								// Update Next Approve........................................
+								$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_tujuan' AND level='Director'")->row_array();
+								
+								$next_approve_nama = $q_next['nama_lengkap'];
+								$next_approve_level = $q_next['level'];
+								$next_approve_email = $q_next['email'];
+
+								$this->M_master->update_data('tbl_next_approve', array(
+									'next_approve_nama' => $next_approve_nama,
+									'next_approve_level' => $next_approve_level,
+									'next_approve_email' => $next_approve_email
+								), array('nomor_pengajuan' => $no_pengajuan));
+								// END Update Next Approve.....................................
+
 							}else{ //jika pengajuan tidak melebihi limit kadiv
 								$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 									'status_approve' => 'final approved',
@@ -277,6 +355,9 @@ class Inbox extends CI_Controller {
 									'wa_blast' => 'off',
 									'balik_lagi' => ''
 								), array('id_pengajuan' => $id));
+
+								// Hapus Next Approve
+								$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 							}
 						}
 
@@ -291,6 +372,9 @@ class Inbox extends CI_Controller {
 							'wa_blast' => 'off',
 							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
+
+						// Hapus Next Approve
+						$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 					}
 
 					
@@ -303,6 +387,20 @@ class Inbox extends CI_Controller {
 						'nama_pengapprove' => $nama_lengkap,
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Update Next Approve........................................
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE departemen='$dept_tujuan' AND level='Department Head'")->row_array();
+								
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+
+					$this->M_master->update_data('tbl_next_approve', array(
+						'next_approve_nama' => $next_approve_nama,
+						'next_approve_level' => $next_approve_level,
+						'next_approve_email' => $next_approve_email
+					), array('nomor_pengajuan' => $no_pengajuan));
+					// END Update Next Approve.....................................
 
 				}
 
@@ -327,6 +425,20 @@ class Inbox extends CI_Controller {
 							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
 
+						// Update Next Approve........................................
+						$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$kadiv_tujuan' AND level='Division Head'")->row_array();
+									
+						$next_approve_nama = $q_next['nama_lengkap'];
+						$next_approve_level = $q_next['level'];
+						$next_approve_email = $q_next['email'];
+
+						$this->M_master->update_data('tbl_next_approve', array(
+							'next_approve_nama' => $next_approve_nama,
+							'next_approve_level' => $next_approve_level,
+							'next_approve_email' => $next_approve_email
+						), array('nomor_pengajuan' => $no_pengajuan));
+						// END Update Next Approve.....................................
+
 					}else{ //jika tidak punya kadiv
 						// Ambil Limit Kadiv
 						$q_limit_kadiv = $this->db->query("SELECT * FROM tbl_level WHERE level='Division Head'")->row_array();
@@ -342,6 +454,20 @@ class Inbox extends CI_Controller {
 								'balik_lagi' => ''
 							), array('id_pengajuan' => $id));
 
+							// Update Next Approve........................................
+							$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_tujuan' AND level='Director'")->row_array();
+								
+							$next_approve_nama = $q_next['nama_lengkap'];
+							$next_approve_level = $q_next['level'];
+							$next_approve_email = $q_next['email'];
+
+							$this->M_master->update_data('tbl_next_approve', array(
+								'next_approve_nama' => $next_approve_nama,
+								'next_approve_level' => $next_approve_level,
+								'next_approve_email' => $next_approve_email
+							), array('nomor_pengajuan' => $no_pengajuan));
+							// END Update Next Approve.....................................
+
 						}else{ //jika pengajuan tidak melebihi limit kadiv
 							$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 								'status_approve' => 'final approved',
@@ -351,6 +477,9 @@ class Inbox extends CI_Controller {
 								'wa_blast' => 'off',
 								'balik_lagi' => ''
 							), array('id_pengajuan' => $id));
+
+							// Hapus Next Approve
+							$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 						}
 					}
 
@@ -364,6 +493,9 @@ class Inbox extends CI_Controller {
 						'wa_blast' => 'off',
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Hapus Next Approve
+					$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 				}
 
 			}
@@ -403,6 +535,21 @@ class Inbox extends CI_Controller {
 							'nama_pengapprove' => $nama_lengkap,
 							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
+
+						// Update Next Approve........................................
+						$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_asal' AND level='Director'")->row_array();
+								
+						$next_approve_nama = $q_next['nama_lengkap'];
+						$next_approve_level = $q_next['level'];
+						$next_approve_email = $q_next['email'];
+
+						$this->M_master->update_data('tbl_next_approve', array(
+							'next_approve_nama' => $next_approve_nama,
+							'next_approve_level' => $next_approve_level,
+							'next_approve_email' => $next_approve_email
+						), array('nomor_pengajuan' => $no_pengajuan));
+						// END Update Next Approve.....................................
+
 					}else{ // jika total pengajuan masih dibawah limit, selesai
 						$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 							'status_approve' => 'final approved',
@@ -412,6 +559,9 @@ class Inbox extends CI_Controller {
 							'wa_blast' => 'off',
 							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
+
+						// Hapus Next Approve
+						$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 					}
 
 				}else{ //jika tujuan divisi lain
@@ -421,6 +571,20 @@ class Inbox extends CI_Controller {
 						'nama_pengapprove' => $nama_lengkap,
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Update Next Approve........................................
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_asal' AND level='Director'")->row_array();
+								
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+
+					$this->M_master->update_data('tbl_next_approve', array(
+						'next_approve_nama' => $next_approve_nama,
+						'next_approve_level' => $next_approve_level,
+						'next_approve_email' => $next_approve_email
+					), array('nomor_pengajuan' => $no_pengajuan));
+					// END Update Next Approve.....................................
 				}
 
 			}else{ //Jika yang ajukan dari dept lain, ia sebagai dept tujuan
@@ -433,6 +597,21 @@ class Inbox extends CI_Controller {
 						'nama_pengapprove' => $nama_lengkap,
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Update Next Approve........................................
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_asal' AND level='Director'")->row_array();
+								
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+
+					$this->M_master->update_data('tbl_next_approve', array(
+						'next_approve_nama' => $next_approve_nama,
+						'next_approve_level' => $next_approve_level,
+						'next_approve_email' => $next_approve_email
+					), array('nomor_pengajuan' => $no_pengajuan));
+					// END Update Next Approve.....................................
+
 				}else{ // jika total pengajuan masih dibawah limit, selesai
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'final approved',
@@ -442,6 +621,9 @@ class Inbox extends CI_Controller {
 						'wa_blast' => 'off',
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Hapus Next Approve
+					$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 				}
 
 			}
@@ -467,6 +649,20 @@ class Inbox extends CI_Controller {
 					'balik_lagi' => ''
 				), array('id_pengajuan' => $id));
 
+				// Update Next Approve........................................
+				$q_next = $this->db->query("SELECT * FROM tbl_user WHERE nama_lengkap='$direktur_tujuan' AND level='Director'")->row_array();
+								
+				$next_approve_nama = $q_next['nama_lengkap'];
+				$next_approve_level = $q_next['level'];
+				$next_approve_email = $q_next['email'];
+
+				$this->M_master->update_data('tbl_next_approve', array(
+					'next_approve_nama' => $next_approve_nama,
+					'next_approve_level' => $next_approve_level,
+					'next_approve_email' => $next_approve_email
+				), array('nomor_pengajuan' => $no_pengajuan));
+				// END Update Next Approve.....................................
+
 			}elseif($dir_login != $dir_asal AND $dir_login == $dir_tujuan){ //jika hanya sebagai direktur tujuan
 
 				if($total_pengajuan > $max_approve){ //Jika Pengajuan Lebih Besar Dari Limit
@@ -476,6 +672,20 @@ class Inbox extends CI_Controller {
 						'nama_pengapprove' => $nama_lengkap,
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Update Next Approve........................................
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE level='Director Finance'")->row_array();
+									
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+
+					$this->M_master->update_data('tbl_next_approve', array(
+						'next_approve_nama' => $next_approve_nama,
+						'next_approve_level' => $next_approve_level,
+						'next_approve_email' => $next_approve_email
+					), array('nomor_pengajuan' => $no_pengajuan));
+					// END Update Next Approve.....................................
 				}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 
 					$bagian = $data_pengajuan['bagian'];
@@ -491,6 +701,20 @@ class Inbox extends CI_Controller {
 							'balik_lagi' => ''
 						), array('id_pengajuan' => $id));
 
+						// Update Next Approve........................................
+						$q_next = $this->db->query("SELECT * FROM tbl_user WHERE level='President Director'")->row_array();
+										
+						$next_approve_nama = $q_next['nama_lengkap'];
+						$next_approve_level = $q_next['level'];
+						$next_approve_email = $q_next['email'];
+
+						$this->M_master->update_data('tbl_next_approve', array(
+							'next_approve_nama' => $next_approve_nama,
+							'next_approve_level' => $next_approve_level,
+							'next_approve_email' => $next_approve_email
+						), array('nomor_pengajuan' => $no_pengajuan));
+						// END Update Next Approve.....................................
+
 					}else{ //jika bukan audit, selesai sampai sini
 
 						$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
@@ -502,6 +726,9 @@ class Inbox extends CI_Controller {
 							'tanggal_approved' => date('Y-m-d'),
 							'wa_blast' => 'off'
 						), array('id_pengajuan' => $id));
+
+						// Hapus Next Approve
+						$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 
 					}
 					
@@ -516,6 +743,21 @@ class Inbox extends CI_Controller {
 						'nama_pengapprove' => $nama_lengkap,
 						'balik_lagi' => ''
 					), array('id_pengajuan' => $id));
+
+					// Update Next Approve........................................
+					$q_next = $this->db->query("SELECT * FROM tbl_user WHERE level='Director Finance'")->row_array();
+									
+					$next_approve_nama = $q_next['nama_lengkap'];
+					$next_approve_level = $q_next['level'];
+					$next_approve_email = $q_next['email'];
+
+					$this->M_master->update_data('tbl_next_approve', array(
+						'next_approve_nama' => $next_approve_nama,
+						'next_approve_level' => $next_approve_level,
+						'next_approve_email' => $next_approve_email
+					), array('nomor_pengajuan' => $no_pengajuan));
+					// END Update Next Approve.....................................
+
 				}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 					$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 						'status_approve' => 'final approved',
@@ -526,6 +768,9 @@ class Inbox extends CI_Controller {
 						'tanggal_approved' => date('Y-m-d'),
 						'wa_blast' => 'off'
 					), array('id_pengajuan' => $id));
+
+					// Hapus Next Approve
+					$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 				}
 
 			}
@@ -545,6 +790,21 @@ class Inbox extends CI_Controller {
 					'nama_pengapprove' => $nama_lengkap,
 					'balik_lagi' => ''
 				), array('id_pengajuan' => $id));
+
+				// Update Next Approve........................................
+				$q_next = $this->db->query("SELECT * FROM tbl_user WHERE level='President Director'")->row_array();
+									
+				$next_approve_nama = $q_next['nama_lengkap'];
+				$next_approve_level = $q_next['level'];
+				$next_approve_email = $q_next['email'];
+
+				$this->M_master->update_data('tbl_next_approve', array(
+					'next_approve_nama' => $next_approve_nama,
+					'next_approve_level' => $next_approve_level,
+					'next_approve_email' => $next_approve_email
+				), array('nomor_pengajuan' => $no_pengajuan));
+				// END Update Next Approve.....................................
+
 			}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 				$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 					'status_approve' => 'final approved',
@@ -554,6 +814,9 @@ class Inbox extends CI_Controller {
 					'wa_blast' => 'off',
 					'balik_lagi' => ''
 				), array('id_pengajuan' => $id));
+
+				// Hapus Next Approve
+				$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 			}
 
 		}elseif($level=='President Director'){ // Jika Yang Approved President Director
@@ -567,6 +830,9 @@ class Inbox extends CI_Controller {
 				'balik_lagi' => ''
 			), array('id_pengajuan' => $id));
 
+			// Hapus Next Approve
+			$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
+
 		}
 
 		if($result>0){
@@ -579,6 +845,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note'),
 					'status_alternate' => $jenis_user
 				));
@@ -592,6 +859,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note'),
 					'status_alternate' => $jenis_user
 				));
@@ -625,6 +893,7 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
+									'jam' => date('H:i:s'),
 									'note' => $this->input->post('note'),
 									'status_alternate' => $jenis_user
 								));
@@ -651,6 +920,7 @@ class Inbox extends CI_Controller {
 										'approved_by' => 'dept head pic',
 										'nama_pengapprove' => $nama_lengkap,
 										'tanggal' => date('Y-m-d'),
+										'jam' => date('H:i:s'),
 										'note' => $this->input->post('note'),
 										'status_alternate' => $jenis_user
 									));
@@ -662,6 +932,7 @@ class Inbox extends CI_Controller {
 										'approved_by' => 'dept head pic',
 										'nama_pengapprove' => $nama_lengkap,
 										'tanggal' => date('Y-m-d'),
+										'jam' => date('H:i:s'),
 										'note' => $this->input->post('note'),
 										'status_alternate' => $jenis_user
 									));
@@ -676,6 +947,7 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note'),
 								'status_alternate' => $jenis_user
 							));
@@ -688,6 +960,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'dept head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -708,6 +981,7 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note'),
 								'status_alternate' => $jenis_user
 							));
@@ -725,6 +999,7 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
+									'jam' => date('H:i:s'),
 									'note' => $this->input->post('note'),
 									'status_alternate' => $jenis_user
 								));
@@ -736,6 +1011,7 @@ class Inbox extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
+									'jam' => date('H:i:s'),
 									'note' => $this->input->post('note'),
 									'status_alternate' => $jenis_user
 								));
@@ -751,6 +1027,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'dept head pic',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -789,6 +1066,7 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'division head',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note'),
 								'status_alternate' => $jenis_user
 							));
@@ -799,6 +1077,7 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'division head',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note'),
 								'status_alternate' => $jenis_user
 							));
@@ -811,6 +1090,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -825,6 +1105,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -835,6 +1116,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -863,6 +1145,7 @@ class Inbox extends CI_Controller {
 						'approved_by' => 'director',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
+						'jam' => date('H:i:s'),
 						'note' => $this->input->post('note'),
 						'status_alternate' => $jenis_user
 					));
@@ -876,6 +1159,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -886,6 +1170,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -900,6 +1185,7 @@ class Inbox extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note'),
 							'status_alternate' => $jenis_user
 						));
@@ -914,6 +1200,7 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'director',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note'),
 								'status_alternate' => $jenis_user
 							));
@@ -924,6 +1211,7 @@ class Inbox extends CI_Controller {
 								'approved_by' => 'director',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note'),
 								'status_alternate' => $jenis_user
 							));
@@ -947,6 +1235,7 @@ class Inbox extends CI_Controller {
 						'approved_by' => 'director finance',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
+						'jam' => date('H:i:s'),
 						'note' => $this->input->post('note'),
 						'status_alternate' => $jenis_user
 					));
@@ -957,6 +1246,7 @@ class Inbox extends CI_Controller {
 						'approved_by' => 'director finance',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
+						'jam' => date('H:i:s'),
 						'note' => $this->input->post('note'),
 						'status_alternate' => $jenis_user
 					));
@@ -970,6 +1260,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note'),
 					'status_alternate' => $jenis_user
 				));
@@ -1043,6 +1334,8 @@ class Inbox extends CI_Controller {
 		
 
 		if($result>0){
+			// Hapus Next Approve Untuk Email
+			$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 
 			if($level=='Branch Manager'){ // Jika yang Reject Kacab
 
@@ -1052,6 +1345,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1063,6 +1357,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1074,6 +1369,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'dept head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1085,6 +1381,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'division head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1096,6 +1393,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1107,6 +1405,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1221,6 +1520,9 @@ class Inbox extends CI_Controller {
 
 		if($result>0){
 
+			// Hapus Next Approve Untuk Email
+			$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
+
 			if($level=='Branch Manager'){ // Jika yang Revisi Kacab
 
 				$this->M_master->simpan_approve_history('tbl_approved_history', array(
@@ -1229,6 +1531,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1240,6 +1543,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1251,6 +1555,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'dept head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1262,6 +1567,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'division head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1273,6 +1579,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1284,6 +1591,7 @@ class Inbox extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 

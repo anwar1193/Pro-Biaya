@@ -38,12 +38,15 @@
     $nama_lengkap = $this->libraryku->tampil_user()->nama_lengkap;
     $cabang = $this->libraryku->tampil_user()->cabang;
     $departemen = $this->libraryku->tampil_user()->departemen;
+    $departemen_update = $this->libraryku->tampil_user()->departemen_update;
     $level = $this->libraryku->tampil_user()->level;
 
     if($departemen=='BRANCH'){ //biar cabang tampil nama_bagiannya
       $dept = $level;
+      $departemen_update = $level;
     }else{
       $dept = $departemen;
+      $departemen_update = $this->libraryku->tampil_user()->departemen_update;
     }
 
   ?>
@@ -117,7 +120,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="bagian">Bagian (Departemen) :</label>
-                      <input type="text" name="bagian" value="<?php echo $dept ?>" class="form-control" readonly>
+                      <input type="text" name="bagian" value="<?php echo $dept ?>" hidden>
+                      <input type="text" value="<?php echo $departemen_update ?>" class="form-control" readonly>
                     </div>
                   </div>
                 </div>

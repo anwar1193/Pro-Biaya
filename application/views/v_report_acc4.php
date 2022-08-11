@@ -80,7 +80,7 @@
 			<td><?php echo $dt_coa['coa'] ?></td>
 			<td><?php echo $row['keterangan'] ?></td>
 			<td><?php echo $nama_bank ?></td>
-			<td style="text-align: right;"><?php echo $row['jumlah_bayar'] ?></td>
+			<td style="text-align: right;"><?php echo $row['jumlah'] + $row['ppn'] - $row['pph23'] - $row['pph42'] - $row['pph21'] ?></td>
 		</tr>
 		<?php } ?>
 
@@ -88,9 +88,15 @@
 			// Cari Total
 			// $data_total = $this->db->query("SELECT SUM(total) AS total_jumlah FROM tbl_pengajuan WHERE (tanggal_bayar BETWEEN '$tanggal_from' AND '$tanggal_to')")->row_array();
 
-			$data_total = $this->db->query("SELECT SUM(tbl_bayar.jumlah_bayar) AS total_jumlah FROM tbl_pengajuan INNER JOIN tbl_bayar USING(nomor_pengajuan) WHERE (tbl_pengajuan.tanggal_bayar BETWEEN '$tanggal_from' AND '$tanggal_to')")->row_array();
+			$data_total = $this->db->query("SELECT 
+				SUM(tbl_pengajuan.jumlah) AS total_jumlah,
+				SUM(tbl_pengajuan.ppn) AS total_ppn,
+				SUM(tbl_pengajuan.pph23) AS total_pph23,
+				SUM(tbl_pengajuan.pph42) AS total_pph42,
+				SUM(tbl_pengajuan.pph21) AS total_pph21
+				FROM tbl_pengajuan INNER JOIN tbl_bayar USING(nomor_pengajuan) WHERE (tbl_pengajuan.tanggal_bayar BETWEEN '$tanggal_from' AND '$tanggal_to')")->row_array();
 
-			$total_biaya = $data_total['total_jumlah'];
+			$total_biaya = $data_total['total_jumlah'] + $data_total['total_ppn'] - $data_total['total_pph23'] - $data_total['total_pph42'] - $data_total['total_pph21'];
 		?>
 		<tr style="background-color: silver">
 			<td colspan="7" style="text-align: center; font-weight: bold">TOTAL</td>

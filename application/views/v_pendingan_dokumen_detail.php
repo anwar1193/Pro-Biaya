@@ -70,7 +70,15 @@
                     <tr>
                       <th>Bagian</th>
                       <th>:</th>
-                      <td><?php echo $data_pengajuan['bagian'] ?></td>
+                      <td>
+                        <?php 
+                          // Yang tampil di view, field departemen update
+                          $bagian = $data_pengajuan['bagian'];
+                          $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                          $nama_departemen_update = $data_departemen['nama_departemen_update'];
+                          echo $nama_departemen_update;
+                        ?>
+                      </td>
                     </tr>
 
                     <tr>
@@ -665,7 +673,16 @@
 
                               <li style="color: green; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: 
                                   <?php echo $row['nama_pengapprove'] ?> 
@@ -681,7 +698,16 @@
 
                               <li style="color: green; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>
@@ -692,7 +718,16 @@
 
                               <li style="color: red; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>

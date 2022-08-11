@@ -460,13 +460,16 @@ class P_on_proccess extends CI_Controller {
 		$data_byr = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan' ORDER BY id")->result_array();
 		$frek_byr = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan' ORDER BY id")->num_rows();
 
+		$data_bank_pengaju = $this->db->query("SELECT * FROM tbl_bank_pengaju ORDER BY nama_bank")->result_array();
+
 		$this->load->view('header');
 		$this->load->view('sidebar', array('data_jb'=>$data_jb));
 		$this->load->view('v_edit_finance', array(
 			'data_pengajuan' => $data_pengajuan,
 			'data_file' => $data_file,
 			'data_byr' => $data_byr,
-			'frek_byr' => $frek_byr
+			'frek_byr' => $frek_byr,
+			'data_bank_pengaju' => $data_bank_pengaju
 		));
 		$this->load->view('footer');
 	}

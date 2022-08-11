@@ -55,13 +55,17 @@
                 <?php
                   $no=1;
                   foreach($data_history as $row_history){
+                    // Yang tampil di view, field departemen update
+                    $bagian = $row_history['bagian'];
+                    $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                    $nama_departemen_update = $data_departemen['nama_departemen_update'];
                 ?>
                 <tr style="text-align: center">
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_history['tanggal'])) ?></td>
                   <td><?php echo $row_history['nomor_pengajuan'] ?></td>
                   <td><?php echo $row_history['cabang'] ?></td>
-                  <td><?php echo $row_history['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update ?></td>
                   <td><?php echo $row_history['jenis_biaya'] ?></td>
                   <td><?php echo $row_history['sub_biaya'] ?></td>
                   <td style="text-align: right;"><?php echo number_format($row_history['jumlah'] + $row_history['ppn'] - $row_history['pph23'] - $row_history['pph42'] - $row_history['pph21'],0,',','.') ?></td>
@@ -107,7 +111,7 @@
 
 
                   <!-- Kolom Next Approve -->
-                  <?php if($row_history['status_approve'] == 'final approved' || $row_history['status_approve'] == 'rejected'){ ?>
+                  <?php if($row_history['status_approve'] == 'final approved' || $row_history['status_approve'] == 'rejected' || $row_history['status_approve'] == 'cancel' || $row_history['status_approve'] == 'cancel by request'){ ?>
                     <td style="font-weight: bold; text-align: center; color: orange">-</td>
                   <?php }else{ ?>
 

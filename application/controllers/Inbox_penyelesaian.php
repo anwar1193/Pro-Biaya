@@ -544,6 +544,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 				
@@ -556,6 +557,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -588,6 +590,7 @@ class Inbox_penyelesaian extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
+									'jam' => date('H:i:s'),
 									'note' => $this->input->post('note')
 								));
 
@@ -604,6 +607,7 @@ class Inbox_penyelesaian extends CI_Controller {
 										'approved_by' => 'dept head pic',
 										'nama_pengapprove' => $nama_lengkap,
 										'tanggal' => date('Y-m-d'),
+										'jam' => date('H:i:s'),
 										'note' => $this->input->post('note')
 									));
 
@@ -614,6 +618,7 @@ class Inbox_penyelesaian extends CI_Controller {
 										'approved_by' => 'dept head pic',
 										'nama_pengapprove' => $nama_lengkap,
 										'tanggal' => date('Y-m-d'),
+										'jam' => date('H:i:s'),
 										'note' => $this->input->post('note')
 									));
 								}
@@ -627,6 +632,7 @@ class Inbox_penyelesaian extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note')
 							));
 						}
@@ -638,6 +644,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'dept head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}
@@ -657,6 +664,7 @@ class Inbox_penyelesaian extends CI_Controller {
 								'approved_by' => 'dept head pic',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note')
 							));
 
@@ -673,6 +681,7 @@ class Inbox_penyelesaian extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
+									'jam' => date('H:i:s'),
 									'note' => $this->input->post('note')
 								));
 
@@ -683,6 +692,7 @@ class Inbox_penyelesaian extends CI_Controller {
 									'approved_by' => 'dept head pic',
 									'nama_pengapprove' => $nama_lengkap,
 									'tanggal' => date('Y-m-d'),
+									'jam' => date('H:i:s'),
 									'note' => $this->input->post('note')
 								));
 							}
@@ -697,6 +707,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'dept head pic',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}
@@ -734,6 +745,7 @@ class Inbox_penyelesaian extends CI_Controller {
 								'approved_by' => 'division head',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note')
 							));
 						}else{
@@ -743,6 +755,7 @@ class Inbox_penyelesaian extends CI_Controller {
 								'approved_by' => 'division head',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note')
 							));
 						}
@@ -754,6 +767,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}
@@ -767,6 +781,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}else{
@@ -776,6 +791,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'division head',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}
@@ -803,6 +819,7 @@ class Inbox_penyelesaian extends CI_Controller {
 						'approved_by' => 'director',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
+						'jam' => date('H:i:s'),
 						'note' => $this->input->post('note')
 					));
 
@@ -815,6 +832,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
@@ -824,6 +842,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}
@@ -837,6 +856,7 @@ class Inbox_penyelesaian extends CI_Controller {
 							'approved_by' => 'director',
 							'nama_pengapprove' => $nama_lengkap,
 							'tanggal' => date('Y-m-d'),
+							'jam' => date('H:i:s'),
 							'note' => $this->input->post('note')
 						));
 					}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
@@ -850,6 +870,7 @@ class Inbox_penyelesaian extends CI_Controller {
 								'approved_by' => 'director',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note')
 							));
 						}else{ //kalau bukan internal audit, selesai
@@ -859,6 +880,7 @@ class Inbox_penyelesaian extends CI_Controller {
 								'approved_by' => 'director',
 								'nama_pengapprove' => $nama_lengkap,
 								'tanggal' => date('Y-m-d'),
+								'jam' => date('H:i:s'),
 								'note' => $this->input->post('note')
 							));
 						}
@@ -881,6 +903,7 @@ class Inbox_penyelesaian extends CI_Controller {
 						'approved_by' => 'director finance',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
+						'jam' => date('H:i:s'),
 						'note' => $this->input->post('note')
 					));
 				}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
@@ -890,6 +913,7 @@ class Inbox_penyelesaian extends CI_Controller {
 						'approved_by' => 'director finance',
 						'nama_pengapprove' => $nama_lengkap,
 						'tanggal' => date('Y-m-d'),
+						'jam' => date('H:i:s'),
 						'note' => $this->input->post('note')
 					));
 				}
@@ -902,6 +926,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 
@@ -1016,6 +1041,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_revisi')
 				));
 
@@ -1027,6 +1053,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_revisi')
 				));
 
@@ -1038,6 +1065,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'dept head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_revisi')
 				));
 
@@ -1049,6 +1077,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'division head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_revisi')
 				));
 
@@ -1060,6 +1089,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_revisi')
 				));
 
@@ -1071,6 +1101,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_penyelesaian')
 				));
 
@@ -1184,6 +1215,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'kacab',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_reject')
 				));
 
@@ -1195,6 +1227,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'kawil',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_reject')
 				));
 
@@ -1206,6 +1239,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'dept head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_reject')
 				));
 
@@ -1217,6 +1251,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'division head',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_reject')
 				));
 
@@ -1228,6 +1263,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_reject')
 				));
 
@@ -1239,6 +1275,7 @@ class Inbox_penyelesaian extends CI_Controller {
 					'approved_by' => 'president director',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note_reject')
 				));
 

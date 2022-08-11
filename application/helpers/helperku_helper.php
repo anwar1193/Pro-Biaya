@@ -2,7 +2,7 @@
 
 function cek_sudah_login(){
 	$ci =& get_instance();
-	$user_session = $ci->session->userdata('id');
+	$user_session = $ci->session->userdata('login_probiaya');
 	if($user_session){
 		redirect('home');
 	}
@@ -10,7 +10,7 @@ function cek_sudah_login(){
 
 function cek_belum_login(){
 	$ci =& get_instance();
-	$user_session = $ci->session->userdata('id');
+	$user_session = $ci->session->userdata('login_probiaya');
 	if(!$user_session){
 		redirect('login');
 	}

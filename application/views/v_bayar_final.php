@@ -116,6 +116,11 @@
                   // cari frekuensi bayar by nomor pengajuan
                   $frek_byr = $this->db->query("SELECT * FROM tbl_bayar WHERE nomor_pengajuan='$no_pengajuan'")->num_rows();
 
+                  // Yang tampil di view, field departemen update
+                  $bagian = $row_bayar['bagian'];
+                  $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                  $nama_departemen_update = $data_departemen['nama_departemen_update'];
+
                 ?>
                 <tr style="text-align: center">
                   <td><?php echo $no++; ?></td>
@@ -150,7 +155,7 @@
 
                   <td><?php echo $row_bayar['nomor_pengajuan'] ?></td>
                   <td><?php echo $row_bayar['cabang'] ?></td>
-                  <td><?php echo $row_bayar['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update ?></td>
                   <td><?php echo $row_bayar['sub_biaya'] ?></td>
 
                   <?php if($frek_byr == 1){ // jika hanya sekali bayar ?>
@@ -168,7 +173,9 @@
                   <?php } ?>
 
 
-                  <td><?php echo $row_bayar['bank_penerima'] ?></td>
+                  <td>
+                    <?php echo $row_bayar['bank_penerima'] ?>
+                  </td>
 
                   <!-- Nomor Rekening Penerima -->
                   <td>
@@ -178,6 +185,11 @@
                     >
                       <i class="fa fa-refresh"></i> Ajukan Revisi Rekening
                     </button>
+
+                    <?php if($row_bayar['minta_bukti_transfer'] == 'ya'){ ?>
+                      <br><span class="bg-warning">(Wajib Upload Bukti Transfer)</span>
+                    <?php } ?>
+
                   </td>
 
 
@@ -214,6 +226,7 @@
                         data-id = "<?php echo $row_bayar['id'] ?>"
                         data-nopeng = "<?php echo $row_bayar['nomor_pengajuan'] ?>"
                         data-ref_no = "<?php echo $row_bayar['ref_no'] ?>"
+                        data-minta_bukti_transfer = "<?php echo $row_bayar['minta_bukti_transfer'] ?>"
                         data-jumlah_bayar = "<?php echo $row_bayar['jumlah']+$row_bayar['ppn']-($row_bayar['pph23']+$row_bayar['pph42']+$row_bayar['pph21']) ?>"
                       >
                         <i class="fa fa-check"></i> Bayar Pengajuan
@@ -225,6 +238,7 @@
                         data-id = "<?php echo $row_bayar['id'] ?>"
                         data-nopeng = "<?php echo $row_bayar['nomor_pengajuan'] ?>"
                         data-ref_no = "<?php echo $row_bayar['ref_no'] ?>"
+                        data-minta_bukti_transfer = "<?php echo $row_bayar['minta_bukti_transfer'] ?>"
                         data-jumlah_bayar = "<?php echo $row_bayar['jumlah_bayar']+$row_bayar['ppn_bayar']-($row_bayar['pph23_bayar']+$row_bayar['pph42_bayar']+$row_bayar['pph21_bayar']) ?>"
                       >
                         <i class="fa fa-check"></i> Bayar Pengajuan
@@ -451,6 +465,9 @@
 
           <input type="number" name="pph21" id="pph21" pattern="[1-9]{20}" hidden>
 
+          <input type="text" id="minta_bukti_transfer" hidden>
+          <span id="notif_minta_bukti"></span>
+
           <div class="form-group">
             <label for="total"></span> Total Bayar :</label>
             <input type="number" name="total" id="totals" hidden><br>
@@ -529,7 +546,23 @@
 
 
       $(document).on('click', '#tombolBayar', function(){
-        $(this).hide();
+        // Jika ada request bukti transfer dari pic reviewer, maka tampilkan notif nya
+        var minta_bukti_transfer2 = $('#minta_bukti_transfer').val();
+        var pilih_file = $('#pilih_file').val();
+        var nama_file = $('#nama_file').val();
+
+        if(minta_bukti_transfer2 == 'ya' && pilih_file == ''){
+          alert("Wajib upload bukti transfer karena ada request dari PIC Reviewer !");
+          return false;
+        }else{
+          if(pilih_file != '' && nama_file == ''){
+            alert("Nama file belum diisi !");
+            return false;
+          }else{
+            $(this).hide();
+          }
+        }
+        
       });
 
 
@@ -556,6 +589,7 @@
         var jml_bayar = $(this).data('jumlah_bayar');
         var pph23 = $(this).data('pph23');
         var ref_no = $(this).data('ref_no');
+        var minta_bukti_transfer = $(this).data('minta_bukti_transfer');
 
         $('#id_bayar').val(id);
         $('#nopeng').val(nopeng);
@@ -566,6 +600,7 @@
         $('#totals').val(jml_bayar);
         $('#total_rp').text(ubah_format(jml_bayar));
         $('#ref_no').val(ref_no);
+        $('#minta_bukti_transfer').val(minta_bukti_transfer);
 
       });
 
@@ -711,11 +746,15 @@ $(document).on('click', '#HapusBaris', function(e){
 });
 
 
-// Jika file upload di klik, nama file akan jadi required/wajib
+
 $(document).ready(function() {
+
+  // Jika file upload di klik, nama file akan jadi required/wajib
   $("#pilih_file").click(function() {
     $("#nama_file").attr("required","");
-  })
+  });
+
+
 });
 
 </script>

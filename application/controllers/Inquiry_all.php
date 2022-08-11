@@ -230,7 +230,7 @@ class Inquiry_all extends CI_Controller {
 			// $tanggal_0 = $this->input->post('tanggal_rencana_bayar');
 			// $tanggal_baru = date('d-m-Y', strtotime($tanggal_0));
 
-			$con_cashflow = mysqli_connect('localhost','root','','db_cashflow');
+			$con_cashflow = mysqli_connect('localhost','root','Profi@123','db_cashflow');
 
 			// ACTION PADA TANGGAL LAMA (KURANGI/HAPUS)
 			$data_cashflow = "SELECT * FROM tbl_cashoutproj WHERE kode_status='$kode_cashflow' AND tanggal='$tanggal_lama'";

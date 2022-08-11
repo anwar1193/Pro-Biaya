@@ -279,6 +279,11 @@
                 <?php
                   $no=1;
                   foreach($data_inquiry as $row_inquiry){
+
+                    // Yang tampil di view, field departemen update
+                    $bagian = $row_inquiry['bagian'];
+                    $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                    $nama_departemen_update = $data_departemen['nama_departemen_update'];
                 ?>
                 <tr style="text-align: center">
                   <td><?php echo $no++; ?></td>
@@ -295,7 +300,7 @@
                   </td>
 
                   <td><?php echo $row_inquiry['cabang'] ?></td>
-                  <td><?php echo $row_inquiry['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update; ?></td>
                   <td><?php echo $row_inquiry['jenis_biaya'] ?></td>
                   <td><?php echo $row_inquiry['sub_biaya'] ?></td>
                   <td style="text-align: right;"><?php echo number_format($row_inquiry['jumlah'] + $row_inquiry['ppn'] - $row_inquiry['pph23'] - $row_inquiry['pph42'] - $row_inquiry['pph21'],0,',','.') ?></td>

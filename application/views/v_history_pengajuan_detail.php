@@ -66,7 +66,15 @@
                     <tr>
                       <th>Bagian</th>
                       <th>:</th>
-                      <td><?php echo $data_pengajuan['bagian'] ?></td>
+                      <td>
+                        <?php 
+                          // Yang tampil di view, field departemen update
+                          $bagian = $data_pengajuan['bagian'];
+                          $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                          $nama_departemen_update = $data_departemen['nama_departemen_update'];
+                          echo $nama_departemen_update;
+                        ?>
+                      </td>
                     </tr>
 
                     <tr>
@@ -658,7 +666,16 @@
 
                               <li style="color: green; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: 
                                   <?php echo $row['nama_pengapprove'] ?> 
@@ -674,7 +691,16 @@
 
                               <li style="color: green; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>
@@ -685,7 +711,16 @@
 
                               <li style="color: red; font-weight: bold; margin-bottom: 5px">
                                 <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                                <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                                <small>
+                                  (
+                                    on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                    <?php  
+                                      if($row['jam'] != ''){
+                                        echo ' | '.$row['jam'];
+                                      }
+                                    ?>
+                                  )
+                                </small>
                                 <br>
                                 :: <?php echo $row['nama_pengapprove'] ?> ::
                                 <br>
@@ -707,8 +742,13 @@
                           <?php if($data_pengajuan['status_check'] == 'Checked'){ ?>
 
                             <li style="color: green; font-weight: bold; margin-bottom: 5px">
-                              <?php echo $data_pengajuan['status_check'] ?> by <?php echo $data_pengajuan['checked_by'] ?> <br>
-                              <small>(on <?php echo date('d-m-Y', strtotime($data_pengajuan['checked_on'])) ?>)</small>
+                              <?php echo $data_pengajuan['status_check'] ?> by <?php echo $data_pengajuan['checked_by'] ?> 
+                              (<?= $data_pengajuan['checked_name'] != '' ? $data_pengajuan['checked_name'] : '' ?>)
+                              <br>
+                              <small>
+                                (on <?php echo date('d-m-Y', strtotime($data_pengajuan['checked_on'])) ?>
+                                <?= $data_pengajuan['checked_time'] != '' ? $data_pengajuan['checked_time'] : '' ?>)
+                              </small>
                             </li>
 
                           <?php }elseif($data_pengajuan['status_check'] == 'Pending'){ ?>
@@ -805,6 +845,37 @@
                             echo date('d-m-Y', strtotime($data_byr1['tanggal_rencana_bayar']));
                           }
                         ?>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Bukti Transfer</th>
+                      <th>:</th>
+                      <td>
+                        <ul>
+                          <?php foreach($data_file_bayar as $row_file){ ?>
+                          <li>
+                            <?php echo $row_file['nama_file'] ?>
+
+                            <?php 
+                              if(file_exists('file_bayar/'.$row_file['file'])){
+                            ?>
+
+                              <a target="_blank" href="<?php echo base_url().'file_bayar/'.$row_file['file'] ?>">Download</a>
+                            
+                            <?php }else{ ?>
+
+                              <?php  
+                                $nama_folder = substr($row_file['file'], 0, 10);
+                              ?>
+
+                              <a target="_blank" href="<?php echo base_url().'file_bayar/'.$nama_folder.'/'.$row_file['file'] ?>">Download</a>
+
+                            <?php } ?>
+
+                          </li>
+                          <?php } ?>
+                        </ul>
                       </td>
                     </tr>
 

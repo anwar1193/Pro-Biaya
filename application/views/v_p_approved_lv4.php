@@ -53,13 +53,17 @@
                 <?php
                   $no=1;
                   foreach($data_approved as $row_approved){
+                    // Yang tampil di view, field departemen update
+                    $bagian = $row_approved['bagian'];
+                    $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                    $nama_departemen_update = $data_departemen['nama_departemen_update'];
                 ?>
                 <tr style="text-align: center">
                   <td><?php echo $no++; ?></td>
                   <td><?php echo date('d-m-Y',strtotime($row_approved['tanggal'])) ?></td>
                   <td><?php echo $row_approved['nomor_pengajuan'] ?></td>
                   <td><?php echo $row_approved['cabang'] ?></td>
-                  <td><?php echo $row_approved['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update ?></td>
                   <td><?php echo $row_approved['jenis_biaya'] ?></td>
                   <td><?php echo $row_approved['sub_biaya'] ?></td>
                   <td style="text-align: right;"><?php echo number_format($row_approved['jumlah'] + $row_approved['ppn'] - $row_approved['pph23'] - $row_approved['pph42'] - $row_approved['pph21'],0,',','.') ?></td>

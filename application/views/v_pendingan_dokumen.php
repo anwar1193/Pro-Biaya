@@ -64,6 +64,10 @@
                 <?php
                   $no=1;
                   foreach($data_pendok as $row_pendok){
+                    // Yang tampil di view, field departemen update
+                    $bagian = $row_pendok['bagian'];
+                    $data_departemen = $this->M_master->tampil_data_where('tbl_departemen', array('nama_departemen' => $bagian))->row_array();
+                    $nama_departemen_update = $data_departemen['nama_departemen_update'];
                 ?>
                 <tr style="text-align: center">
                   <td><?php echo $no++; ?></td>
@@ -71,7 +75,7 @@
                   <td><?php echo $row_pendok['nomor_pengajuan'] ?></td>
                   <td><?php echo $row_pendok['nomor_invoice'] ?></td>
                   <td><?php echo $row_pendok['cabang'] ?></td>
-                  <td><?php echo $row_pendok['bagian'] ?></td>
+                  <td><?php echo $nama_departemen_update ?></td>
                   <td><?php echo $row_pendok['jenis_biaya'] ?></td>
                   <td><?php echo $row_pendok['sub_biaya'] ?></td>
                   <td style="text-align: right;"><?php echo number_format($row_pendok['jumlah'] + $row_pendok['ppn'] - $row_pendok['pph23'] - $row_pendok['pph42'] - $row_pendok['pph21'],0,',','.') ?></td>

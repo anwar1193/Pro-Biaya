@@ -166,7 +166,16 @@ $level = $this->libraryku->tampil_user()->level;
 
                             <li style="color: green; font-weight: bold; margin-bottom: 5px">
                               <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                              <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                              <small>
+                                (
+                                  on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                  <?php  
+                                    if($row['jam'] != ''){
+                                      echo ' | '.$row['jam'];
+                                    }
+                                  ?>
+                                )
+                              </small>
                               <br>
                               :: <?php echo $row['nama_pengapprove'] ?> ::
                               <br>
@@ -177,7 +186,16 @@ $level = $this->libraryku->tampil_user()->level;
 
                             <li style="color: green; font-weight: bold; margin-bottom: 5px">
                               <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                              <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                              <small>
+                                (
+                                  on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                  <?php  
+                                    if($row['jam'] != ''){
+                                      echo ' | '.$row['jam'];
+                                    }
+                                  ?>
+                                )
+                              </small>
                               <br>
                               :: <?php echo $row['nama_pengapprove'] ?> ::
                               <br>
@@ -188,7 +206,16 @@ $level = $this->libraryku->tampil_user()->level;
 
                             <li style="color: orange; font-weight: bold; margin-bottom: 5px">
                               <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                              <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                              <small>
+                                (
+                                  on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                  <?php  
+                                    if($row['jam'] != ''){
+                                      echo ' | '.$row['jam'];
+                                    }
+                                  ?>
+                                )
+                              </small>
                               <br>
                               :: <?php echo $row['nama_pengapprove'] ?> ::
                               <br>
@@ -199,7 +226,16 @@ $level = $this->libraryku->tampil_user()->level;
 
                             <li style="color: red; font-weight: bold; margin-bottom: 5px">
                               <?php echo $row['status_approve'] ?> by <?php echo $row['approved_by'] ?>
-                              <small>(on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>)</small>
+                              <small>
+                                (
+                                  on <?php echo date('d-m-Y', strtotime($row['tanggal'])) ?>
+                                  <?php  
+                                    if($row['jam'] != ''){
+                                      echo ' | '.$row['jam'];
+                                    }
+                                  ?>
+                                )
+                              </small>
                               <br>
                               :: <?php echo $row['nama_pengapprove'] ?> ::
                               <br>

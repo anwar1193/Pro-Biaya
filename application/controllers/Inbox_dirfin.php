@@ -113,6 +113,21 @@ class Inbox_dirfin extends CI_Controller {
 				'approved_by' => 'director finance',
 				'nama_pengapprove' => $nama_lengkap
 			), array('id_pengajuan' => $id));
+
+			// Update Next Approve........................................
+			$q_next = $this->db->query("SELECT * FROM tbl_user WHERE level='President Director'")->row_array();
+									
+			$next_approve_nama = $q_next['nama_lengkap'];
+			$next_approve_level = $q_next['level'];
+			$next_approve_email = $q_next['email'];
+
+			$this->M_master->update_data('tbl_next_approve', array(
+				'next_approve_nama' => $next_approve_nama,
+				'next_approve_level' => $next_approve_level,
+				'next_approve_email' => $next_approve_email
+			), array('nomor_pengajuan' => $no_pengajuan));
+			// END Update Next Approve.....................................
+
 		}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
 			$result = $this->M_master->approve_pengajuan('tbl_pengajuan',array(
 				'status_approve' => 'final approved',
@@ -122,6 +137,9 @@ class Inbox_dirfin extends CI_Controller {
 				'wa_blast' => 'off',
 				'balik_lagi' => ''
 			), array('id_pengajuan' => $id));
+
+			// Hapus Next Approve
+			$this->M_master->hapus_pengajuan('tbl_next_approve', array('nomor_pengajuan' => $no_pengajuan));
 		}
 
 		if($result>0){
@@ -138,6 +156,7 @@ class Inbox_dirfin extends CI_Controller {
 					'approved_by' => 'director finance',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 			}else{ //Jika Pengajuan Lebih Kecil Dari Limit, Approve Selesai
@@ -147,6 +166,7 @@ class Inbox_dirfin extends CI_Controller {
 					'approved_by' => 'director finance',
 					'nama_pengapprove' => $nama_lengkap,
 					'tanggal' => date('Y-m-d'),
+					'jam' => date('H:i:s'),
 					'note' => $this->input->post('note')
 				));
 			}
@@ -181,6 +201,7 @@ class Inbox_dirfin extends CI_Controller {
 				'approved_by' => 'director finance',
 				'nama_pengapprove' => $nama_lengkap,
 				'tanggal' => date('Y-m-d'),
+				'jam' => date('H:i:s'),
 				'note' => $this->input->post('note')
 			));
 			
@@ -255,6 +276,7 @@ class Inbox_dirfin extends CI_Controller {
 				'approved_by' => 'director finance',
 				'nama_pengapprove' => $nama_lengkap,
 				'tanggal' => date('Y-m-d'),
+				'jam' => date('H:i:s'),
 				'note' => $this->input->post('note')
 			));
 			

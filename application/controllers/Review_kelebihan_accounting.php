@@ -141,4 +141,20 @@ class Review_kelebihan_accounting extends CI_Controller {
 	}
 
 
+	public function header_leggen_pic(){
+		$tanggal = $this->input->post('tanggal');
+
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE tanggal_pengembalian='$tanggal' AND status_verifikasi_penyelesaian='Verified By Accounting'")->result_array();
+
+		$this->load->view('v_header_leggen_penyelesaian_kelebihan',array('row'=>$data_pengajuan));
+	}
+
+	public function detail_leggen_pic(){
+		$tanggal = $this->input->post('tanggal');
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE tanggal_pengembalian='$tanggal' AND status_verifikasi_penyelesaian='Verified By Accounting'")->result_array();
+
+		$this->load->view('v_detail_leggen_penyelesaian_kelebihan',array('row'=>$data_pengajuan));
+	}
+
+
 }

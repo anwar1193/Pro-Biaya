@@ -48,7 +48,7 @@
 	<tr>
 		<th>PERIODE</th>
 		<td>:</td>
-		<td>Jan-21 s/d Des-21</td>
+		<td>Jan-<?php echo $tahun; ?> s/d Des-<?php echo $tahun ?></td>
 	</tr>
 </table>
 
@@ -104,9 +104,9 @@
 			<td style="text-align: right;">
 				<?php
 					if($departemen == 'All'){
-						$opex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_januari['total_januari'];
@@ -117,9 +117,9 @@
 			<td style="text-align: right;">
 				<?php
 					if($departemen == 'All'){
-						$opex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}  
 					
 					echo $opex_februari['total_februari'];
@@ -130,9 +130,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_maret['total_maret'];
@@ -143,9 +143,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_april['total_april'];
@@ -156,9 +156,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_mei['total_mei'];
@@ -169,9 +169,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_juni['total_juni'];
@@ -182,9 +182,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_juli['total_juli'];
@@ -195,9 +195,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_agustus['total_agustus'];
@@ -208,9 +208,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_september['total_september'];
@@ -221,9 +221,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_oktober['total_oktober'];
@@ -234,9 +234,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_november['total_november'];
@@ -247,9 +247,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 					}else{
-						$opex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 					}
 					
 					echo $opex_desember['total_desember'];
@@ -260,9 +260,9 @@
 			<td style="text-align: right;">
 				<?php  
 					if($departemen == 'All'){
-						$opex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND status_bayar='Telah Dibayar' AND YEAR(tanggal)='$tahun'")->row_array();
 					}else{
-						$opex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+						$opex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar' AND YEAR(tanggal)='$tahun'")->row_array();
 					}
 					
 					echo $opex_all['total_all'];
@@ -282,9 +282,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='01' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='01' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='01' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='01' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_januari['total_januari'];
@@ -295,9 +295,9 @@
 	        <td style="text-align: right;">
 	          <?php 
 	          	if($departemen == 'All'){
-	          		$total_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='02' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='02' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='02' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='02' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				} 
 	            
 	            echo $total_februari['total_februari'];
@@ -308,9 +308,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='03' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='03' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='03' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='03' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_maret['total_maret'];
@@ -321,9 +321,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='04' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='04' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='04' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='04' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_april['total_april'];
@@ -334,9 +334,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='05' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='05' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='05' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='05' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_mei['total_mei'];
@@ -347,9 +347,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='06' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='06' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='06' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='06' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_juni['total_juni'];
@@ -360,9 +360,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='07' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='07' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='07' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='07' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_juli['total_juli'];
@@ -373,9 +373,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='08' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='08' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='08' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='08' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_agustus['total_agustus'];
@@ -386,9 +386,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='09' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='09' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='09' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='09' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_september['total_september'];
@@ -399,9 +399,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='10' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='10' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='10' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='10' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_oktober['total_oktober'];
@@ -412,9 +412,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='11' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='11' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='11' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='11' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_november['total_november'];
@@ -425,9 +425,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='12' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='12' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='12' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND MONTH(tbl_pengajuan.tanggal)='12' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_desember['total_desember'];
@@ -438,9 +438,9 @@
 	        <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND cabang='$cabang' AND status_bayar='Telah Dibayar' AND YEAR(tbl_pengajuan.tanggal)='$tahun'")->row_array();
 				}else{
-					$total_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='opex' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar' AND YEAR(tbl_pengajuan.tanggal)='$tahun'")->row_array();
 				}
 	            
 	            echo $total_all['total_all'];
@@ -470,9 +470,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_januari = $this->db->query("SELECT SUM(total) AS total_januari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='01' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_januari['total_januari'];
@@ -483,9 +483,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_februari = $this->db->query("SELECT SUM(total) AS total_februari FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='02' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_februari['total_februari'];
@@ -496,9 +496,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_maret = $this->db->query("SELECT SUM(total) AS total_maret FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='03' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_maret['total_maret'];
@@ -509,9 +509,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();	
+					$capex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();	
 				}else{
-					$capex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
+					$capex_april = $this->db->query("SELECT SUM(total) AS total_april FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='04' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
 				}
 				
 				echo $capex_april['total_april'];
@@ -522,9 +522,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_mei = $this->db->query("SELECT SUM(total) AS total_mei FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='05' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_mei['total_mei'];
@@ -535,9 +535,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_juni = $this->db->query("SELECT SUM(total) AS total_juni FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='06' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_juni['total_juni'];
@@ -548,9 +548,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_juli = $this->db->query("SELECT SUM(total) AS total_juli FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='07' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_juli['total_juli'];
@@ -561,9 +561,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_agustus = $this->db->query("SELECT SUM(total) AS total_agustus FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='08' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_agustus['total_agustus'];
@@ -574,9 +574,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_september = $this->db->query("SELECT SUM(total) AS total_september FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='09' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_september['total_september'];
@@ -587,9 +587,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_oktober = $this->db->query("SELECT SUM(total) AS total_oktober FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='10' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_oktober['total_oktober'];
@@ -600,9 +600,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_november = $this->db->query("SELECT SUM(total) AS total_november FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='11' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_november['total_november'];
@@ -613,9 +613,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$capex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_desember = $this->db->query("SELECT SUM(total) AS total_desember FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND MONTH(tanggal)='12' AND YEAR(tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 				
 				echo $capex_desember['total_desember'];
@@ -626,9 +626,9 @@
 		  <td style="text-align: right;">
 			<?php  
 				if($departemen == 'All'){
-					$capex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND status_bayar='Telah Dibayar' AND YEAR(tanggal)='$tahun'")->row_array();
 				}else{
-					$capex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$capex_all = $this->db->query("SELECT SUM(total) AS total_all FROM tbl_pengajuan WHERE jenis_biaya='$jenis_biaya' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar' AND YEAR(tanggal)='$tahun'")->row_array();
 				}
 				
 				echo $capex_all['total_all'];
@@ -647,9 +647,9 @@
 	      <td style="text-align: right;">
 	          <?php 
 	          	if($departemen == 'All'){
-	          		$total_cp_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='01' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='01' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='01' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_januari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_januari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='01' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				} 
 	            
 	            echo $total_cp_januari['total_cp_januari'];
@@ -660,9 +660,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='02' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='02' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='02' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_februari = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_februari FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='02' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_cp_februari['total_cp_februari'];
@@ -673,9 +673,9 @@
 	      <td style="text-align: right;">
 	          <?php 
 	          	if($departemen == 'All'){
-	          		$total_cp_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='03' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='03' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='03' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
+					$total_cp_maret = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_maret FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='03' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
 				} 
 	            
 	            echo $total_cp_maret['total_cp_maret'];
@@ -686,9 +686,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='04' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();	
+	          		$total_cp_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='04' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();	
 				}else{
-					$total_cp_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='04' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
+					$total_cp_april = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_april FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='04' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
 				}
 	            
 	            echo $total_cp_april['total_cp_april'];
@@ -699,9 +699,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='05' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='05' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='05' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_mei = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_mei FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='05' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_cp_mei['total_cp_mei'];
@@ -712,9 +712,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='06' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='06' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='06' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_juni = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juni FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='06' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_cp_juni['total_cp_juni'];
@@ -725,9 +725,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='07' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='07' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='07' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
+					$total_cp_juli = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_juli FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='07' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
 				}
 	            
 	            echo $total_cp_juli['total_cp_juli'];
@@ -738,9 +738,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='08' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();	
+	          		$total_cp_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='08' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();	
 				}else{
-					$total_cp_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='08' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
+					$total_cp_agustus = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_agustus FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='08' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
 				}
 	            
 	            echo $total_cp_agustus['total_cp_agustus'];
@@ -751,9 +751,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='09' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='09' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='09' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_september = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_september FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='09' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}
 	            
 	            echo $total_cp_september['total_cp_september'];
@@ -764,9 +764,9 @@
 	      <td style="text-align: right;">
 	          <?php
 	          	if($departemen == 'All'){
-	          		$total_cp_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='10' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='10' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='10' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_oktober = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_oktober FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='10' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}  
 	            
 	            echo $total_cp_oktober['total_cp_oktober'];
@@ -777,9 +777,9 @@
 	      <td style="text-align: right;">
 	          <?php  
 	          	if($departemen == 'All'){
-	          		$total_cp_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='11' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='11' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='11' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
+					$total_cp_november = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_november FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='11' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();	
 				}
 	            
 	            echo $total_cp_november['total_cp_november'];
@@ -790,9 +790,9 @@
 	      <td style="text-align: right;">
 	          <?php
 	          	if($departemen == 'All'){
-	          		$total_cp_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='12' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='12' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
 				}else{
-					$total_cp_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='12' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_desember = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_desember FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND MONTH(tbl_pengajuan.tanggal)='12' AND YEAR(tbl_pengajuan.tanggal)='$tahun' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
 				}  
 	            
 	            echo $total_cp_desember['total_cp_desember'];
@@ -803,9 +803,9 @@
 	      <td style="text-align: right;">
 	          <?php
 	          	if($departemen == 'All'){
-	          		$total_cp_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND cabang='$cabang' AND status_bayar='Telah Dibayar'")->row_array();
+	          		$total_cp_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND cabang='$cabang' AND status_bayar='Telah Dibayar' AND YEAR(tbl_pengajuan.tanggal)='$tahun'")->row_array();
 				}else{
-					$total_cp_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar'")->row_array();
+					$total_cp_all = $this->db->query("SELECT SUM(tbl_pengajuan.total) AS total_cp_all FROM tbl_pengajuan INNER JOIN tbl_jenis_biaya ON tbl_pengajuan.jenis_biaya = tbl_jenis_biaya.jenis_biaya WHERE tbl_jenis_biaya.opex_capex='capex' AND cabang='$cabang' AND bagian='$departemen' AND status_bayar='Telah Dibayar' AND YEAR(tbl_pengajuan.tanggal)='$tahun'")->row_array();
 				}  
 	            
 	            echo $total_cp_all['total_cp_all'];

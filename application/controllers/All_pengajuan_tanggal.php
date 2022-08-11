@@ -685,12 +685,15 @@ class All_pengajuan_tanggal extends CI_Controller {
 
 		$data_capex = $this->db->query("SELECT * FROM tbl_jenis_biaya WHERE opex_capex='capex' ORDER BY no_capex")->result_array();
 
+		$tahun = $this->input->post('tahun');
+
 		$this->load->view('v_report_acc2',array(
 			'cabang' => $cabang,
 			'departemen' => $departemen,
 			'data_opex' => $data_opex,
 			'data_capex' => $data_capex,
-			'data_wilayah' => $data_wilayah
+			'data_wilayah' => $data_wilayah,
+			'tahun' => $tahun
 		));
 	}
 
