@@ -48,9 +48,9 @@
             $ref_no = $data_pengajuan['ref_no'];
 		?>
 		<tr>
-			<td><?php echo $ref_no.'PENY' ?></td>
+			<td><?php echo $ref_no.'PYPB' ?></td>
 			<td>9</td>
-			<td>PENY</td>
+			<td>PYPB</td>
 			<td><?php echo $tanggal_penyelesaian ?></td>
 			<td><?php echo $tanggal_penyelesaian ?></td>
 			<td>JK</td>
