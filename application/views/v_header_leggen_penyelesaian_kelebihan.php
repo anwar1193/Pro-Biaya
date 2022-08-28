@@ -39,8 +39,14 @@
 	<tbody>
 		<?php foreach($row as $data){ 
 			date_default_timezone_set("Asia/Jakarta");
-			$tanggal_pengembalian0 = $data['tanggal_pengembalian'];
-			$tanggal_pengembalian = date('Y-m-d', strtotime($tanggal_pengembalian0));
+
+			if($data['tanggal_approve_accounting'] == '0000-00-00'){
+				$tanggal_jurnal0 = $data['tanggal_pengembalian'];
+			}else{
+				$tanggal_jurnal0 = $data['tanggal_approve_accounting'];
+			}
+
+			$tanggal_jurnal = date('Y-m-d', strtotime($tanggal_jurnal0));
             $nomor_pengajuan = $data['nomor_pengajuan'];
 
             // Ambil Data Pengajuan Sebelumnya
@@ -51,8 +57,8 @@
 			<td><?php echo $ref_no.'PYPB' ?></td>
 			<td>9</td>
 			<td>PYPB</td>
-			<td><?php echo $tanggal_pengembalian ?></td>
-			<td><?php echo $tanggal_pengembalian ?></td>
+			<td><?php echo $tanggal_jurnal ?></td>
+			<td><?php echo $tanggal_jurnal ?></td>
 			<td>JK</td>
 			<td>IDR</td>
 			<td><?php echo $data['nomor_pengajuan'] ?></td>

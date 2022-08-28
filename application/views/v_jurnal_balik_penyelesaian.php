@@ -72,7 +72,15 @@ $level = $this->libraryku->tampil_user()->level;
 
               <td>Tanggal</td>
               <td>:</td>
-              <td><?php echo date('d-m-Y',strtotime($data_penyelesaian['tanggal_pengembalian'])) ?></td>
+              <td>
+                <?php 
+                  if($data_penyelesaian['tanggal_approve_accounting'] == '0000-00-00'){
+                    echo date('d-m-Y',strtotime($data_penyelesaian['tanggal_pengembalian']));
+                  }else{
+                    echo date('d-m-Y',strtotime($data_penyelesaian['tanggal_approve_accounting']));
+                  }
+                ?>
+              </td>
             </tr>
           </table>
 
@@ -85,21 +93,60 @@ $level = $this->libraryku->tampil_user()->level;
               <th>Credit</th>
             </tr>
 
-            <tr>
-              <td>115-001-028-000</td>
-              <td>BCA KP 523.0304922</td>
-              <td><?php echo $data_penyelesaian['cabang'] ?></td>
-              <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
-              <td style="text-align: right;">0</td>
-            </tr>
+            <?php  
+              // Jika Cara Pengembalian Melalui Tunai / KAS
+              if($data_penyelesaian['cara_pengembalian'] == 'Tunai (LPPD)'){
+            ?>
+              <tr>
+                <td>115-001-028-000</td>
+                <td>KAS</td>
+                <td><?php echo $data_penyelesaian['cabang'] ?></td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+                <td style="text-align: right;">0</td>
+              </tr>
 
-            <tr>
-              <td><?php echo $coa; ?></td>
-              <td><?php echo strtoupper($nama_coa); ?></td>
-              <td><?php echo $data_penyelesaian['cabang'] ?></td>
-              <td style="text-align: right;">0</td>
-              <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
-            </tr>
+              <tr>
+                <td><?php echo $coa; ?></td>
+                <td><?php echo strtoupper($nama_coa); ?></td>
+                <td><?php echo $data_penyelesaian['cabang'] ?></td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+              </tr>
+
+            <!-- Jika Cara Pengembalian Melalui Transfer Bank (Harus ditambah RAK) -->
+            <?php }elseif($data_penyelesaian['cara_pengembalian'] == 'Transfer BCA 523 0304922'){ ?>
+              <tr>
+                <td>115-001-028-000</td>
+                <td>BCA KP 523.0304922</td>
+                <td><?php echo $data_penyelesaian['cabang'] ?></td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+                <td style="text-align: right;">0</td>
+              </tr>
+
+              <tr>
+                <td><?php echo '120-001-000-000'; ?></td>
+                <td><?php echo 'REKENING ANTAR KANTOR'; ?></td>
+                <td><?php echo $data_penyelesaian['cabang'] ?></td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+              </tr>
+
+              <tr>
+                <td><?php echo '120-001-000-000'; ?></td>
+                <td><?php echo 'REKENING ANTAR KANTOR'; ?></td>
+                <td><?php echo 'HEAD OFFICE'; ?></td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+                <td style="text-align: right;">0</td>
+              </tr>
+
+              <tr>
+                <td><?php echo $coa; ?></td>
+                <td><?php echo strtoupper($nama_coa); ?></td>
+                <td><?php echo 'HEAD OFFICE'; ?></td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
+              </tr>
+            <?php } ?>
 
             <tr>
               <td colspan="3" style="text-align: right;font-weight: bold;">TOTAL</td>

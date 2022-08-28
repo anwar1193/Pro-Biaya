@@ -48,7 +48,7 @@
             $ref_no = $data_pengajuan['ref_no'];
 		?>
 		<tr>
-			<td><?php echo $ref_no.'BMHD' ?></td>
+			<td><?php echo $ref_no.'BMHD-PY' ?></td>
 			<td>9</td>
 			<td>BMHD</td>
 			<td><?php echo $tanggal_proses_bayar ?></td>

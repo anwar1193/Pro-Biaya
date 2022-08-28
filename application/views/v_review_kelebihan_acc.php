@@ -51,6 +51,7 @@ $level = $this->libraryku->tampil_user()->level;
               <th>Realisasi</th>
               <th>Lebih Bayar</th>
               <th>Tanggal Pengembalian</th>
+              <th>Tanggal Approve Acc.</th>
               <th>Status Penyelesaian</th>
               <th style="text-align: center" width="7%">Action</th>
             </tr>
@@ -71,6 +72,7 @@ $level = $this->libraryku->tampil_user()->level;
               <td style="text-align: right;"><?php echo number_format($row_review['realisasi'],0,',','.') ?></td>
               <td style="text-align: right;"><?php echo number_format($row_review['lebih_bayar'],0,',','.') ?></td>
               <td><?php echo date('d-m-Y', strtotime($row_review['tanggal_pengembalian'])) ?></td>
+              <td><?= $row_review['tanggal_approve_accounting'] == '0000-00-00' ? '-' : date('d-m-Y', strtotime($row_review['tanggal_approve_accounting'])) ?></td>
               <td style="font-weight:bold"><?php echo $row_review['status_penyelesaian'] ?></td>
 
               <!-- Kolom Action -->

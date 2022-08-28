@@ -44,7 +44,7 @@
 
         ?>
 		<tr>
-			<td><?php echo $data_pengajuan['ref_no'].'PYMT' ?></td>
+			<td><?php echo $data_pengajuan['ref_no'].'PYMT-PY' ?></td>
 			<td>9</td>
 			<td>PYMT</td>
 

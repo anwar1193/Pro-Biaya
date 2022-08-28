@@ -56,7 +56,7 @@
 		?>
 
 		<tr>
-			<td><?php echo $data_pengajuan['ref_no'].'PYMT' ?></td>
+			<td><?php echo $data_pengajuan['ref_no'].'PYMT-PY' ?></td>
 			<td>1</td>
 			<td><?php echo '245-999-000-000'; ?></td>
 			<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
@@ -71,7 +71,7 @@
 			<?php if($data_pengajuan['cabang'] != 'HEAD OFFICE'){ ?>
 
 				<tr>
-					<td><?php echo $data_pengajuan['ref_no'].'PYMT' ?></td>
+					<td><?php echo $data_pengajuan['ref_no'].'PYMT-PY' ?></td>
 					<td>2</td>
 					<td>120-001-000-000</td>
 					<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
@@ -84,7 +84,7 @@
 				</tr>
 
 				<tr>
-					<td><?php echo $data_pengajuan['ref_no'].'PYMT' ?></td>
+					<td><?php echo $data_pengajuan['ref_no'].'PYMT-PY' ?></td>
 					<td>3</td>
 					<td>120-001-000-000</td>
 					<td class="str">000</td>
@@ -97,7 +97,7 @@
 				</tr>
 
 				<tr>
-					<td><?php echo $data_pengajuan['ref_no'].'PYMT' ?></td>
+					<td><?php echo $data_pengajuan['ref_no'].'PYMT-PY' ?></td>
 					<td>4</td>
 					<td><?php echo $coa_bank; ?></td>
 					<td class="str">000</td>
@@ -112,7 +112,7 @@
 			<?php }else{ ?>
 
 				<tr>
-					<td><?php echo $data_pengajuan['ref_no'].'PYMT' ?></td>
+					<td><?php echo $data_pengajuan['ref_no'].'PYMT-PY' ?></td>
 					<td>2</td>
 					<td><?php echo $coa_bank; ?></td>
 					<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>

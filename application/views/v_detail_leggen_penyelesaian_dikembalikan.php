@@ -56,7 +56,7 @@
 		?>
 
 		<tr>
-			<td><?php echo $data_pengajuan['ref_no'].'PENY' ?></td>
+			<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
 			<td>1</td>
 			<td>115-001-028-000</td>
 			<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
@@ -67,7 +67,7 @@
 		</tr>
 
         <tr>
-			<td><?php echo $data_pengajuan['ref_no'].'PENY' ?></td>
+			<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
 			<td>2</td>
 			<td><?php echo $coa; ?></td>
 			<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>

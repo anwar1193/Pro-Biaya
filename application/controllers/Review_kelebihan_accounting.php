@@ -58,16 +58,19 @@ class Review_kelebihan_accounting extends CI_Controller {
 	}
 
 	public function verifikasi(){
+		date_default_timezone_set("Asia/Jakarta");
+		$tanggal = date('Y-m-d');
+
         // Cari nomor_pengajuan
         $id_penyelesaian = $this->input->post('id');
         $id_pengajuan = $this->input->post('id_pengajuan');
         $note_verifikasi = $this->input->post('note_verifikasi');
-
         
         // Update status_penyelesaian di tbl_penyelesaian_kelebihan
         $update_status = $this->M_master->update_pengajuan('tbl_penyelesaian_kelebihan', array(
             'status_verifikasi_penyelesaian' => 'Verified By Accounting',
-            'note_verifikasi_penyelesaian' => $note_verifikasi
+            'note_verifikasi_penyelesaian' => $note_verifikasi,
+			'tanggal_approve_accounting' => $tanggal
         ), array('id_penyelesaian' => $id_penyelesaian));
 
         if($update_status > 0){
@@ -144,14 +147,23 @@ class Review_kelebihan_accounting extends CI_Controller {
 	public function header_leggen_pic(){
 		$tanggal = $this->input->post('tanggal');
 
-		$data_pengajuan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE tanggal_pengembalian='$tanggal' AND status_verifikasi_penyelesaian='Verified By Accounting'")->result_array();
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan 
+						WHERE 
+							tanggal_pengembalian='$tanggal' AND tanggal_approve_accounting='0000-00-00' AND status_verifikasi_penyelesaian='Verified By Accounting' OR
+							tanggal_approve_accounting='$tanggal' AND status_verifikasi_penyelesaian='Verified By Accounting'
+						")->result_array();
 
 		$this->load->view('v_header_leggen_penyelesaian_kelebihan',array('row'=>$data_pengajuan));
 	}
 
 	public function detail_leggen_pic(){
 		$tanggal = $this->input->post('tanggal');
-		$data_pengajuan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan WHERE tanggal_pengembalian='$tanggal' AND status_verifikasi_penyelesaian='Verified By Accounting'")->result_array();
+		
+		$data_pengajuan = $this->db->query("SELECT * FROM tbl_penyelesaian_kelebihan 
+						WHERE 
+							tanggal_pengembalian='$tanggal' AND tanggal_approve_accounting='0000-00-00' AND status_verifikasi_penyelesaian='Verified By Accounting' OR
+							tanggal_approve_accounting='$tanggal' AND status_verifikasi_penyelesaian='Verified By Accounting'
+						")->result_array();
 
 		$this->load->view('v_detail_leggen_penyelesaian_kelebihan',array('row'=>$data_pengajuan));
 	}

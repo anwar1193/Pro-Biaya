@@ -91,7 +91,15 @@ class All_pengajuan_tanggal extends CI_Controller {
 				}
 
 		}else{ //jika tombol cari tidak di klik
-			$data_all_tanggal = $this->M_master->tampil_all()->result_array();
+			// $data_all_tanggal = $this->M_master->tampil_all()->result_array();
+
+			$sekarang = date('Y-m-d');
+			$kurang_90 = mktime(0,0,0,date("n"),date("j")-90, date("Y"));
+			$dari_tanggal = date("Y-m-d", $kurang_90);
+
+			$data_all_tanggal = $this->db->query("SELECT * FROM tbl_pengajuan WHERE 
+				status_bayar='Proses Bayar' AND tanggal BETWEEN '$dari_tanggal' AND '$sekarang' OR 
+				status_bayar='Telah Dibayar' AND tanggal BETWEEN '$dari_tanggal' AND '$sekarang' ORDER BY id_pengajuan DESC")->result_array();
 		}
 		
 		if($cabang == 'HEAD OFFICE'){
