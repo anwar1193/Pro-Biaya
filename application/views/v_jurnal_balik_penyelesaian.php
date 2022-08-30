@@ -118,7 +118,7 @@ $level = $this->libraryku->tampil_user()->level;
               <tr>
                 <td>115-001-028-000</td>
                 <td>BCA KP 523.0304922</td>
-                <td><?php echo $data_penyelesaian['cabang'] ?></td>
+                <td><?php echo 'HEAD OFFICE' ?></td>
                 <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
                 <td style="text-align: right;">0</td>
               </tr>
@@ -126,7 +126,7 @@ $level = $this->libraryku->tampil_user()->level;
               <tr>
                 <td><?php echo '120-001-000-000'; ?></td>
                 <td><?php echo 'REKENING ANTAR KANTOR'; ?></td>
-                <td><?php echo $data_penyelesaian['cabang'] ?></td>
+                <td><?php echo 'HEAD OFFICE' ?></td>
                 <td style="text-align: right;">0</td>
                 <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
               </tr>
@@ -134,7 +134,7 @@ $level = $this->libraryku->tampil_user()->level;
               <tr>
                 <td><?php echo '120-001-000-000'; ?></td>
                 <td><?php echo 'REKENING ANTAR KANTOR'; ?></td>
-                <td><?php echo 'HEAD OFFICE'; ?></td>
+                <td><?php echo $data_penyelesaian['cabang']; ?></td>
                 <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
                 <td style="text-align: right;">0</td>
               </tr>
@@ -142,7 +142,7 @@ $level = $this->libraryku->tampil_user()->level;
               <tr>
                 <td><?php echo $coa; ?></td>
                 <td><?php echo strtoupper($nama_coa); ?></td>
-                <td><?php echo 'HEAD OFFICE'; ?></td>
+                <td><?php echo $data_penyelesaian['cabang']; ?></td>
                 <td style="text-align: right;">0</td>
                 <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
               </tr>
