@@ -88,10 +88,26 @@ $level = $this->libraryku->tampil_user()->level;
             <tr>
               <td>115-001-028-000</td>
               <td>BCA KP 523.0304922</td>
-              <td><?php echo $data_penyelesaian['cabang'] ?></td>
+              <td><?php echo 'HEAD OFFICE' ?></td>
               <td style="text-align: right;"><?php echo number_format($data_penyelesaian['selisih'],0,',','.') ?></td>
               <td style="text-align: right;">0</td>
             </tr>
+
+            <tr>
+                <td><?php echo '120-001-000-000'; ?></td>
+                <td><?php echo 'REKENING ANTAR KANTOR'; ?></td>
+                <td><?php echo 'HEAD OFFICE' ?></td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['selisih'],0,',','.') ?></td>
+              </tr>
+
+              <tr>
+                <td><?php echo '120-001-000-000'; ?></td>
+                <td><?php echo 'REKENING ANTAR KANTOR'; ?></td>
+                <td><?php echo $data_penyelesaian['cabang']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($data_penyelesaian['selisih'],0,',','.') ?></td>
+                <td style="text-align: right;">0</td>
+              </tr>
 
             <tr>
               <td><?php echo $coa; ?></td>

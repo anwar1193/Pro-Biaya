@@ -55,30 +55,79 @@
 
 		?>
 
-		<tr>
-			<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
-			<td>1</td>
-			<td>115-001-028-000</td>
-			<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
-			<td><?php echo $data['lebih_bayar'] ?></td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
+			<?php 
+				// Jika Cara Pengembalian Melalui Tunai / Kas
+				if($data['cara_pengembalian'] == 'Tunai (LPPD)'){ 
+			?>
+				<tr>
+					<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
+					<td>1</td>
+					<td>250-010-000-000</td>
+					<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
+					<td><?php echo $data['lebih_bayar'] ?></td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
 
-        <tr>
-			<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
-			<td>2</td>
-			<td><?php echo $coa; ?></td>
-			<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
-			<td>0</td>
-			<td><?php echo $data['lebih_bayar'] ?></td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
+				<tr>
+					<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
+					<td>2</td>
+					<td><?php echo $coa; ?></td>
+					<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
+					<td>0</td>
+					<td><?php echo $data['lebih_bayar'] ?></td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+			<?php }elseif($data['cara_pengembalian'] == 'Transfer BCA 523 0304922'){ ?>
 
-		<?php 
-			}
-		?>
+				<tr>
+					<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
+					<td>1</td>
+					<td>115-001-028-000</td>
+					<td class="str">000</td>
+					<td><?php echo $data['lebih_bayar'] ?></td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+
+				<tr>
+					<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
+					<td>2</td>
+					<td>120-001-000-000</td>
+					<td class="str">000</td>
+					<td>0</td>
+					<td><?php echo $data['lebih_bayar'] ?></td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+
+				<tr>
+					<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
+					<td>3</td>
+					<td>120-001-000-000</td>
+					<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
+					<td><?php echo $data['lebih_bayar'] ?></td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+
+				<tr>
+					<td><?php echo $data_pengajuan['ref_no'].'PYPB' ?></td>
+					<td>4</td>
+					<td><?php echo $coa; ?></td>
+					<td class="str"><?php echo substr($data_pengajuan['ref_no'], 0,3) ?></td>
+					<td>0</td>
+					<td><?php echo $data['lebih_bayar'] ?></td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+			<?php } ?>
+
+		<?php } ?>
+
 	</tbody>
 </table>

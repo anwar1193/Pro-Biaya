@@ -98,8 +98,8 @@ $level = $this->libraryku->tampil_user()->level;
               if($data_penyelesaian['cara_pengembalian'] == 'Tunai (LPPD)'){
             ?>
               <tr>
-                <td>115-001-028-000</td>
-                <td>KAS</td>
+                <td>250-010-000-000</td>
+                <td>TITIPAN PENYELESAIAN UANG MUKA</td>
                 <td><?php echo $data_penyelesaian['cabang'] ?></td>
                 <td style="text-align: right;"><?php echo number_format($data_penyelesaian['lebih_bayar'],0,',','.') ?></td>
                 <td style="text-align: right;">0</td>
